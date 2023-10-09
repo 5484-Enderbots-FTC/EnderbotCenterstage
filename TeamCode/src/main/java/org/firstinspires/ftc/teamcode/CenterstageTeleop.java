@@ -17,9 +17,9 @@ import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 //
 
 
-@TeleOp(name = "AYEAYECAPTAIN2(This is an experimental teleop, if its not working use AYEAYECAPTAIN, but it should be, so this is what you should use for John Jay", group = "Linear Opmode")
+@TeleOp(name = "testteleop", group = "Linear Opmode")
 //@Disabled
-public class AYEAYECAPTAIN2 extends LinearOpMode {
+public class CenterstageTeleop extends LinearOpMode {
 
     ElapsedTime runtime = new ElapsedTime();
 
