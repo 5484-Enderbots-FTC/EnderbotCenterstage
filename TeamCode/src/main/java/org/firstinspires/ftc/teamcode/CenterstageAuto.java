@@ -27,7 +27,9 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.firstinspires.ftc.robotcontroller.external.samples;
+package org.firstinspires.ftc.teamcode;
+
+import android.net.wifi.aware.IdentityChangedListener;
 
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -55,7 +57,7 @@ import java.util.concurrent.TimeUnit;
  * To reduce any motion blur (which will interrupt the detection process) the Camera exposure is reduced to a very low value (5mS)
  * You can determine the best Exposure and Gain values by using the ConceptAprilTagOptimizeExposure OpMode in this Samples folder.
  *
- * The code assumes a Robot Configuration with motors named: leftfront_drive and rightfront_drive, leftback_drive and rightback_drive.
+ * The code assumes a Robot Configuration with motors named: mtrFL and mtrFR, mtrBL and mtrBR.
  * The motor directions must be set so a positive power goes forward on all wheels.
  * This sample assumes that the current game AprilTag Library (usually for the current season) is being loaded by default,
  * so you should choose to approach a valid tag ID (usually starting at 0)
@@ -80,10 +82,10 @@ import java.util.concurrent.TimeUnit;
  */
 
 @TeleOp(name="Omni Drive To AprilTag", group = "TeleOp")
-public class RobotAutoDriveToAprilTagOmni extends LinearOpMode
+public class CenterstageAuto extends LinearOpMode
 {
     // Adjust these numbers to suit your robot.
-    final double DESIRED_DISTANCE = 52.0; //  this is how close the camera should get to the target (inches)
+    final double DESIRED_DISTANCE = 3.0; //  this is how close the camera should get to the target (inches)
 
     //  Set the GAIN constants to control the relationship between the measured position error, and how much power is
     //  applied to the drive motors to correct the error.
@@ -102,7 +104,7 @@ public class RobotAutoDriveToAprilTagOmni extends LinearOpMode
     private DcMotor mtrBR   = null;  //  Used to control the right back drive wheel
 
     private static final boolean USE_WEBCAM = true;  // Set true to use a webcam, or false for a phone camera
-    private static final int DESIRED_TAG_ID = 0;     // Choose the tag you want to approach or set to -1 for ANY tag.
+    private static final int DESIRED_TAG_ID = -1;
     private VisionPortal visionPortal;               // Used to manage the video source.
     private AprilTagProcessor aprilTag;              // Used for managing the AprilTag detection process.
     private AprilTagDetection desiredTag = null;     // Used to hold the data for a detected AprilTag
@@ -151,26 +153,24 @@ public class RobotAutoDriveToAprilTagOmni extends LinearOpMode
             List<AprilTagDetection> currentDetections = aprilTag.getDetections();
             for (AprilTagDetection detection : currentDetections) {
                 if ((detection.metadata != null)
-                        && ((DESIRED_TAG_ID >= 0) || (detection.id == DESIRED_TAG_ID))  ){
-                    targetFound = true;
-                    desiredTag = detection;
-                    break;  // don't look any further.
+                        && ((DESIRED_TAG_ID >= 0) || (detection.id == DESIRED_TAG_ID)))  {
+                    if (detection.id != 7 && detection.id != 8) {
+                        targetFound = true;
+                        desiredTag = detection;
+                        break;  // don't look any further.
+                    }
                 }
             }
 
-            // Tell the driver what we see, and what to do.
             if (targetFound) {
-                telemetry.addData(">","HOLD Left-Bumper to Drive to Target\n");
                 telemetry.addData("Target", "ID %d (%s)", desiredTag.id, desiredTag.metadata.name);
                 telemetry.addData("Range",  "%5.1f inches", desiredTag.ftcPose.range);
                 telemetry.addData("Bearing","%3.0f degrees", desiredTag.ftcPose.bearing);
                 telemetry.addData("Yaw","%3.0f degrees", desiredTag.ftcPose.yaw);
-            } else {
-                telemetry.addData(">","Drive using joystick to find target\n");
             }
 
             // If Left Bumper is being pressed, AND we have found the desired target, Drive to target Automatically .
-            if (gamepad1.left_bumper && targetFound) {
+            if (targetFound) {
 
                 // Determine heading, range and Yaw (tag image rotation) error so we can use them to control the robot automatically.
                 double  rangeError      = (desiredTag.ftcPose.range - DESIRED_DISTANCE);
@@ -183,13 +183,6 @@ public class RobotAutoDriveToAprilTagOmni extends LinearOpMode
                 strafe = Range.clip(-yawError * STRAFE_GAIN, -MAX_AUTO_STRAFE, MAX_AUTO_STRAFE);
 
                 telemetry.addData("Auto","Drive %5.2f, Strafe %5.2f, Turn %5.2f ", drive, strafe, turn);
-            } else {
-
-                // drive using manual POV Joystick mode.  Slow things down to make the robot more controlable.
-                drive  = -gamepad1.left_stick_y  / 2.0;  // Reduce drive rate to 50%.
-                strafe = -gamepad1.left_stick_x  / 2.0;  // Reduce strafe rate to 50%.
-                turn   = -gamepad1.right_stick_x / 3.0;  // Reduce turn rate to 33%.
-                telemetry.addData("Manual","Drive %5.2f, Strafe %5.2f, Turn %5.2f ", drive, strafe, turn);
             }
             telemetry.update();
 
