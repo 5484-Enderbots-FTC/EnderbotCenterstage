@@ -28,7 +28,6 @@ public class CenterstageTeleop extends LinearOpMode {
     DcMotor mtrBR;
     DcMotor mtrFL;
     DcMotor mtrFR;
-    DcMotorEx mtrLift;
 
     //servos
     Servo extend;
@@ -74,16 +73,6 @@ public class CenterstageTeleop extends LinearOpMode {
     double armSpan = 0.5;
     int PlacingMode = 1;
 
-
-    boolean firstHeightBool = false;
-    int secondHeight = 3300;
-    boolean secondHeightBool = false;
-    int fullHeight = 5250;
-    boolean fullHeightBool = false;
-    boolean neutralHoldBool = false;
-    boolean lowGrab = false;
-    boolean highGrab = false;
-    //servos
     double extendOut = 0.65;
     double extendIn = 0;
     double groundArm = 0.05;
@@ -145,12 +134,6 @@ public class CenterstageTeleop extends LinearOpMode {
         //mtrFR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         //mtrFR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
-        mtrLift = hardwareMap.get(DcMotorEx.class, "mtrLift");
-        mtrLift.setZeroPowerBehavior(BRAKE);
-        mtrLift.setDirection(DcMotor.Direction.REVERSE);
-        mtrLift.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-
-        lowLimit = hardwareMap.get(TouchSensor.class, "lowLimit");
 
 
         telemetry.addData("heres the encoders", "Starting at %7d :%7d :%7d :%7d",
@@ -159,12 +142,6 @@ public class CenterstageTeleop extends LinearOpMode {
                 mtrBL.getCurrentPosition(),
                 mtrBR.getCurrentPosition());
         telemetry.update();
-
-        arm = hardwareMap.get(Servo.class, "arm");
-        arm.setDirection(Servo.Direction.FORWARD);
-
-        grab = hardwareMap.get(Servo.class, "grab");
-        grab.setDirection(Servo.Direction.REVERSE);
 
 
         //start
