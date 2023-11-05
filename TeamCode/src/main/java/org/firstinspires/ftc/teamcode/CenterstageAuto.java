@@ -81,7 +81,7 @@ import java.util.concurrent.TimeUnit;
  *
  */
 
-@TeleOp(name="Omni Drive To AprilTag", group = "TeleOp")
+@TeleOp(name="CenterstageAuto", group = "TeleOp")
 public class CenterstageAuto extends LinearOpMode
 {
     // Adjust these numbers to suit your robot.
