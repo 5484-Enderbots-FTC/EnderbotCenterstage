@@ -31,6 +31,7 @@ package org.firstinspires.ftc.teamcode;
 
 import android.net.wifi.aware.IdentityChangedListener;
 
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
@@ -81,7 +82,7 @@ import java.util.concurrent.TimeUnit;
  *
  */
 
-@TeleOp(name="CenterstageAuto", group = "TeleOp")
+@Autonomous(name="CenterstageAuto", group = "Autonomous")
 public class CenterstageAuto extends LinearOpMode
 {
     // Adjust these numbers to suit your robot.
