@@ -28,7 +28,7 @@ public class MaxAngularVeloTuner extends LinearOpMode {
     public static double RUNTIME = 4.0;
 
     private ElapsedTime timer;
-    private double maxAngVelocity = 0.0;
+    private double maxAngVelocity = 0.2094677213802462;
 
     @Override
     public void runOpMode() throws InterruptedException {
