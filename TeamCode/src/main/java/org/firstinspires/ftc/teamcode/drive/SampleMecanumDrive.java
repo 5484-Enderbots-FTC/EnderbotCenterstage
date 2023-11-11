@@ -289,7 +289,7 @@ public class SampleMecanumDrive extends MecanumDrive {
 
     @Override
     public double getRawExternalHeading() {
-        return 0.0;
+        return 0;
     }
 
     @Override
