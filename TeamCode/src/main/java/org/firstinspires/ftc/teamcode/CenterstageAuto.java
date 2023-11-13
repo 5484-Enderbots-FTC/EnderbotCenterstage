@@ -110,6 +110,8 @@ public class CenterstageAuto extends LinearOpMode
     private AprilTagProcessor aprilTag;              // Used for managing the AprilTag detection process.
     private AprilTagDetection desiredTag = null;     // Used to hold the data for a detected AprilTag
 
+    private char AutoColor = 'n';
+
     @Override public void runOpMode()
     {
         boolean targetFound     = false;    // Set to true when an AprilTag target is detected
@@ -147,18 +149,21 @@ public class CenterstageAuto extends LinearOpMode
 
         while (opModeIsActive())
         {
+
             targetFound = false;
             desiredTag  = null;
 
             // Step through the list of detected tags and look for a matching tag
             List<AprilTagDetection> currentDetections = aprilTag.getDetections();
-            for (AprilTagDetection detection : currentDetections) {
-                if ((detection.metadata != null)
-                        && ((DESIRED_TAG_ID >= 0) || (detection.id == DESIRED_TAG_ID)))  {
-                    if (detection.id != 7 && detection.id != 8) {
-                        targetFound = true;
-                        desiredTag = detection;
-                        break;  // don't look any further.
+            if (AutoColor != 'n') {
+                for (AprilTagDetection detection : currentDetections) {
+                    if ((detection.metadata != null)
+                            && ((DESIRED_TAG_ID >= 0) || (detection.id == DESIRED_TAG_ID))) {
+                        if (detection.id != 7 && detection.id != 8) {
+                            targetFound = true;
+                            desiredTag = detection;
+                            break;  // don't look any further.
+                        }
                     }
                 }
             }
@@ -170,7 +175,7 @@ public class CenterstageAuto extends LinearOpMode
                 telemetry.addData("Yaw","%3.0f degrees", desiredTag.ftcPose.yaw);
             }
 
-            // If Left Bumper is being pressed, AND we have found the desired target, Drive to target Automatically .
+            // If we have found the desired target, Drive to target Automatically .
             if (targetFound) {
 
                 // Determine heading, range and Yaw (tag image rotation) error so we can use them to control the robot automatically.
