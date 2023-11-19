@@ -17,7 +17,7 @@ import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 //
 
 
-@TeleOp(name = "testteleop", group = "Linear Opmode")
+@TeleOp(name = "CenterstageTeleop", group = "Linear Opmode")
 //@Disabled
 public class CenterstageTeleop extends LinearOpMode {
 

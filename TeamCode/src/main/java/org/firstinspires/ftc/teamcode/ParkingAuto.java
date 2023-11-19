@@ -45,21 +45,25 @@ public class ParkingAuto extends LinearOpMode {
 
     @Override
     public void runOpMode() throws InterruptedException {
-
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
-        Pose2d startPose = new Pose2d(0,0,0);
+        Pose2d startPose = new Pose2d(63,36,0);
+        drive.setPoseEstimate(startPose);
 
-        if (!isStopRequested()) return;
-            Trajectory traj1 = drive.trajectoryBuilder(startPose)
-                    .forward(60)
-                    .build();
-            Trajectory traj2 = drive.trajectoryBuilder(traj1.end())
-                    .strafeLeft(60)
-                    .build();
+        while (!isStarted() && !isStopRequested()) {
+
+        }
+        if (isStopRequested()) return;
+        TrajectorySequence traj1 = drive.trajectorySequenceBuilder(startPose)
+                .forward(60)
+                .
+                .build();
+        TrajectorySequence traj2 = drive.trajectorySequenceBuilder(traj1.end())
+                .strafeLeft(60)
+                .build();
 
         waitForStart();
 
-        drive.followTrajectory(traj1);
-        drive.followTrajectory(traj2);
+        drive.followTrajectorySequence(traj1);
+        drive.followTrajectorySequence(traj2);
     }
 }

@@ -79,6 +79,7 @@ import java.util.concurrent.TimeUnit;
  *
  */
 
+@Disabled
 @TeleOp(name="Omni Drive To AprilTag", group = "TeleOp")
 public class RobotAutoDriveToAprilTagOmni extends LinearOpMode
 {
