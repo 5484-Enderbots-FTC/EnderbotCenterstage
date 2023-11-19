@@ -152,6 +152,18 @@ public class CenterstageAuto extends LinearOpMode
 
             targetFound = false;
             desiredTag  = null;
+            //insert webcam detect spike here and decide desired tag
+            //DESIRED_TAG_ID = put number
+
+            //right here is deciding what auto we are
+
+            //drive towards spike and place pixel
+
+            //here put it turning so we can see which side of the stage we are
+
+            //detect apriltag and see distance from side wall
+
+            //turn back towards backdrop
 
             // Step through the list of detected tags and look for a matching tag
             List<AprilTagDetection> currentDetections = aprilTag.getDetections();

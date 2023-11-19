@@ -59,43 +59,12 @@ public class CenterstageTeleop extends LinearOpMode {
             (WHEEL_DIAMETER_INCHES * 3.1415);
     static final double DRIVE_SPEED = 0.9;
     static final double TURN_SPEED = 0.7;
-    double armOffset = 0;
-    int LiftOffset = 0;
-    double EncdrFL = 0;
-    double EncdrFR = 0;
-    double EncdrBL = 0;
-    double EncdrBR = 0;
-    double BLcorrect = 0;
-    double BRcorrect = 0;
-    double FLcorrect = 0;
-    double FRcorrect = 0;
-    int floor = 0;
-    double armSpan = 0.5;
     int PlacingMode = 1;
-
-    double extendOut = 0.65;
-    double extendIn = 0;
-    double groundArm = 0.05;
-    double foundArm = 0.18;
-    double foundSecure = 0.1;
-    double highArm = 0.36;
-    double highSecure = 0.29;
-    double retractArm = 0.75;
-    double grabbed = 0;
     boolean armOutButton = false;
     boolean gripCloseButton = false;
-    double fullGrab = 0.33;
-    double releaseGrab = 0.7;
     boolean armOut = false;
     boolean gripClose = false;
-    double FLdown = 0.75;
-    double FLup = 0.5;
-    double FRdown = 0.25;
-    double FRup = 0.5;
 
-    //motors
-    double liftReversal = 0.05;
-    double liftStop = -0;
 
 
     @Override
