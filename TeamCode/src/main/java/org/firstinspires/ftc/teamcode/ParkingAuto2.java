@@ -1,29 +1,12 @@
 package org.firstinspires.ftc.teamcode;
 
-import static com.qualcomm.robotcore.hardware.DcMotor.ZeroPowerBehavior.BRAKE;
-
-import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.config.Config;
-import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
-import com.acmerobotics.roadrunner.trajectory.Trajectory;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorEx;
-import com.qualcomm.robotcore.hardware.Servo;
-import com.qualcomm.robotcore.util.ElapsedTime;
 
-import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
-import org.openftc.apriltag.AprilTagDetection;
-import org.openftc.easyopencv.OpenCvCamera;
-import org.openftc.easyopencv.OpenCvCameraFactory;
-import org.openftc.easyopencv.OpenCvCameraRotation;
-
-import java.util.ArrayList;
 
 /*
  * Op mode for preliminary tuning of the follower PID coefficients (located in the drive base
@@ -39,14 +22,14 @@ import java.util.ArrayList;
  * These coefficients can be tuned live in dashboard.
  */
 @Config
-@Autonomous(name = "Blue Frontstage Parking Auto")
+@Autonomous(name = "Red Frontstage Parking Auto")
 
-public class ParkingAuto extends LinearOpMode {
+public class ParkingAuto2 extends LinearOpMode {
 
     @Override
     public void runOpMode() throws InterruptedException {
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
-        Pose2d startPose = new Pose2d(63,36,90);
+        Pose2d startPose = new Pose2d(63,36,270);
         drive.setPoseEstimate(startPose);
 
         waitForStart();
@@ -56,7 +39,7 @@ public class ParkingAuto extends LinearOpMode {
         while (!isStopRequested()) {
             TrajectorySequence traj1 = drive.trajectorySequenceBuilder(startPose)
                     .forward(52)
-                    .turn(Math.toRadians(90))
+                    .turn(Math.toRadians(-90))
                     .build();
             TrajectorySequence traj2 = drive.trajectorySequenceBuilder(traj1.end())
                     .forward(100)
