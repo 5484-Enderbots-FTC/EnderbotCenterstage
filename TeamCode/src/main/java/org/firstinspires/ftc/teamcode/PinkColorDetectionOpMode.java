@@ -1,10 +1,23 @@
 package org.firstinspires.ftc.teamcode;
 
+import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.telemetry;
+
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.ElapsedTime;
+import org.opencv.core.Core;
+import org.opencv.core.Mat;
+import org.opencv.core.Scalar;
+import org.opencv.core.Size;
+import org.opencv.imgproc.Imgproc;
 
+import org.opencv.core.CvType;
+import org.opencv.core.MatOfPoint;
+import org.opencv.core.MatOfPoint2f;
+import org.opencv.core.Point;
+import org.opencv.core.Rect;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
+import org.opencv.core.Core;
 import org.opencv.core.CvType;
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfRect;
@@ -35,13 +48,20 @@ public class PinkColorDetectionOpMode extends OpMode {
         webcam.setPipeline(new PinkColorDetectionPipeline());
         
         // Open the connection to the camera device
-        webcam.openCameraDeviceAsync(() -> webcam.startStreaming(320, 240, OpenCvCameraRotation.UPRIGHT));
-rttttttttttttttttttttygttttttgyttyuyhghyhghytttttttttttttttttttttgyujki]]]]
-\]'
-    \\\\\\\\\\\]\\
-        '
-                \
-        telemetry.addData("Status", "Initialized");
+        webcam.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener()
+        {
+            @Override
+            public void onOpened()
+            {
+                webcam.startStreaming(320, 240, OpenCvCameraRotation.UPRIGHT);
+            }
+
+            @Override
+            public void onError(int errorCode)
+            {
+
+            }
+        });        telemetry.addData("Status", "Initialized");
     }
 
     @Override
@@ -64,17 +84,17 @@ rttttttttttttttttttttygttttttgyttyuyhghyhghytttttttttttttttttttttgyujki]]]]
         public Mat processFrame(Mat input) {
             // Convert the input frame to HSV color space
             Imgproc.cvtColor(input, input, Imgproc.COLOR_RGB2HSV);
-            
+
             // Define the range of pink color in HSV
             Scalar lowerBound = new Scalar(150, 50, 50);
             Scalar upperBound = new Scalar(180, 255, 255);
             
             // Threshold the image to keep only the pixels within the pink color range
+
             Core.inRange(input, lowerBound, upperBound, input);
 
-            // Perform additional processing if needed, such as finding contours or drawing on the frame
-
             return input;
+            
         }
     }
 }
