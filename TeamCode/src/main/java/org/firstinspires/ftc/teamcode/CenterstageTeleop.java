@@ -88,8 +88,11 @@ public class CenterstageTeleop extends LinearOpMode {
         mtrFR.setZeroPowerBehavior(BRAKE);
         mtrFR.setDirection(DcMotor.Direction.REVERSE);
         mtrFR.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        //mtrFR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        //mtrFR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+        mtrI =  hardwareMap.get(DcMotorEx.class, "mtrI");
+        mtrI.setZeroPowerBehavior(BRAKE);
+        mtrI.setDirection(DcMotor.Direction.REVERSE);
+        mtrI.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
 
 
