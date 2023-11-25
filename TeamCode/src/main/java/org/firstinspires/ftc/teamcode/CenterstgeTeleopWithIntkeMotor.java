@@ -149,7 +149,7 @@ public class CenterstageTeleopWithIntkeMotor extends LinearOpMode {
 
         mtrI =  hardwareMap.get(DcMotorEx.class, "mtrI");
         mtrI.setZeroPowerBehavior(BRAKE);
-        mtrI.setDirection(DcMotor.Direction.REVERSE)
+        mtrI.setDirection(DcMotor.Direction.REVERSE);
         mtrI.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
         mtrLift = hardwareMap.get(DcMotorEx.class, "mtrLift");
@@ -194,7 +194,7 @@ public class CenterstageTeleopWithIntkeMotor extends LinearOpMode {
             );
 
 
-            if (mtrI > 1.0) {
+            if (gamepad2.x) {
                 mtrI.setPower(0.5);
             }
 
