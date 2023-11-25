@@ -28,6 +28,9 @@ public class CenterstageTeleop extends LinearOpMode {
     DcMotor mtrBR;
     DcMotor mtrFL;
     DcMotor mtrFR;
+    DcMotor mtrI;
+
+    //servos when we get to it
 
 
 
@@ -114,6 +117,10 @@ public class CenterstageTeleop extends LinearOpMode {
                             gamepad1.right_stick_x * (1 - (gamepad1.right_trigger * 0.4))
                     )
             );
+
+            if (gamepad2.x) {
+                mtrI.setPower(0.5);
+            }
 
 
             Pose2d poseEstimate = drive.getPoseEstimate();
