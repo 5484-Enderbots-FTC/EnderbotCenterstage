@@ -85,7 +85,7 @@ public class PinkColorDetectionOpMode extends OpMode {
             // Convert the input frame to HSV color space
             Imgproc.cvtColor(input, input, Imgproc.COLOR_RGB2HSV);
 
-            // Define the range of pink color in HSV
+            // Define the rang//share of pink color in HSV
             Scalar lowerBound = new Scalar(150, 50, 50);
             Scalar upperBound = new Scalar(180, 255, 255);
             
