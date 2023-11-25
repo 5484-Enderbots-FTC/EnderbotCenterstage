@@ -148,6 +148,7 @@ public class CenterstageTeleopWithIntkeMotor extends LinearOpMode {
         //mtrFR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         mtrI =  hardwareMap.get(DcMotorEx.class, "mtrI");
+        mtrI.setZeroPowerBehavior(BRAKE);
         mtrI.setDirection(DcMotor.Direction.REVERSE)
         mtrI.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
@@ -192,6 +193,10 @@ public class CenterstageTeleopWithIntkeMotor extends LinearOpMode {
                     )
             );
 
+
+            if (mtrI > 1.0) {
+                mtrI.setPower(0.5);
+            }
 
             Pose2d poseEstimate = drive.getPoseEstimate();
             telemetry.addData("x", poseEstimate.getX());
