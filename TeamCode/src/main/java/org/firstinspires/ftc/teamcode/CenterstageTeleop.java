@@ -29,22 +29,7 @@ public class CenterstageTeleop extends LinearOpMode {
     DcMotor mtrFL;
     DcMotor mtrFR;
 
-    //servos
-    Servo extend;
-    Servo grab;
 
-    Servo arm;
-    Servo FRservo;
-    Servo FLservo;
-    Servo LED_strip;
-
-    //sensors
-    DistanceSensor sensorRange;
-
-    //limit switches
-    TouchSensor topLimit;
-    TouchSensor lowLimit;
-    DigitalChannel DistanceBreak;
 
     /**
      * -
@@ -52,7 +37,7 @@ public class CenterstageTeleop extends LinearOpMode {
      * CONSTANTS
      */
     //encoder stuff
-    static final double COUNTS_PER_MOTOR_REV = 537.6;    // eg: TETRIX Motor Encoder
+    static final double COUNTS_PER_MOTOR_REV = 0;    // eg: TETRIX Motor Encoder
     static final double DRIVE_GEAR_REDUCTION = 1.0;     // This is < 1.0 if geared UP
     static final double WHEEL_DIAMETER_INCHES = 4.0;     // For figuring circumference
     static final double COUNTS_PER_INCH = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
@@ -105,12 +90,10 @@ public class CenterstageTeleop extends LinearOpMode {
 
 
 
-        telemetry.addData("heres the encoders", "Starting at %7d :%7d :%7d :%7d",
-                mtrFL.getCurrentPosition(),
-                mtrFR.getCurrentPosition(),
-                mtrBL.getCurrentPosition(),
-                mtrBR.getCurrentPosition());
-        telemetry.update();
+
+
+        telemetry.addLine("Have fun!");
+        telemetry.addLine("Get your TeleOp! Hot and fresh!");
 
 
         //start
@@ -126,9 +109,9 @@ public class CenterstageTeleop extends LinearOpMode {
 
             drive.setWeightedDrivePower(
                     new Pose2d(
-                            gamepad1.left_stick_y * PlacingMode * (1 - (gamepad1.right_trigger * 0.5)),
-                            gamepad1.left_stick_x * .8 * PlacingMode * (1 - (gamepad1.right_trigger * 0.5)),
-                            gamepad1.right_stick_x * (1 - (gamepad1.right_trigger * 0.5))
+                            gamepad1.left_stick_y * (1 - (gamepad1.right_trigger * 0.4)),
+                            gamepad1.left_stick_x * .8 * (1 - (gamepad1.right_trigger * 0.4)),
+                            gamepad1.right_stick_x * (1 - (gamepad1.right_trigger * 0.4))
                     )
             );
 
@@ -138,13 +121,6 @@ public class CenterstageTeleop extends LinearOpMode {
             telemetry.addData("y", poseEstimate.getY());
             telemetry.addData("heading", poseEstimate.getHeading());
 
-
-
-            telemetry.addData("arm", armOut);
-            telemetry.addData("armButton", armOutButton);
-
-            telemetry.addData("grip", gripClose);
-            telemetry.addData("gripButton", gripCloseButton);
             //grab.setPosition();
 
 
