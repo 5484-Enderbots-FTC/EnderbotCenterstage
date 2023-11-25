@@ -29,7 +29,7 @@ public class ParkingAuto3 extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
-        Pose2d startPose = new Pose2d(-36,63,270);
+        Pose2d startPose = new Pose2d(60,-36,270);
         drive.setPoseEstimate(startPose);
 
         waitForStart();
@@ -38,7 +38,7 @@ public class ParkingAuto3 extends LinearOpMode {
 
         while (!isStopRequested()) {
             TrajectorySequence traj1 = drive.trajectorySequenceBuilder(startPose)
-                    .forward(53)
+                    .forward(2)
                     .turn(Math.toRadians(90))
                     .build();
             TrajectorySequence traj2 = drive.trajectorySequenceBuilder(traj1.end())

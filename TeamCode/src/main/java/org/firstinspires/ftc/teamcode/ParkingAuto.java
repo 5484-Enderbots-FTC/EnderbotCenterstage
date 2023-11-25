@@ -29,7 +29,7 @@ public class ParkingAuto extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
-        Pose2d startPose = new Pose2d(-38,64,270);
+        Pose2d startPose = new Pose2d(-60,64,270);
         drive.setPoseEstimate(startPose);
 
         waitForStart();
