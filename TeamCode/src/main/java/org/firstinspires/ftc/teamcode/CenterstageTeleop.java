@@ -29,6 +29,13 @@ public class CenterstageTeleop extends LinearOpMode {
     DcMotor mtrFL;
     DcMotor mtrFR;
     DcMotor mtrI;
+    DcMotor mtrHang;
+
+    //limit switch
+    TouchSensor limitSwitch;
+
+    //timer
+    ElapsedTime elapsedTime;
 
     //servos when we get to it
 
@@ -71,6 +78,11 @@ public class CenterstageTeleop extends LinearOpMode {
         mtrI.setDirection(DcMotor.Direction.REVERSE);
         mtrI.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
+        mtrHang = hardwareMap.get(DcMotor.class, "mtrHang");
+        mtrHang.setZeroPowerBehavior(BRAKE);
+        mtrHang.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        mtrHang.setDirection(DcMotor.Direction.FORWARD);
+
         telemetry.addLine("Have fun!");
         telemetry.addLine("Get your TeleOp! Hot and fresh!");
 
@@ -94,9 +106,13 @@ public class CenterstageTeleop extends LinearOpMode {
                     )
             );
 
-           // if (gamepad1.x) {
-           //     mtrI.setPower(0.5);
-            // }
+            if (gamepad1.x) {
+                mtrI.setPower(0.5);
+            }
+
+            if (gamepad1.a && !limitSwitch.isPressed() /**&& elapsedTime.time() > 60**/) {
+                mtrHang.setPower(0.5);
+            }
 
             Pose2d poseEstimate = drive.getPoseEstimate();
             telemetry.addData("x", poseEstimate.getX());
