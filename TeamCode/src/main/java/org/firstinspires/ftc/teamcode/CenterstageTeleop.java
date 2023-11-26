@@ -94,9 +94,9 @@ public class CenterstageTeleop extends LinearOpMode {
                     )
             );
 
-            if (gamepad1.x) {
-                mtrI.setPower(0.5);
-            }
+           // if (gamepad1.x) {
+           //     mtrI.setPower(0.5);
+            // }
 
             Pose2d poseEstimate = drive.getPoseEstimate();
             telemetry.addData("x", poseEstimate.getX());
