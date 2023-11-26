@@ -45,15 +45,6 @@ public class CenterstageTeleop extends LinearOpMode {
     static final double WHEEL_DIAMETER_INCHES = 4.0;     // For figuring circumference
     static final double COUNTS_PER_INCH = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
             (WHEEL_DIAMETER_INCHES * 3.1415);
-    static final double DRIVE_SPEED = 0.9;
-    static final double TURN_SPEED = 0.7;
-    int PlacingMode = 1;
-    boolean armOutButton = false;
-    boolean gripCloseButton = false;
-    boolean armOut = false;
-    boolean gripClose = false;
-
-
 
     @Override
     public void runOpMode() {
@@ -67,22 +58,16 @@ public class CenterstageTeleop extends LinearOpMode {
         mtrBL.setZeroPowerBehavior(BRAKE);
         mtrBL.setDirection(DcMotor.Direction.FORWARD);
         mtrBL.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        //mtrBL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        //mtrBL.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         mtrBR = hardwareMap.get(DcMotor.class, "mtrBR");
         mtrBR.setZeroPowerBehavior(BRAKE);
         mtrBR.setDirection(DcMotor.Direction.REVERSE);
         mtrBR.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        //mtrBR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        //mtrBR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         mtrFL = hardwareMap.get(DcMotor.class, "mtrFL");
         mtrFL.setZeroPowerBehavior(BRAKE);
         mtrFL.setDirection(DcMotor.Direction.FORWARD);
         mtrFL.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        //mtrFL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        //mtrFL.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         mtrFR = hardwareMap.get(DcMotor.class, "mtrFR");
         mtrFR.setZeroPowerBehavior(BRAKE);
@@ -121,7 +106,7 @@ public class CenterstageTeleop extends LinearOpMode {
                     )
             );
 
-            if (gamepad2.x) {
+            if (gamepad1.x) {
                 mtrI.setPower(0.5);
             }
 
