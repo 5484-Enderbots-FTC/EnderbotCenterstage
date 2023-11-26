@@ -32,14 +32,6 @@ public class CenterstageTeleop extends LinearOpMode {
 
     //servos when we get to it
 
-
-
-    /**
-     * -
-     * <p>
-     * CONSTANTS
-     */
-    //encoder stuff
     static final double COUNTS_PER_MOTOR_REV = 0;    // eg: TETRIX Motor Encoder
     static final double DRIVE_GEAR_REDUCTION = 1.0;     // This is < 1.0 if geared UP
     static final double WHEEL_DIAMETER_INCHES = 4.0;     // For figuring circumference
@@ -79,10 +71,6 @@ public class CenterstageTeleop extends LinearOpMode {
         mtrI.setDirection(DcMotor.Direction.REVERSE);
         mtrI.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
-
-
-
-
         telemetry.addLine("Have fun!");
         telemetry.addLine("Get your TeleOp! Hot and fresh!");
 
@@ -100,9 +88,9 @@ public class CenterstageTeleop extends LinearOpMode {
 
             drive.setWeightedDrivePower(
                     new Pose2d(
-                            gamepad1.left_stick_y * (1 - (gamepad1.right_trigger * 0.4)),
-                            gamepad1.left_stick_x * .8 * (1 - (gamepad1.right_trigger * 0.4)),
-                            gamepad1.right_stick_x * (1 - (gamepad1.right_trigger * 0.4))
+                            gamepad1.left_stick_y * (1 - (gamepad1.right_trigger * 0.6)),
+                            gamepad1.left_stick_x * .8 * (1 - (gamepad1.right_trigger * 0.6)),
+                            gamepad1.right_stick_x * (1 - (gamepad1.right_trigger * 0.6))
                     )
             );
 
@@ -110,23 +98,13 @@ public class CenterstageTeleop extends LinearOpMode {
                 mtrI.setPower(0.5);
             }
 
-
             Pose2d poseEstimate = drive.getPoseEstimate();
             telemetry.addData("x", poseEstimate.getX());
             telemetry.addData("y", poseEstimate.getY());
             telemetry.addData("heading", poseEstimate.getHeading());
 
-            //grab.setPosition();
-
-
             telemetry.update();
             drive.update();
-
-
-
-
-
-
 
         }
     }
