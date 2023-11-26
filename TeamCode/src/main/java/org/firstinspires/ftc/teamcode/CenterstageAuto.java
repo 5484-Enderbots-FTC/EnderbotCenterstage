@@ -153,10 +153,19 @@ public class CenterstageAuto extends LinearOpMode
 
             targetFound = false;
             desiredTag  = null;
+
             //insert webcam detect spike here and decide desired tag
+
             //DESIRED_TAG_ID = put number
 
             //right here is deciding what auto we are
+            if (AutoColor == 'b'){
+
+            }else if (AutoColor == 'r'){
+
+            }else {
+
+            }
 
             //drive towards spike and place pixel
 
