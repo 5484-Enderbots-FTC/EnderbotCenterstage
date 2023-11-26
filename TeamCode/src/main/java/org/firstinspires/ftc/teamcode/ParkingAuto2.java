@@ -22,7 +22,7 @@ import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
  * These coefficients can be tuned live in dashboard.
  */
 @Config
-@Autonomous(name = "Red Frontstage Parking Auto")
+@Autonomous(name = "Red Frontstage Parking Auto", group = "Parking Autos")
 
 public class ParkingAuto2 extends LinearOpMode {
 

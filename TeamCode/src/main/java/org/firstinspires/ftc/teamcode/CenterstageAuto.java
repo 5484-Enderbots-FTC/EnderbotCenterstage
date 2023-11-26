@@ -82,6 +82,7 @@ import java.util.concurrent.TimeUnit;
  *
  */
 
+@Disabled
 @Autonomous(name="CenterstageAuto", group = "Autonomous")
 public class CenterstageAuto extends LinearOpMode
 {
