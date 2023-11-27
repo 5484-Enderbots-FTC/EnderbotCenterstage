@@ -37,13 +37,8 @@ public class CenterstageTeleop extends LinearOpMode {
     //time
 
     //servos when we get to it
-<<<<<<< HEAD
-    Servo IntakeLeft;
-    Servo IntakeRight;
-=======
-    Servo intakeLeft
-    Servo intakeRight
->>>>>>> 5ba9e2350252d7b34b8a17725bb049030258f520
+    Servo intakeLeft;
+    Servo intakeRight;
 
     static final double COUNTS_PER_MOTOR_REV = 0;    // eg: TETRIX Motor Encoder
     static final double DRIVE_GEAR_REDUCTION = 1.0;     // This is < 1.0 if geared UP
@@ -91,9 +86,7 @@ public class CenterstageTeleop extends LinearOpMode {
 
         //servos
         intakeLeft = hardwareMap.get(Servo.class, "leftSvr");
-        
-        intakeRight = hardwarpMap.get(Servo.class, "rightSvr");
-        intakeRight = setDirection(Servo.Direction.REVERSE);
+        intakeRight = hardwareMap.get(Servo.class, "rightSvr");
 
         telemetry.addLine("Have fun!");
         telemetry.addLine("Get your TeleOp! Hot and fresh!");
@@ -105,10 +98,7 @@ public class CenterstageTeleop extends LinearOpMode {
 
         while (opModeIsActive()) {
 
-            /**
-
-             GAMEPAD 1 CONTROLS
-             **/
+             //GAMEPAD 1 CONTROLS
 
             drive.setWeightedDrivePower(
                     new Pose2d(
@@ -118,41 +108,32 @@ public class CenterstageTeleop extends LinearOpMode {
                     )
             );
 
-            /** adding gamepad two controls here fellas **/
+            // adding gamepad two controls here fellas
 
             if (gamepad2.x) {
                 mtrI.setPower(0.5);
             }
 
-<<<<<<< HEAD
-            if (gamepad1.b && !limitSwitch.isPressed() && runtime.time() > 60) {
-                mtrHang.setPower(0.5);
-            }
-
-            if (gamepad1.a) {
-                IntakeLeft.setPosition(.6); //theoretical positions, we don't actually know yet lol
-                IntakeRight.setPosition(.9);
-            }  else if (!gamepad1.a){
-                IntakeLeft.setPosition(0.2);
-                IntakeRight.setPosition(0.2);
-=======
-            if (gamepad2.a && !limitSwitch.isPressed() /**&& elapsedTime.time() > 60**/) {
+            if (gamepad2.a && !limitSwitch.isPressed()) { //&& runtime.time() > 60 <---- commented out but its so that we don't accidentally press it until endgame at least. put it back it after testing is done.
                 mtrHang.setPower(0.5);
             }
 
             if (gamepad2.right_trigger == 1) {
+
                 intakeLeft.setPosition(.6);
                 intakeRight.setPosition(.9);
-            }  else if (!gamepad2.right_trigger == 1){
+
+            }  else if (gamepad2.right_trigger == 0){
+
                 intakeLeft.setPosition(0.2);
                 intakeRight.setPosition(0.2);
->>>>>>> 5ba9e2350252d7b34b8a17725bb049030258f520
+
             }
 
             Pose2d poseEstimate = drive.getPoseEstimate();
-            telemetry.addData("x", poseEstimate.getX());
-            telemetry.addData("y", poseEstimate.getY());
-            telemetry.addData("heading", poseEstimate.getHeading());
+            telemetry.addData("x:", poseEstimate.getX());
+            telemetry.addData("y:", poseEstimate.getY());
+            telemetry.addData("heading:", poseEstimate.getHeading());
 
             telemetry.update();
             drive.update();
