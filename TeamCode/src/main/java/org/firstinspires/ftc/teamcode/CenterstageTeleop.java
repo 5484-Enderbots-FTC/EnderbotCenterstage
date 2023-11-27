@@ -38,6 +38,8 @@ public class CenterstageTeleop extends LinearOpMode {
     ElapsedTime elapsedTime;
 
     //servos when we get to it
+    Servo intakeLeft
+    Servo intakeRight
 
     static final double COUNTS_PER_MOTOR_REV = 0;    // eg: TETRIX Motor Encoder
     static final double DRIVE_GEAR_REDUCTION = 1.0;     // This is < 1.0 if geared UP
@@ -114,6 +116,14 @@ public class CenterstageTeleop extends LinearOpMode {
 
             if (gamepad2.a && !limitSwitch.isPressed() /**&& elapsedTime.time() > 60**/) {
                 mtrHang.setPower(0.5);
+            }
+
+            if (gamepad2.right_trigger == 1) {
+                intakeLeft.setPosition(.6);
+                intakeRight.setPosition(.9);
+            }  else if (!gamepad2.right_trigger == 1){
+                intakeLeft.setPosition(0.2);
+                intakeRight.setPosition(0.2);
             }
 
             Pose2d poseEstimate = drive.getPoseEstimate();
