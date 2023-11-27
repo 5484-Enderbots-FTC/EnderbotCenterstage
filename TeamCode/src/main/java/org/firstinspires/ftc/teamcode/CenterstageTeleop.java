@@ -114,7 +114,7 @@ public class CenterstageTeleop extends LinearOpMode {
                 mtrI.setPower(0.5);
             }
 
-            if (gamepad2.a && !limitSwitch.isPressed()) { //&& runtime.time() > 60 <---- commented out but its so that we don't accidentally press it until endgame at least. put it back it after testing is done.
+            if (gamepad2.a ){//&& !limitSwitch.isPressed()) { //&& runtime.time() > 60 <---- commented out but its so that we don't accidentally press it until endgame at least. put it back it after testing is done.
                 mtrHang.setPower(0.5);
             }
 
