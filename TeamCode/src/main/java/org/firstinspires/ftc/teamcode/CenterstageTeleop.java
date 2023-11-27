@@ -106,11 +106,13 @@ public class CenterstageTeleop extends LinearOpMode {
                     )
             );
 
-            if (gamepad1.x) {
+            /** adding gamepad two controls here fellas **/
+
+            if (gamepad2.x) {
                 mtrI.setPower(0.5);
             }
 
-            if (gamepad1.a && !limitSwitch.isPressed() /**&& elapsedTime.time() > 60**/) {
+            if (gamepad2.a && !limitSwitch.isPressed() /**&& elapsedTime.time() > 60**/) {
                 mtrHang.setPower(0.5);
             }
 
