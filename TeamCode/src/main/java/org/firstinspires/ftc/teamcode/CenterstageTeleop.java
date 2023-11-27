@@ -85,6 +85,12 @@ public class CenterstageTeleop extends LinearOpMode {
         mtrHang.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         mtrHang.setDirection(DcMotor.Direction.FORWARD);
 
+        //servos
+        intakeLeft = hardwareMap.get(Servo.class, "leftSvr");
+        
+        intakeRight = hardwarpMap.get(Servo.class, "rightSvr");
+        intakeRight = setDirection(Servo.Direction.REVERSE);
+
         telemetry.addLine("Have fun!");
         telemetry.addLine("Get your TeleOp! Hot and fresh!");
 
