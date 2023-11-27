@@ -37,8 +37,13 @@ public class CenterstageTeleop extends LinearOpMode {
     //time
 
     //servos when we get to it
+<<<<<<< HEAD
     Servo IntakeLeft;
     Servo IntakeRight;
+=======
+    Servo intakeLeft
+    Servo intakeRight
+>>>>>>> 5ba9e2350252d7b34b8a17725bb049030258f520
 
     static final double COUNTS_PER_MOTOR_REV = 0;    // eg: TETRIX Motor Encoder
     static final double DRIVE_GEAR_REDUCTION = 1.0;     // This is < 1.0 if geared UP
@@ -84,6 +89,12 @@ public class CenterstageTeleop extends LinearOpMode {
         mtrHang.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         mtrHang.setDirection(DcMotor.Direction.FORWARD);
 
+        //servos
+        intakeLeft = hardwareMap.get(Servo.class, "leftSvr");
+        
+        intakeRight = hardwarpMap.get(Servo.class, "rightSvr");
+        intakeRight = setDirection(Servo.Direction.REVERSE);
+
         telemetry.addLine("Have fun!");
         telemetry.addLine("Get your TeleOp! Hot and fresh!");
 
@@ -107,10 +118,13 @@ public class CenterstageTeleop extends LinearOpMode {
                     )
             );
 
-            if (gamepad1.x) {
+            /** adding gamepad two controls here fellas **/
+
+            if (gamepad2.x) {
                 mtrI.setPower(0.5);
             }
 
+<<<<<<< HEAD
             if (gamepad1.b && !limitSwitch.isPressed() && runtime.time() > 60) {
                 mtrHang.setPower(0.5);
             }
@@ -121,6 +135,18 @@ public class CenterstageTeleop extends LinearOpMode {
             }  else if (!gamepad1.a){
                 IntakeLeft.setPosition(0.2);
                 IntakeRight.setPosition(0.2);
+=======
+            if (gamepad2.a && !limitSwitch.isPressed() /**&& elapsedTime.time() > 60**/) {
+                mtrHang.setPower(0.5);
+            }
+
+            if (gamepad2.right_trigger == 1) {
+                intakeLeft.setPosition(.6);
+                intakeRight.setPosition(.9);
+            }  else if (!gamepad2.right_trigger == 1){
+                intakeLeft.setPosition(0.2);
+                intakeRight.setPosition(0.2);
+>>>>>>> 5ba9e2350252d7b34b8a17725bb049030258f520
             }
 
             Pose2d poseEstimate = drive.getPoseEstimate();
