@@ -34,8 +34,7 @@ public class CenterstageTeleop extends LinearOpMode {
     //limit switch
     TouchSensor limitSwitch;
 
-    //timer
-    ElapsedTime elapsedTime;
+    //time
 
     //servos when we get to it
     Servo IntakeLeft;
@@ -112,12 +111,12 @@ public class CenterstageTeleop extends LinearOpMode {
                 mtrI.setPower(0.5);
             }
 
-            if (gamepad1.a && !limitSwitch.isPressed() /**&& elapsedTime.time() > 60**/) {
+            if (gamepad1.b && !limitSwitch.isPressed() && runtime.time() > 60) {
                 mtrHang.setPower(0.5);
             }
 
             if (gamepad1.a) {
-                IntakeLeft.setPosition(.6);
+                IntakeLeft.setPosition(.6); //theoretical positions, we don't actually know yet lol
                 IntakeRight.setPosition(.9);
             }  else if (!gamepad1.a){
                 IntakeLeft.setPosition(0.2);
