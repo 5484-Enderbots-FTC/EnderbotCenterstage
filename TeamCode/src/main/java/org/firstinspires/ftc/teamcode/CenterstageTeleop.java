@@ -41,7 +41,7 @@ public class CenterstageTeleop extends LinearOpMode {
     Servo intakeLeft;
     Servo intakeRight;
     @Override
-    public void runOpMode() {
+    public void runOpMode() throws InterruptedException {
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
         telemetry.addData("Status", "Initialized");
         telemetry.update();
@@ -111,12 +111,15 @@ public class CenterstageTeleop extends LinearOpMode {
             //hanging
             if (gamepad2.a) { //&& !limitSwitch.isPressed() && runtime.time() > 60) { <- comment back in when ready
                 mtrHang.setPower(0.3);
+                wait(5);
                 mtrHang.setPower(0);
 
             } else if (gamepad2.b) {//&& limitSwitch.isPressed() && runtime.time() > 60) { <- comment back in when ready
+               wait(1);
                 mtrHang.setDirection(DcMotorSimple.Direction.REVERSE);
                 mtrHang.setZeroPowerBehavior(BRAKE);
                 mtrHang.setPower(0.5);
+                wait(4);
                 mtrHang.setPower(0);
             }
 
