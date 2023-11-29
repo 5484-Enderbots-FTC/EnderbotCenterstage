@@ -4,6 +4,7 @@ import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.acmerobotics.roadrunner.geometry.Vector2d;
 
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
@@ -29,18 +30,18 @@ public class ParkingAuto extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
-        Pose2d startPose = new Pose2d(-60,64,270);
+        Pose2d startPose = new Pose2d(-36,63,270);
         drive.setPoseEstimate(startPose);
 
         waitForStart();
 
         TrajectorySequence traj1 = drive.trajectorySequenceBuilder(startPose)
-                .forward(53)
-                .turn(Math.toRadians(90))
+                .lineTo(new Vector2d(-36, 12))
                 .build();
         TrajectorySequence traj2 = drive.trajectorySequenceBuilder(traj1.end())
-                .forward(100)
+                .lineTo(new Vector2d(64, 12))
                 .build();
+
 
         if (isStopRequested()) return;
 

@@ -5,13 +5,14 @@ import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.TouchSensor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 @Disabled
-@TeleOp(name = "LiftProgram", group = "Linear Opmode")
+@TeleOp(name = "Hanger Program", group = "Linear Opmode")
 
-public class LiftProgram extends LinearOpMode {
+public class HangerProgram extends LinearOpMode {
 
     DcMotor mtrHang;
     TouchSensor limitSwitch;
@@ -29,7 +30,17 @@ public class LiftProgram extends LinearOpMode {
         mtrHang.setDirection(DcMotor.Direction.FORWARD);
 
         if (gamepad1.a && !limitSwitch.isPressed() && elapsedTime.time() > 60) {
+            mtrHang.setPower(0.3);
+            wait(5);
+            mtrHang.setPower(0);
+
+        } else if (limitSwitch.isPressed() && elapsedTime.time() > 60) {
+            mtrHang.setDirection(DcMotorSimple.Direction.REVERSE);
+            mtrHang.setZeroPowerBehavior(BRAKE);
+            wait(1);
             mtrHang.setPower(0.5);
+            wait(3);
+            mtrHang.setPower(0);
         }
     }
 }

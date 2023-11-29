@@ -7,6 +7,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.DigitalChannel;
 import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.Servo;
@@ -39,13 +40,6 @@ public class CenterstageTeleop extends LinearOpMode {
     //servos when we get to it
     Servo intakeLeft;
     Servo intakeRight;
-
-    static final double COUNTS_PER_MOTOR_REV = 0;    // eg: TETRIX Motor Encoder
-    static final double DRIVE_GEAR_REDUCTION = 1.0;     // This is < 1.0 if geared UP
-    static final double WHEEL_DIAMETER_INCHES = 4.0;     // For figuring circumference
-    static final double COUNTS_PER_INCH = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
-            (WHEEL_DIAMETER_INCHES * 3.1415);
-
     @Override
     public void runOpMode() {
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
@@ -114,10 +108,19 @@ public class CenterstageTeleop extends LinearOpMode {
                 mtrI.setPower(0.5);
             }
 
-            if (gamepad2.a ){//&& !limitSwitch.isPressed()) { //&& runtime.time() > 60 <---- commented out but its so that we don't accidentally press it until endgame at least. put it back it after testing is done.
+            //hanging
+            if (gamepad2.a) { //&& !limitSwitch.isPressed() && runtime.time() > 60) { <- comment back in when ready
+                mtrHang.setPower(0.3);
+                mtrHang.setPower(0);
+
+            } else if (gamepad2.b) {//&& limitSwitch.isPressed() && runtime.time() > 60) { <- comment back in when ready
+                mtrHang.setDirection(DcMotorSimple.Direction.REVERSE);
+                mtrHang.setZeroPowerBehavior(BRAKE);
                 mtrHang.setPower(0.5);
+                mtrHang.setPower(0);
             }
 
+            //intake servos
             if (gamepad2.right_trigger == 1) {
 
                 intakeLeft.setPosition(.6);
