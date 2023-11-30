@@ -104,12 +104,12 @@ public class CenterstageTeleop extends LinearOpMode {
 
             // adding gamepad two controls here fellas
 
-            if (gamepad2.x) {
+            if (gamepad1.x) {
                 mtrI.setPower(0.5);
             }
 
             //hanging
-            if (gamepad2.a) { //&& !limitSwitch.isPressed() && runtime.time() > 60) { <- comment back in when ready
+            /** if (gamepad2.a) { //&& !limitSwitch.isPressed() && runtime.time() > 60) { <- comment back in when ready
                 mtrHang.setPower(0.3);
                 wait(5);
                 mtrHang.setPower(0);
@@ -122,9 +122,9 @@ public class CenterstageTeleop extends LinearOpMode {
                 wait(4);
                 mtrHang.setPower(0);
             }
-
+            **/
             //intake servos
-            if (gamepad2.right_trigger == 1) {
+           /** if (gamepad2.right_trigger == 1) {
 
                 intakeLeft.setPosition(.6);
                 intakeRight.setPosition(.9);
@@ -135,7 +135,7 @@ public class CenterstageTeleop extends LinearOpMode {
                 intakeRight.setPosition(0.2);
 
             }
-
+            **/
             Pose2d poseEstimate = drive.getPoseEstimate();
             telemetry.addData("x:", poseEstimate.getX());
             telemetry.addData("y:", poseEstimate.getY());
