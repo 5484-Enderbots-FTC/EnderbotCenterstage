@@ -127,7 +127,7 @@ public class CenterstageTeleop extends LinearOpMode {
 
             }  else if (gamepad2.right_trigger == 0){
 
-                intakeLeft.setPosition(0.2);
+                intakeLeft.setPosition(0.5);
                 intakeRight.setPosition(0.2);
 
             }
