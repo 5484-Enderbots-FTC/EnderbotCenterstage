@@ -110,12 +110,14 @@ public class CenterstageTeleop extends LinearOpMode {
                     A = Take in pixels
                     B = Shoot them out
                     X = Kill Intake power
+                    Right Bumper = Pull servo arms back in
                 Hanger:
                     DPad.Up = Extend hanger
                     Dpad.Down = Retract hanger
                     Dpad.Right = Kill Hanger power
              */
 
+            //intake
             if (gamepad2.a) {
                 mtrI.setDirection(DcMotor.Direction.REVERSE);
                 mtrI.setPower(0.75);
@@ -127,7 +129,28 @@ public class CenterstageTeleop extends LinearOpMode {
             if (gamepad2.x) {
                 mtrI.setPower(0);
             }
+            //intake servos
+            /*
+            if (gamepad2.right_bumper) {
 
+             intakeRight.setPosition(0.5);
+             servoTime.reset();
+
+                if (servoTime.time() > 0.5) {
+                    intakeLeft.setPosition(0.0);
+                }
+
+             }  else if (!gamepad2.right_bumper){
+
+                intakeLeft.setPosition(0.5);
+                servoTime.reset();
+
+                 if (servoTime.time() > 0.5) {
+                    intakeRight.setPosition(0.0);
+                 }
+
+             }
+             */
             //hanging
             if (gamepad2.dpad_up) { //&& !limitSwitch.isPressed() && runtime.time() > 60) { <- comment back in when ready
                 mtrHang.setDirection(DcMotorSimple.Direction.REVERSE);
@@ -140,25 +163,7 @@ public class CenterstageTeleop extends LinearOpMode {
             } else if (gamepad2.dpad_right) {
                 mtrHang.setPower(0);
             }
-            //intake servos
-           /**if (gamepad2.right_bumper) {
 
-                intakeRight.setPosition(0.5);
-                servoTime.reset();
-                if (servoTime.time() > 0.5) {
-
-                    intakeLeft.setPosition(0.0);
-                }
-
-            }  else if (!gamepad2.right_bumper){
-
-                intakeLeft.setPosition(0.5);
-                servoTime.reset();
-
-                if (servoTime.time() > 0.5) {
-                    intakeRight.setPosition(0.0);
-                }
-            } **/
             Pose2d poseEstimate = drive.getPoseEstimate();
             telemetry.addData("x:", poseEstimate.getX());
             telemetry.addData("y:", poseEstimate.getY());
