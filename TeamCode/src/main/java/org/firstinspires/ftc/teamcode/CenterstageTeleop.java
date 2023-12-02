@@ -104,34 +104,44 @@ public class CenterstageTeleop extends LinearOpMode {
             );
 
             // adding gamepad two controls here fellas
+            /*
+             Controls:
+                Intake:
+                    A = Take in pixels
+                    B = Shoot them out
+                    X = Kill Intake power
+                Hanger:
+                    DPad.Up = Extend hanger
+                    Dpad.Down = Retract hanger
+                    Dpad.Right = Kill Hanger power
+             */
 
-            if (gamepad2.x) {
+            if (gamepad2.a) {
                 mtrI.setDirection(DcMotor.Direction.REVERSE);
                 mtrI.setPower(0.75);
             }
-            if (gamepad2.dpad_down) {
+            if (gamepad2.b) {
                 mtrI.setDirection(DcMotor.Direction.FORWARD);
                 mtrI.setPower(0.75);
             }
-            if (gamepad2.dpad_up) {
+            if (gamepad2.x) {
                 mtrI.setPower(0);
             }
 
             //hanging
-            if (gamepad2.a) { //&& !limitSwitch.isPressed() && runtime.time() > 60) { <- comment back in when ready
+            if (gamepad2.dpad_up) { //&& !limitSwitch.isPressed() && runtime.time() > 60) { <- comment back in when ready
                 mtrHang.setDirection(DcMotorSimple.Direction.REVERSE);
                 mtrHang.setPower(0.3);
 
-            } else if (gamepad2.b) {//&& limitSwitch.isPressed() && runtime.time() > 60) { <- comment back in when ready
+            } else if (gamepad2.dpad_down) {//&& limitSwitch.isPressed() && runtime.time() > 60) { <- comment back in when ready
                 mtrHang.setDirection(DcMotor.Direction.FORWARD);
                 mtrHang.setZeroPowerBehavior(BRAKE);
                 mtrHang.setPower(0.5);
-            } else if (gamepad2.y) {
+            } else if (gamepad2.dpad_right) {
                 mtrHang.setPower(0);
             }
-
             //intake servos
-           /**if (gamepad2.right_trigger == 1) {
+           /**if (gamepad2.right_bumper) {
 
                 intakeRight.setPosition(0.5);
                 servoTime.reset();
@@ -140,11 +150,14 @@ public class CenterstageTeleop extends LinearOpMode {
                     intakeLeft.setPosition(0.0);
                 }
 
-            }  else if (gamepad2.right_trigger == 0){
+            }  else if (!gamepad2.right_bumper){
 
                 intakeLeft.setPosition(0.5);
-                intakeRight.setPosition(0.0);
+                servoTime.reset();
 
+                if (servoTime.time() > 0.5) {
+                    intakeRight.setPosition(0.0);
+                }
             } **/
             Pose2d poseEstimate = drive.getPoseEstimate();
             telemetry.addData("x:", poseEstimate.getX());
