@@ -120,17 +120,17 @@ public class CenterstageTeleop extends LinearOpMode {
             }
 
             //intake servos
-           if (gamepad2.right_trigger == 1) {
+           /**if (gamepad2.right_trigger == 1) {
 
-                intakeLeft.setPosition(.6);
-                intakeRight.setPosition(.9);
+                intakeLeft.setPosition(0.0);
+                intakeRight.setPosition(1);
 
             }  else if (gamepad2.right_trigger == 0){
 
                 intakeLeft.setPosition(0.5);
                 intakeRight.setPosition(0.2);
 
-            }
+            } **/
             Pose2d poseEstimate = drive.getPoseEstimate();
             telemetry.addData("x:", poseEstimate.getX());
             telemetry.addData("y:", poseEstimate.getY());

@@ -6,7 +6,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 //
 
-@TeleOp(name = "IntakeServo", group = "Linear Opmode")
+@TeleOp(name = "Intake Servo", group = "Linear Opmode")
 
 public class IntakeServo extends LinearOpMode {
 
@@ -21,14 +21,12 @@ public class IntakeServo extends LinearOpMode {
         waitForStart();
 
         while (opModeIsActive())
-
             if (!gamepad1.a) {
-                intakeLeft.setPosition(intakeLeft.getPosition() + (gamepad1.left_stick_y * 0.1));
-                //intakeRight.setPosition(intakeRight.getPosition() + (gamepad1.right_stick_y * 0.1));
-            }  else if (gamepad1.a){
-                intakeLeft.setPosition(intakeLeft.getPosition() - (gamepad1.left_stick_y * 0.1));
-                //intakeRight.setPosition(intakeRight.getPosition() - (gamepad1.right_stick_y * 0.1));
+                intakeLeft.setPosition(intakeLeft.getPosition() - (gamepad1.left_stick_y * 0.001));
+                intakeRight.setPosition(intakeRight.getPosition() - (gamepad1.right_stick_y * 0.001));
+                telemetry.addData("left servo ", intakeLeft.getPosition());
+                telemetry.addData("right servo ", intakeRight.getPosition());
+                telemetry.update();
             }
-        telemetry.addData("left servo", "pos: " + intakeLeft.getPosition());
     }
 }

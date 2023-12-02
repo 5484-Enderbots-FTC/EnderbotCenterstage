@@ -9,7 +9,6 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.TouchSensor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-@Disabled
 @TeleOp(name = "Hanger Program", group = "Linear Opmode")
 
 public class HangerProgram extends LinearOpMode {
@@ -27,21 +26,18 @@ public class HangerProgram extends LinearOpMode {
             mtrHang = hardwareMap.get(DcMotor.class, "mtrHang");
             mtrHang.setZeroPowerBehavior(BRAKE);
             mtrHang.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-            mtrHang.setDirection(DcMotor.Direction.FORWARD);
+            mtrHang.setDirection(DcMotor.Direction.REVERSE);
 
-            if (gamepad1.a && !limitSwitch.isPressed() && elapsedTime.time() > 60) {
-                mtrHang.setPower(0.3);
-                wait(5);
-                mtrHang.setPower(0);
-
-            } else if (gamepad1.b && limitSwitch.isPressed() && elapsedTime.time() > 60) {
+            if (gamepad2.a) { //&& !limitSwitch.isPressed() && runtime.time() > 60) { <- comment back in when ready
                 mtrHang.setDirection(DcMotorSimple.Direction.REVERSE);
+                mtrHang.setPower(0.3);
+
+            } else if (gamepad2.b) {//&& limitSwitch.isPressed() && runtime.time() > 60) { <- comment back in when ready
+                mtrHang.setDirection(DcMotor.Direction.FORWARD);
                 mtrHang.setZeroPowerBehavior(BRAKE);
-                wait(1);
                 mtrHang.setPower(0.5);
-                wait(3);
-                mtrHang.setPower(0);
             }
+
         }
     }
 }
