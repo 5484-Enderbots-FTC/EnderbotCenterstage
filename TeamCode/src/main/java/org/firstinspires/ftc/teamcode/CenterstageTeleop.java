@@ -23,6 +23,7 @@ import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 public class CenterstageTeleop extends LinearOpMode {
 
     ElapsedTime runtime = new ElapsedTime();
+    ElapsedTime servoTime = new ElapsedTime();
 
     //motors
     DcMotor mtrBL;
@@ -104,31 +105,45 @@ public class CenterstageTeleop extends LinearOpMode {
 
             // adding gamepad two controls here fellas
 
-            if (gamepad1.x) {
-                mtrI.setPower(0.5);
+            if (gamepad2.x) {
+                mtrI.setDirection(DcMotor.Direction.REVERSE);
+                mtrI.setPower(0.75);
+            }
+            if (gamepad2.dpad_down) {
+                mtrI.setDirection(DcMotor.Direction.FORWARD);
+                mtrI.setPower(0.75);
+            }
+            if (gamepad2.dpad_up) {
+                mtrI.setPower(0);
             }
 
             //hanging
             if (gamepad2.a) { //&& !limitSwitch.isPressed() && runtime.time() > 60) { <- comment back in when ready
-                mtrHang.setDirection(DcMotorSimple.Direction.FORWARD);
+                mtrHang.setDirection(DcMotorSimple.Direction.REVERSE);
                 mtrHang.setPower(0.3);
 
             } else if (gamepad2.b) {//&& limitSwitch.isPressed() && runtime.time() > 60) { <- comment back in when ready
-                mtrHang.setDirection(DcMotor.Direction.REVERSE);
+                mtrHang.setDirection(DcMotor.Direction.FORWARD);
                 mtrHang.setZeroPowerBehavior(BRAKE);
                 mtrHang.setPower(0.5);
+            } else if (gamepad2.y) {
+                mtrHang.setPower(0);
             }
 
             //intake servos
            /**if (gamepad2.right_trigger == 1) {
 
-                intakeLeft.setPosition(0.0);
-                intakeRight.setPosition(1);
+                intakeRight.setPosition(0.5);
+                servoTime.reset();
+                if (servoTime.time() > 0.5) {
+
+                    intakeLeft.setPosition(0.0);
+                }
 
             }  else if (gamepad2.right_trigger == 0){
 
                 intakeLeft.setPosition(0.5);
-                intakeRight.setPosition(0.2);
+                intakeRight.setPosition(0.0);
 
             } **/
             Pose2d poseEstimate = drive.getPoseEstimate();

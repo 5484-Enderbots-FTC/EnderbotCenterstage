@@ -38,7 +38,7 @@ public class ParkingAuto3 extends LinearOpMode {
         if (isStopRequested()) return;
 
         TrajectorySequence traj1 = drive.trajectorySequenceBuilder(startPose)
-                .splineTo(new Vector2d(62.00, 62.00), Math.toRadians(0.00))
+                .splineTo(new Vector2d(60.00, 62.00), Math.toRadians(0.00))
                 .build();
 
 
