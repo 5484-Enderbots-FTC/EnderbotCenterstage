@@ -8,10 +8,10 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
-import com.qualcomm.robotcore.hardware.DigitalChannel;
-import com.qualcomm.robotcore.hardware.DistanceSensor;
+//import com.qualcomm.robotcore.hardware.DigitalChannel;
+//import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.Servo;
-import com.qualcomm.robotcore.hardware.TouchSensor;
+//import com.qualcomm.robotcore.hardware.TouchSensor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
@@ -23,7 +23,7 @@ import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 public class CenterstageTeleop extends LinearOpMode {
 
     ElapsedTime runtime = new ElapsedTime();
-    ElapsedTime servoTime = new ElapsedTime();
+    //ElapsedTime servoTime = new ElapsedTime();
 
     //motors
     DcMotor mtrBL;
@@ -34,7 +34,7 @@ public class CenterstageTeleop extends LinearOpMode {
     DcMotor mtrHang;
 
     //limit switch
-    TouchSensor limitSwitch;
+    //TouchSensor limitSwitch;
 
     //time
 
@@ -45,6 +45,8 @@ public class CenterstageTeleop extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
         telemetry.addData("Status", "Initialized");
+        telemetry.addLine("Have fun!");
+        telemetry.addLine("Get your TeleOp! Hot and fresh!");
         telemetry.update();
 
         // motors
@@ -82,9 +84,6 @@ public class CenterstageTeleop extends LinearOpMode {
         //servos
         intakeLeft = hardwareMap.get(Servo.class, "leftSvr");
         intakeRight = hardwareMap.get(Servo.class, "rightSvr");
-
-        telemetry.addLine("Have fun!");
-        telemetry.addLine("Get your TeleOp! Hot and fresh!");
 
 
         //start
