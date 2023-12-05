@@ -8,6 +8,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.acmerobotics.roadrunner.geometry.Vector2d;
 
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
+import org.firstinspires.ftc.teamcode.drive.StandardTrackingWheelLocalizer;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 
 @Config
@@ -37,7 +38,9 @@ public class ParkingAuto extends LinearOpMode {
 
             drive.followTrajectorySequence(bluefronttraj1);
             drive.followTrajectorySequence(bluefronttraj2);
-
+            var.xAutoEnd = bluefronttraj2.end().getX();
+            var.yAutoEnd = bluefronttraj2.end().getY();
+            var.headingAutoEnd = bluefronttraj2.end().getHeading();
 
         }
 
