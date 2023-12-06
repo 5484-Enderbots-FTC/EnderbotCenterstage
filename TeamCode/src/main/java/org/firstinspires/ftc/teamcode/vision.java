@@ -29,22 +29,20 @@ import org.opencv.core.Rect;
         int bottom = top + Math.round(rect.height * scaleBmpPxToCanvasPx);
         return new android.graphics.Rect(left, top, right, bottom);
     }
-<<<<<<< Updated upstream
+
     }
-    
-=======
 
-        @Override
-public void onDrawFrame(Canvas canvas, int onscreenWidth, int onscreenHeight,
-        float scaleBmpPxToCanvasPx, float scaleCanvasDensity, Object userContext)
+   //     @Override
+//public void onDrawFrame(Canvas canvas, int onscreenWidth, int onscreenHeight,
+    //    float scaleBmpPxToCanvasPx, float scaleCanvasDensity, Object userContext)
 
-        {
+      //  {
 
-        Paint rectPaint = new Paint();
-        rectPaint.setColor(Color.RED);
-        rectPaint.setStyle(Paint.Style.STROKE);
-        rectPaint.setStrokeWidth(scaleCanvasDensity * 4);
-        canvas.drawRect(makeGraphicsRect(rect, scaleBmpPxToCanvasPx), rectPaint);
-        }
-        }
->>>>>>> Stashed changes
+        //Paint rectPaint = new Paint();
+       // rectPaint.setColor(Color.RED);
+        //rectPaint.setStyle(Paint.Style.STROKE);
+        //rectPaint.setStrokeWidth(scaleCanvasDensity * 4);
+        //canvas.drawRect(makeGraphicsRect(rect, scaleBmpPxToCanvasPx), rectPaint);
+        //}
+        //}
+//>>>>>>> Stashed changes
