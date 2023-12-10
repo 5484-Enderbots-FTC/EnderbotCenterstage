@@ -38,9 +38,6 @@ public class ParkingAuto extends LinearOpMode {
 
             drive.followTrajectorySequence(bluefronttraj1);
             drive.followTrajectorySequence(bluefronttraj2);
-            var.xAutoEnd = bluefronttraj2.end().getX();
-            var.yAutoEnd = bluefronttraj2.end().getY();
-            var.headingAutoEnd = bluefronttraj2.end().getHeading();
 
         }
 

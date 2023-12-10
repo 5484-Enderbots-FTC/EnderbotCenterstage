@@ -23,8 +23,9 @@ public class IntakeServo extends LinearOpMode {
 
         waitForStart();
 
+        //.6 is all the way in for intake right
 
-        intakeRight.setPosition(0.5);
+        intakeRight.setPosition(0.85);
         servoTime.reset();
 
         if (servoTime.time() > 1) {
@@ -37,6 +38,9 @@ public class IntakeServo extends LinearOpMode {
                 telemetry.addData("left servo ", intakeLeft.getPosition());
                 telemetry.addData("right servo ", intakeRight.getPosition());
                 telemetry.update();
+            }
+            if (gamepad1.b) {
+                intakeRight.setPosition(.74);
             }
     }
 }
