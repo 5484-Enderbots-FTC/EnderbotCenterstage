@@ -17,10 +17,11 @@ import com.qualcomm.robotcore.hardware.VoltageSensor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
+import org.firstinspires.ftc.vision.VisionPortal;
 import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
-import org.openftc.easyopencv.OpenCvWebcam;
+
 
 public class hardwareCS {
 
@@ -33,10 +34,11 @@ public class hardwareCS {
 
     public DcMotor mtrHang;
 
-    public ElementAnalysisPipelineFF pipeline;
+    //public pipeline pipeline;
 
     public HardwareMap hw = null;
 
+    private VisionPortal visionPortal;
     public OpenCvCamera webcam;
 
     public void init(HardwareMap thisHwMap){
@@ -70,28 +72,6 @@ public class hardwareCS {
     }
 
     public void initWebcam() {
-        // Create camera instance
-        int cameraMonitorViewId = hw.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hw.appContext.getPackageName());
-        webcam = OpenCvCameraFactory.getInstance().createWebcam(hw.get(WebcamName.class, "Webcam 1"), cameraMonitorViewId);
 
-
-        // Open async and start streaming inside opened callback
-        webcam.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener() {
-            @Override
-            public void onOpened() {
-                webcam.startStreaming(1280, 720, OpenCvCameraRotation.UPRIGHT);
-
-                pipeline = new ElementAnalysisPipelineFF();
-                webcam.setPipeline(pipeline);
-            }
-
-            @Override
-            public void onError(int errorCode) {
-                /*
-                 * This will be called if the camera could not be opened
-                 */
-            }
-        });
     }
-
 }
