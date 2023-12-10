@@ -21,7 +21,6 @@ public class LiftCode extends LinearOpMode {
     ElapsedTime runtime = new ElapsedTime();
     Servo grab;
     double armOffset = 0;
-    Servo arm;
     DcMotorEx mtrLift;
     TouchSensor lowLimit;
 
