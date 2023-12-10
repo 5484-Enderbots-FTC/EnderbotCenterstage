@@ -1,6 +1,6 @@
 package org.firstinspires.ftc.teamcode;
 
-import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.telemetry;
+import static com.qualcomm.robotcore.hardware.DcMotor.ZeroPowerBehavior.BRAKE;
 
 import com.qualcomm.hardware.modernrobotics.ModernRoboticsI2cRangeSensor;
 import com.qualcomm.robotcore.hardware.CRServo;
@@ -22,30 +22,53 @@ import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 import org.openftc.easyopencv.OpenCvWebcam;
 
-public class var {
+public class hardwareCS {
 
-    //heights for lift
-    public static int groundHeight = 0;
-    public static int firstHeight = 0;
-    public static int secondHeight = 0;
-    public static int thirdHeight = 0;
+    public DcMotor mtrFL;
+    public DcMotor mtrFR;
+    public DcMotor mtrBR;
+    public DcMotor mtrBL;
 
-    //auto end
-    public static double xAutoEnd = 0;
-    public static double yAutoEnd = 0;
-    public static double headingAutoEnd = 0;
+    public DcMotor mtrI;
 
+    public DcMotor mtrHang;
 
-    public pipeline pipeline;
+    public ElementAnalysisPipelineFF pipeline;
+
     public HardwareMap hw = null;
-    public void init(HardwareMap thisHwMap) {
+
+    public OpenCvCamera webcam;
+
+    public void init(HardwareMap thisHwMap){
         hw = thisHwMap;
+
+        mtrBL = hw.get(DcMotorEx.class, "mtrBL");
+        mtrBL.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
+        mtrBL.setDirection(DcMotorEx.Direction.REVERSE);
+
+        mtrBR = hw.get(DcMotorEx.class, "mtrBR");
+        mtrBR.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
+        mtrBR.setDirection(DcMotorEx.Direction.FORWARD);
+
+        mtrFL = hw.get(DcMotorEx.class, "mtrFL");
+        mtrFL.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
+        mtrFL.setDirection(DcMotorEx.Direction.REVERSE);
+
+        mtrFR = hw.get(DcMotorEx.class, "mtrFR");
+        mtrFR.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
+        mtrFR.setDirection(DcMotorEx.Direction.FORWARD);
+
+        mtrI =  hw.get(DcMotorEx.class, "mtrI");
+        mtrI.setZeroPowerBehavior(BRAKE);
+        mtrI.setDirection(DcMotor.Direction.REVERSE);
+        mtrI.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
+        mtrHang = hw.get(DcMotor.class, "mtrHang");
+        mtrHang.setZeroPowerBehavior(BRAKE);
+        mtrHang.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        mtrHang.setDirection(DcMotor.Direction.FORWARD);
     }
 
-    public OpenCvWebcam webcam;
-    public var() {
-        //nothing goes in this- its just a way to call the program
-    }
     public void initWebcam() {
         // Create camera instance
         int cameraMonitorViewId = hw.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hw.appContext.getPackageName());
@@ -58,7 +81,7 @@ public class var {
             public void onOpened() {
                 webcam.startStreaming(1280, 720, OpenCvCameraRotation.UPRIGHT);
 
-                pipeline = new pipeline();
+                pipeline = new ElementAnalysisPipelineFF();
                 webcam.setPipeline(pipeline);
             }
 
@@ -67,11 +90,8 @@ public class var {
                 /*
                  * This will be called if the camera could not be opened
                  */
-                telemetry.addLine("Cam not able to init");
-
             }
         });
     }
-
 
 }
