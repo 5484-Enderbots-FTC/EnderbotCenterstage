@@ -37,8 +37,8 @@ public class redpropPipeline implements VisionProcessor {
     public Object processFrame(Mat frame, long captureTimeNanos) {
         Imgproc.cvtColor(frame, testMat, Imgproc.COLOR_RGB2HSV);
 
-        Scalar redHSVRedLower = new Scalar(244,194,194);
-        Scalar highHSVRedUpper = new Scalar(250,218,221);
+        Scalar redHSVRedLower = new Scalar(247,198,203);
+        Scalar highHSVRedUpper = new Scalar(236,114,125);
 
         Core.inRange(testMat, redHSVRedLower, highHSVRedUpper, highMat);
 

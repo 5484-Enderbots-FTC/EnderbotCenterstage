@@ -12,30 +12,29 @@ import org.firstinspires.ftc.vision.VisionProcessor;
 
 public class visiontest {
 
-    @Autonomous(name="Vision Test")
+    @Autonomous(name = "Vision Test")
     public class CameraTest extends LinearOpMode {
+
 
         private VisionPortal portal;
         private redpropPipeline redpropPipeline;
+
         @Override
         public void runOpMode() throws InterruptedException {
 
-            redpropPipeline = new redpropPipeline();
-
             portal = new VisionPortal.Builder()
                     .setCamera(hardwareMap.get(WebcamName.class, "Webcam 1"))
-                    .setCameraResolution(new Size(640, 480))
+                    .setCameraResolution(new Size(1280, 720))
                     .setCamera(BuiltinCameraDirection.BACK)
-                    .addProcessor(redpropPipeline)
                     .build();
 
 
             waitForStart();
-
-
-
+            telemetry.addData("Prop Position", redpropPipeline.getPropPosition());
+            telemetry.update();
 
         }
+
     }
 
 }
