@@ -63,6 +63,8 @@ public class redpropPipeline implements VisionProcessor {
             outStr = "right";
         }
 
+        finalMat.copyTo(frame);
+
         return null;
     }
 

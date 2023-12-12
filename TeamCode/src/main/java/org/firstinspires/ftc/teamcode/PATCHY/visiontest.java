@@ -9,6 +9,8 @@ import org.firstinspires.ftc.robotcore.external.hardware.camera.BuiltinCameraDir
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.vision.VisionPortal;
 
+import java.util.Locale;
+
 public class visiontest {
 
     @Autonomous(name = "Vision Test")
@@ -26,6 +28,8 @@ public class visiontest {
                     .setCameraResolution(new Size(1280, 720))
                     .setCamera(BuiltinCameraDirection.BACK)
                     .build();
+
+            portal.saveNextFrameRaw(String.format(Locale.US, "CameraFrameCapture-%06d"));
 
 
             waitForStart();

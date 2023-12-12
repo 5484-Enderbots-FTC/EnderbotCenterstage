@@ -1,9 +1,11 @@
 package org.firstinspires.ftc.teamcode.pocCode;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.TouchSensor;
 import static com.qualcomm.robotcore.hardware.DcMotor.ZeroPowerBehavior.BRAKE;
+@Disabled
 @TeleOp(name = "LimitSwitch", group = "Linear OpMode")
 //@Disabled
 public class LimitSwitch {
