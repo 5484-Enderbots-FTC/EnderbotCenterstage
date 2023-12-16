@@ -6,7 +6,7 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.TouchSensor;
 import static com.qualcomm.robotcore.hardware.DcMotor.ZeroPowerBehavior.BRAKE;
 @Disabled
-@TeleOp(name = "LimitSwitch", group = "Linear OpMode")
+@TeleOp(name = "LimitSwitch", group = "Linear Opmode")
 //@Disabled
 public class LimitSwitch {
     DcMotorEx mtrLift;

@@ -29,7 +29,7 @@ public class IntakeServo extends LinearOpMode {
 
         //outside pos
         intakeRight.setPosition(0.9);
-        intakeLeft.setPosition(0.15);
+        intakeLeft.setPosition(0.1);
 
         while (opModeIsActive())
             if (gamepad1.a) {
