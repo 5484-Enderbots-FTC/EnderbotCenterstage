@@ -43,9 +43,6 @@ public class redpropPipeline implements VisionProcessor {
         Core.inRange(testMat, redHSVRedLower, highHSVRedUpper, highMat);
 
         testMat.release();
-
-        Core.bitwise_or(lowMat, highMat, finalMat);
-
         lowMat.release();
         highMat.release();
 
@@ -65,7 +62,7 @@ public class redpropPipeline implements VisionProcessor {
 
         finalMat.copyTo(frame);
 
-        return null;
+        return finalMat;
     }
 
     @Override

@@ -1,6 +1,10 @@
 package org.firstinspires.ftc.teamcode.pocCode;
+import static com.qualcomm.robotcore.hardware.DcMotor.ZeroPowerBehavior.BRAKE;
+
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 //
@@ -11,6 +15,8 @@ public class IntakeServo extends LinearOpMode {
 
     Servo intakeLeft;
     Servo intakeRight;
+
+    DcMotorEx mtrI;
     ElapsedTime runtime = new ElapsedTime();
     ElapsedTime servoTime = new ElapsedTime();
 
@@ -21,6 +27,11 @@ public class IntakeServo extends LinearOpMode {
         intakeLeft = hardwareMap.get(Servo.class, "leftSvr");
         intakeRight = hardwareMap.get(Servo.class, "rightSvr");
 
+        mtrI =  hardwareMap.get(DcMotorEx.class, "mtrI");
+        mtrI.setZeroPowerBehavior(BRAKE);
+        mtrI.setDirection(DcMotor.Direction.REVERSE);
+        mtrI.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
         waitForStart();
         telemetry.addData("left servo ", intakeLeft.getPosition());
         telemetry.addData("right servo ", intakeRight.getPosition());
@@ -28,10 +39,22 @@ public class IntakeServo extends LinearOpMode {
         telemetry.update();
 
         //outside pos
-        intakeRight.setPosition(0.9);
+        intakeRight.setPosition(0.85);
         intakeLeft.setPosition(0.15);
 
         while (opModeIsActive())
+            if (gamepad1.dpad_up) {
+                mtrI.setDirection(DcMotor.Direction.REVERSE);
+                mtrI.setPower(0.62);
+            }
+            if (gamepad1.dpad_down) {
+                mtrI.setDirection(DcMotor.Direction.FORWARD);
+                mtrI.setPower(0.75);
+            }
+            if (gamepad1.dpad_right) {
+                mtrI.setPower(0);
+            }
+
             if (gamepad1.a) {
                 intakeLeft.setPosition(intakeLeft.getPosition() - (gamepad1.left_stick_y * 0.001));
                 intakeRight.setPosition(intakeRight.getPosition() - (gamepad1.right_stick_y * 0.001));
@@ -53,7 +76,7 @@ public class IntakeServo extends LinearOpMode {
             }
 
             //after x seconds have passed, what button was last pressed? then set position.
-            if (servoTime.time() > .75) {
+           if (servoTime.time() > .75) {
 
                 switch (lastBtn) {
 
@@ -73,6 +96,7 @@ public class IntakeServo extends LinearOpMode {
         telemetry.addData("left servo ", intakeLeft.getPosition());
         telemetry.addData("right servo ", intakeRight.getPosition());
         telemetry.addData("servo time: ", servoTime.time());
+        telemetry.addData("last btn: ", lastBtn);
         telemetry.update();
     }
 }

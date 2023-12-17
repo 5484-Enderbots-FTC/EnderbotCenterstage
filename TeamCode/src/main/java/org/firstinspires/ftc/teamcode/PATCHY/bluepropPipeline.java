@@ -26,7 +26,7 @@ public class bluepropPipeline implements VisionProcessor {
     );
     static final Rect RIGHT_RECTANGLE = new Rect(
             new Point(0,0),
-            new Point(0,0)
+            new Point(200, 300)
     );
     @Override
     public void init(int width, int height, CameraCalibration calibration) {
@@ -65,7 +65,7 @@ public class bluepropPipeline implements VisionProcessor {
 
         finalMat.copyTo(frame);
 
-        return null;
+        return finalMat;
     }
 
     @Override
