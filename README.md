@@ -1,5 +1,6 @@
-# Road Runner Quickstart
+Heyo
 
+<<<<<<< HEAD
 An example FTC project using [Road Runner](https://github.com/acmerobotics/road-runner).
  --single-branch -b quickstart1 https://github.com/acmerobotics/road-runner-quickstart.git`.
 
@@ -14,3 +15,6 @@ Check out the [online quickstart documentation](https://rr.brott.dev/docs/v0-5/q
 ## Installation
 
 1. Download or clone this repo with `git clone
+=======
+Enderbots Centerstage, 2023-2024 fellas. Head programmer this szn, lets getter' goin' here.
+>>>>>>> master

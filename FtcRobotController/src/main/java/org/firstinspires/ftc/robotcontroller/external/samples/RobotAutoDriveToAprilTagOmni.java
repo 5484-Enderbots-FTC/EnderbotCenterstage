@@ -79,12 +79,12 @@ import java.util.concurrent.TimeUnit;
  *
  */
 
-@TeleOp(name="Omni Drive To AprilTag", group = "Concept")
 @Disabled
+@TeleOp(name="Omni Drive To AprilTag", group = "TeleOp")
 public class RobotAutoDriveToAprilTagOmni extends LinearOpMode
 {
     // Adjust these numbers to suit your robot.
-    final double DESIRED_DISTANCE = 12.0; //  this is how close the camera should get to the target (inches)
+    final double DESIRED_DISTANCE = 52.0; //  this is how close the camera should get to the target (inches)
 
     //  Set the GAIN constants to control the relationship between the measured position error, and how much power is
     //  applied to the drive motors to correct the error.
@@ -97,10 +97,10 @@ public class RobotAutoDriveToAprilTagOmni extends LinearOpMode
     final double MAX_AUTO_STRAFE= 0.5;   //  Clip the approach speed to this max value (adjust for your robot)
     final double MAX_AUTO_TURN  = 0.3;   //  Clip the turn speed to this max value (adjust for your robot)
 
-    private DcMotor leftFrontDrive   = null;  //  Used to control the left front drive wheel
-    private DcMotor rightFrontDrive  = null;  //  Used to control the right front drive wheel
-    private DcMotor leftBackDrive    = null;  //  Used to control the left back drive wheel
-    private DcMotor rightBackDrive   = null;  //  Used to control the right back drive wheel
+    private DcMotor mtrFL   = null;  //  Used to control the left front drive wheel
+    private DcMotor mtrFR  = null;  //  Used to control the right front drive wheel
+    private DcMotor mtrBL   = null;  //  Used to control the left back drive wheel
+    private DcMotor mtrBR   = null;  //  Used to control the right back drive wheel
 
     private static final boolean USE_WEBCAM = true;  // Set true to use a webcam, or false for a phone camera
     private static final int DESIRED_TAG_ID = 0;     // Choose the tag you want to approach or set to -1 for ANY tag.
@@ -121,18 +121,18 @@ public class RobotAutoDriveToAprilTagOmni extends LinearOpMode
         // Initialize the hardware variables. Note that the strings used here as parameters
         // to 'get' must match the names assigned during the robot configuration.
         // step (using the FTC Robot Controller app on the phone).
-        leftFrontDrive  = hardwareMap.get(DcMotor.class, "leftfront_drive");
-        rightFrontDrive = hardwareMap.get(DcMotor.class, "rightfront_drive");
-        leftBackDrive  = hardwareMap.get(DcMotor.class, "leftback_drive");
-        rightBackDrive = hardwareMap.get(DcMotor.class, "rightback_drive");
+        mtrFL  = hardwareMap.get(DcMotor.class, "mtrFL");
+        mtrFR = hardwareMap.get(DcMotor.class, "mtrFR");
+        mtrBL  = hardwareMap.get(DcMotor.class, "mtrBL");
+        mtrBR = hardwareMap.get(DcMotor.class, "mtrBR");
 
         // To drive forward, most robots need the motor on one side to be reversed, because the axles point in opposite directions.
         // When run, this OpMode should start both motors driving forward. So adjust these two lines based on your first test drive.
         // Note: The settings here assume direct drive on left and right wheels.  Gear Reduction or 90 Deg drives may require direction flips
-        leftFrontDrive.setDirection(DcMotor.Direction.REVERSE);
-        leftBackDrive.setDirection(DcMotor.Direction.REVERSE);
-        rightFrontDrive.setDirection(DcMotor.Direction.FORWARD);
-        rightBackDrive.setDirection(DcMotor.Direction.FORWARD);
+        mtrFL.setDirection(DcMotor.Direction.REVERSE);
+        mtrBL.setDirection(DcMotor.Direction.REVERSE);
+        mtrFR.setDirection(DcMotor.Direction.FORWARD);
+        mtrBR.setDirection(DcMotor.Direction.FORWARD);
 
         if (USE_WEBCAM)
             setManualExposure(6, 250);  // Use low exposure time to reduce motion blur
@@ -226,10 +226,10 @@ public class RobotAutoDriveToAprilTagOmni extends LinearOpMode
         }
 
         // Send powers to the wheels.
-        leftFrontDrive.setPower(leftFrontPower);
-        rightFrontDrive.setPower(rightFrontPower);
-        leftBackDrive.setPower(leftBackPower);
-        rightBackDrive.setPower(rightBackPower);
+        mtrFL.setPower(leftFrontPower);
+        mtrFR.setPower(rightFrontPower);
+        mtrBL.setPower(leftBackPower);
+        mtrBR.setPower(rightBackPower);
     }
 
     /**
