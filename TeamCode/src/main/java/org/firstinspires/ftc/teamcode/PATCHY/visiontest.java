@@ -41,9 +41,10 @@ import java.util.concurrent.TimeUnit;
                 }
 
                 waitForStart();
+                while (opModeIsActive()) {
                     telemetry.addData("Red Prop Position", redpropPipeline.getPropPosition());
                     telemetry.update();
-
+                }
             }
 
         }

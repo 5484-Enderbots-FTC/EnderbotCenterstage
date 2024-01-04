@@ -21,12 +21,12 @@ public class bluepropPipeline implements VisionProcessor {
     String outStr = "left";
 
     static final Rect LEFT_RECTANGLE = new Rect(
-            new Point(0,0),
-            new Point(0,0)
+            new Point(100,100),
+            new Point(50,50)
     );
     static final Rect RIGHT_RECTANGLE = new Rect(
-            new Point(0,0),
-            new Point(200, 300)
+            new Point(100,100),
+            new Point(50,50)
     );
     @Override
     public void init(int width, int height, CameraCalibration calibration) {
@@ -43,9 +43,6 @@ public class bluepropPipeline implements VisionProcessor {
         Core.inRange(testMat, blueHSVBlueLower, highHSVBlueUpper, highMat);
 
         testMat.release();
-
-        Core.bitwise_or(lowMat, highMat, finalMat);
-
         lowMat.release();
         highMat.release();
 
