@@ -120,11 +120,11 @@ public class CenterstageTeleop extends LinearOpMode {
             //intake
             if (gamepad2.a) {
                 mtrI.setDirection(DcMotor.Direction.REVERSE);
-                mtrI.setPower(0.75);
+                mtrI.setPower(0.55);
             }
             if (gamepad2.b) {
                 mtrI.setDirection(DcMotor.Direction.FORWARD);
-                mtrI.setPower(0.75);
+                mtrI.setPower(0.55);
             }
             if (gamepad2.x) {
                 mtrI.setPower(0);
