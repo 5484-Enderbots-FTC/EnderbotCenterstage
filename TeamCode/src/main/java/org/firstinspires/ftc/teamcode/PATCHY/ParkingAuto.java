@@ -24,10 +24,10 @@ public class ParkingAuto extends LinearOpMode {
         waitForStart();
 
         TrajectorySequence bluefronttraj1 = drive.trajectorySequenceBuilder(startPose)
-                .lineTo(new Vector2d(-38, 12))
+                .lineTo(new Vector2d(-38, 10))
                 .build();
         TrajectorySequence bluefronttraj2 = drive.trajectorySequenceBuilder(bluefronttraj1.end())
-                .lineTo(new Vector2d(60, 12))
+                .lineTo(new Vector2d(58, 10))
                 .build();
 
 

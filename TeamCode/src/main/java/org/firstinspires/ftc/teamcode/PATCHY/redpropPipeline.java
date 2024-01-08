@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.PATCHY;
 
 import android.graphics.Canvas;
+import android.util.Log;
 
 import org.firstinspires.ftc.robotcore.internal.camera.calibration.CameraCalibration;
 import org.firstinspires.ftc.vision.VisionProcessor;
@@ -22,11 +23,11 @@ public class redpropPipeline implements VisionProcessor {
 
     static final Rect LEFT_RECTANGLE = new Rect(
             new Point(0,0),
-            new Point(0,0)
+            new Point(640,720)
     );
     static final Rect RIGHT_RECTANGLE = new Rect(
-            new Point(0,0),
-            new Point(0,0)
+            new Point(1280-640,0),
+            new Point(1279,720)
     );
     @Override
     public void init(int width, int height, CameraCalibration calibration) {
@@ -37,9 +38,14 @@ public class redpropPipeline implements VisionProcessor {
     public Object processFrame(Mat frame, long captureTimeNanos) {
         Imgproc.cvtColor(frame, testMat, Imgproc.COLOR_RGB2HSV);
 
-        Scalar redHSVRedLower = new Scalar(247,198,203);
-        Scalar highHSVRedUpper = new Scalar(236,114,125);
+        Scalar lowHSVRedLower = new Scalar(0, 60, 150);  //Beginning of Color Wheel
+        Scalar lowHSVRedUpper = new Scalar(30, 200, 255);
 
+        Scalar redHSVRedLower = new Scalar(141, 60, 150); //Wraps around Color Wheel
+        Scalar highHSVRedUpper = new Scalar(180, 200, 255);
+
+
+        Core.inRange(testMat, lowHSVRedLower, lowHSVRedUpper, lowMat);
         Core.inRange(testMat, redHSVRedLower, highHSVRedUpper, highMat);
 
         testMat.release();
@@ -48,6 +54,12 @@ public class redpropPipeline implements VisionProcessor {
 
         lowMat.release();
         highMat.release();
+
+        //testMat.release();
+        //lowMat.release();
+        //highMat.release();
+
+        //Log.e("Testtesttest", String.format("width=%d, height=%d", finalMat.width(), finalMat.height()));
 
         double leftBox = Core.sumElems(finalMat.submat(LEFT_RECTANGLE)).val[0];
         double rightBox = Core.sumElems(finalMat.submat(RIGHT_RECTANGLE)).val[0];
@@ -62,10 +74,13 @@ public class redpropPipeline implements VisionProcessor {
         }else {
             outStr = "right";
         }
-
+        // comment this stuff out when done
         finalMat.copyTo(frame);
+        Imgproc.rectangle(frame, LEFT_RECTANGLE, new Scalar(255, 255, 255), 7);
+        Imgproc.rectangle(frame, RIGHT_RECTANGLE, new Scalar(255, 255, 255), 7);
+        //end comment
 
-        return null;
+        return finalMat;
     }
 
     @Override

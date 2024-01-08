@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.pocCode;
+package org.firstinspires.ftc.teamcode.PATCHY;
 import static com.qualcomm.robotcore.hardware.DcMotor.ZeroPowerBehavior.BRAKE;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -9,9 +9,9 @@ import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 //
 
-@TeleOp(name = "Intake + Servo", group = "Linear Opmode")
+@TeleOp(name = "INTAKE SERVO ONLY", group = "Linear Opmode")
 
-public class IntakeServo extends LinearOpMode {
+public class servoOnly extends LinearOpMode {
 
     Servo intakeLeft;
     Servo intakeRight;
@@ -27,11 +27,6 @@ public class IntakeServo extends LinearOpMode {
         intakeLeft = hardwareMap.get(Servo.class, "leftSvr");
         intakeRight = hardwareMap.get(Servo.class, "rightSvr");
 
-        mtrI =  hardwareMap.get(DcMotorEx.class, "mtrI");
-        mtrI.setZeroPowerBehavior(BRAKE);
-        mtrI.setDirection(DcMotor.Direction.REVERSE);
-        mtrI.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-
         waitForStart();
         telemetry.addData("left servo ", intakeLeft.getPosition());
         telemetry.addData("right servo ", intakeRight.getPosition());
@@ -39,21 +34,10 @@ public class IntakeServo extends LinearOpMode {
         telemetry.update();
 
         //outside pos
-        intakeRight.setPosition(0.85);
-        intakeLeft.setPosition(0.15);
+        //intakeRight.setPosition(0.85);
+        intakeLeft.setPosition(0.1388);
 
         while (opModeIsActive()) {
-            if (gamepad1.dpad_up) {
-                mtrI.setDirection(DcMotor.Direction.REVERSE);
-                mtrI.setPower(0.62);
-            }
-            if (gamepad1.dpad_down) {
-                mtrI.setDirection(DcMotor.Direction.FORWARD);
-                mtrI.setPower(0.62);
-            }
-            if (gamepad1.dpad_right) {
-                mtrI.setPower(0);
-            }
 
             if (gamepad1.a) {
                 intakeLeft.setPosition(intakeLeft.getPosition() - (gamepad1.left_stick_y * 0.001));
@@ -75,30 +59,17 @@ public class IntakeServo extends LinearOpMode {
             }
 
             if (gamepad1.x) {
-                intakeRight.setPosition(0.85);
+                intakeLeft.setPosition(0.1388);
                 lastBtn = 'x';
             }
 
             //after x seconds have passed, what button was last pressed? then set position.
-           if (servoTime.time() > .75) {
 
-               if (lastBtn == 'b') {
-                   intakeLeft.setPosition(0.25);
-               }
-
-               if (lastBtn == 'y') {
-                   intakeRight.setPosition(0.672);
-               }
-               if (lastBtn == 'x') {
-                   intakeLeft.setPosition(0.15);
-               }
-
-           }
-        telemetry.addData("left servo ", intakeLeft.getPosition());
-        telemetry.addData("right servo ", intakeRight.getPosition());
-        telemetry.addData("servo time: ", servoTime.time());
-        telemetry.addData("last btn: ", lastBtn);
-        telemetry.update();
+            telemetry.addData("left servo ", intakeLeft.getPosition());
+            telemetry.addData("right servo ", intakeRight.getPosition());
+            telemetry.addData("servo time: ", servoTime.time());
+            telemetry.addData("last btn: ", lastBtn);
+            telemetry.update();
         }
     }
 }
