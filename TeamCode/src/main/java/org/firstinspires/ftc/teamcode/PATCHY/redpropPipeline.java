@@ -1,5 +1,5 @@
 package org.firstinspires.ftc.teamcode.PATCHY;
-
+//shart
 import android.graphics.Canvas;
 import android.util.Log;
 
@@ -17,7 +17,7 @@ public class redpropPipeline implements VisionProcessor {
     Mat highMat = new Mat();
     Mat lowMat = new Mat();
     Mat finalMat = new Mat();
-    double redThreshold = 0.5;
+    double redThreshold = 0.6;
 
     String outStr = "left";
 
@@ -38,11 +38,11 @@ public class redpropPipeline implements VisionProcessor {
     public Object processFrame(Mat frame, long captureTimeNanos) {
         Imgproc.cvtColor(frame, testMat, Imgproc.COLOR_RGB2HSV);
 
-        Scalar lowHSVRedLower = new Scalar(0, 60, 150);  //Beginning of Color Wheel
-        Scalar lowHSVRedUpper = new Scalar(30, 200, 255);
+        Scalar lowHSVRedLower = new Scalar(0, 60, 125);  //Beginning of Color Wheel
+        Scalar lowHSVRedUpper = new Scalar(40, 255, 255);
 
-        Scalar redHSVRedLower = new Scalar(141, 60, 150); //Wraps around Color Wheel
-        Scalar highHSVRedUpper = new Scalar(180, 200, 255);
+        Scalar redHSVRedLower = new Scalar(141, 60, 125); //Wraps around Color Wheel
+        Scalar highHSVRedUpper = new Scalar(180, 255, 255);
 
 
         Core.inRange(testMat, lowHSVRedLower, lowHSVRedUpper, lowMat);
@@ -70,9 +70,9 @@ public class redpropPipeline implements VisionProcessor {
         if (averagedLeftBox > redThreshold){
             outStr = "left";
         } else if(averagedRightBox > redThreshold){
-            outStr = "center";
-        }else {
             outStr = "right";
+        }else {
+            outStr = "center";
         }
         // comment this stuff out when done
         finalMat.copyTo(frame);

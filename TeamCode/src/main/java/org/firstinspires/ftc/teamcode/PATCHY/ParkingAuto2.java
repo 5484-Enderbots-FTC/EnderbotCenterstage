@@ -20,17 +20,18 @@ public class ParkingAuto2 extends LinearOpMode {
         Pose2d startPose = new Pose2d(-38,-61, Math.toRadians(90));
         drive.setPoseEstimate(startPose);
 
+        TrajectorySequence redfronttraj1 = drive.trajectorySequenceBuilder(startPose)
+                .lineTo(new Vector2d(-38.00, -10.00))
+                .build();
+        TrajectorySequence redfronttraj2 = drive.trajectorySequenceBuilder(redfronttraj1.end())
+                .lineTo(new Vector2d(58.00, -10.00))
+                .build();
+
+
+
         waitForStart();
 
-        if (isStopRequested()) return;
-
         while (!isStopRequested()) {
-            TrajectorySequence redfronttraj1 = drive.trajectorySequenceBuilder(startPose)
-                    .lineTo(new Vector2d(-38.00, -10.00))
-                    .build();
-            TrajectorySequence redfronttraj2 = drive.trajectorySequenceBuilder(redfronttraj1.end())
-                    .lineTo(new Vector2d(58.00, -10.00))
-                    .build();
 
 
             drive.followTrajectorySequence(redfronttraj1);
