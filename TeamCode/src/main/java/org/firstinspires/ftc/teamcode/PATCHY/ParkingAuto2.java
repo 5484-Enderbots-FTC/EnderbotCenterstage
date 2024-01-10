@@ -45,6 +45,7 @@ public class ParkingAuto2 extends LinearOpMode {
             telemetry.addData("Camera", "Ready");
             telemetry.update();
         }
+
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
         Pose2d startPose = new Pose2d(-38, -61, Math.toRadians(90));
         drive.setPoseEstimate(startPose);
@@ -65,6 +66,7 @@ public class ParkingAuto2 extends LinearOpMode {
 
                 drive.followTrajectorySequence(redfronttraj1);
                 drive.followTrajectorySequence(redfronttraj2);
+                
             }
 
         }

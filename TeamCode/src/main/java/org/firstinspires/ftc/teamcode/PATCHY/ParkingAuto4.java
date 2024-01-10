@@ -20,14 +20,11 @@ public class ParkingAuto4 extends LinearOpMode {
         Pose2d startPose = new Pose2d(16,-62, Math.toRadians(90));
         drive.setPoseEstimate(startPose);
 
-        waitForStart();
-
-        if (isStopRequested()) return;
-
         TrajectorySequence redbacktraj1 = drive.trajectorySequenceBuilder(startPose)
                 .splineTo(new Vector2d(60.00, -62.00), Math.toRadians(0.00))
                 .build();
 
+        waitForStart();
 
         while (!isStopRequested()) {
 
