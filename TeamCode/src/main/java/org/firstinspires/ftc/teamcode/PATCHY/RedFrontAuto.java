@@ -173,6 +173,7 @@ public class RedFrontAuto extends LinearOpMode {
 
                 }
 
+                drive.setPoseEstimate(placePose);
                 drive.followTrajectorySequence(rfUltimatum);
 
             }
