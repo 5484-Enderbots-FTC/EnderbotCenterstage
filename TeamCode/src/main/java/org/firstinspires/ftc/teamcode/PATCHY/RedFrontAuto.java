@@ -11,16 +11,12 @@ import com.acmerobotics.roadrunner.geometry.Vector2d;
 import org.firstinspires.ftc.teamcode.RoadrunnerUtilStuff.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.RoadrunnerUtilStuff.trajectorysequence.TrajectorySequence;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
-import org.firstinspires.ftc.robotcore.external.hardware.camera.controls.ExposureControl;
-import org.firstinspires.ftc.robotcore.external.hardware.camera.controls.GainControl;
 import org.firstinspires.ftc.vision.VisionPortal;
-
-import java.util.concurrent.TimeUnit;
 
 @Config
 @Autonomous(name = "Red Frontstage Parking Auto", group = "Parking Autos")
 
-public class ParkingAuto2 extends LinearOpMode {
+public class RedFrontAuto extends LinearOpMode {
 
     Pose2d visPose;
     Pose2d placePose;
@@ -90,6 +86,10 @@ public class ParkingAuto2 extends LinearOpMode {
         TrajectorySequence rfCenterTraj1 = drive.trajectorySequenceBuilder(redfronttraj1.end())
                 .lineTo(new Vector2d(-36.00, -30.00))
                 .build();
+        TrajectorySequence rfCenterTraj2 = drive.trajectorySequenceBuilder(rfCenterTraj1.end())
+                .lineTo(new Vector2d(-54.00, -30.00))
+                .build();
+
 
         //final trajectories
         TrajectorySequence rfFinalTraj1 = drive.trajectorySequenceBuilder(visPose)
@@ -122,10 +122,6 @@ public class ParkingAuto2 extends LinearOpMode {
             .build();
 
 
-
-
-
-
         waitForStart();
         while (opModeIsActive()) {
 
@@ -149,7 +145,8 @@ public class ParkingAuto2 extends LinearOpMode {
                 } else {
                     //center traj
                     drive.followTrajectorySequence(rfCenterTraj1);
-                    visPose = rfCenterTraj1.end();
+                    drive.followTrajectorySequence(rfCenterTraj2);
+                    visPose = rfCenterTraj2.end();
                 }
 
                 //final trajes
