@@ -17,7 +17,7 @@ import org.firstinspires.ftc.vision.VisionPortal;
 @Autonomous(name = "Red Frontstage Parking Auto", group = "Parking Autos")
 
 public class RedFrontAuto extends LinearOpMode {
-
+//fixed
     Pose2d visPose;
     Pose2d placePose;
     String auto;
@@ -61,9 +61,8 @@ public class RedFrontAuto extends LinearOpMode {
         //left trajectories
         TrajectorySequence rfLeftTraj1 = drive.trajectorySequenceBuilder(redfronttraj1.end())
                 .lineTo(new Vector2d(-40.00, -33.00))
-                .turn(Math.toRadians(-45))
+                .turn(Math.toRadians(90))
                 .waitSeconds(2)
-                .turn(Math.toRadians(45))
                 .build();
 
         TrajectorySequence rfLeftTraj2 = drive.trajectorySequenceBuilder(rfLeftTraj1.end())
@@ -73,12 +72,12 @@ public class RedFrontAuto extends LinearOpMode {
         //right trajectories
         TrajectorySequence rfRightTraj1 = drive.trajectorySequenceBuilder(redfronttraj1.end())
                 .lineTo(new Vector2d(-31.00, -33.00))
-                .turn(Math.toRadians(45))
+                .turn(Math.toRadians(-90))
                 .waitSeconds(2)
-                .turn(Math.toRadians(-45))
                 .build();
 
         TrajectorySequence rfRightTraj2 = drive.trajectorySequenceBuilder(rfRightTraj1.end())
+                .turn(Math.toRadians(180))
                 .lineTo(new Vector2d(-36.00, -37.00))
                 .build();
 
@@ -87,6 +86,7 @@ public class RedFrontAuto extends LinearOpMode {
                 .lineTo(new Vector2d(-36.00, -30.00))
                 .build();
         TrajectorySequence rfCenterTraj2 = drive.trajectorySequenceBuilder(rfCenterTraj1.end())
+                .turn(Math.toRadians(90))
                 .lineTo(new Vector2d(-54.00, -30.00))
                 .build();
 
@@ -94,7 +94,6 @@ public class RedFrontAuto extends LinearOpMode {
         //final trajectories
         TrajectorySequence rfFinalTraj1 = drive.trajectorySequenceBuilder(visPose)
                 .lineTo(new Vector2d(-36.00, -10.00))
-                .turn(Math.toRadians(90))
                 .build();
         TrajectorySequence rfFinalTraj2 = drive.trajectorySequenceBuilder(rfFinalTraj1.end())
                 .lineTo(new Vector2d(36.00, -10.00))

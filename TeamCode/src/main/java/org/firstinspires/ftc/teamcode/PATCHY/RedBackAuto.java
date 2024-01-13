@@ -17,7 +17,7 @@ import org.firstinspires.ftc.vision.VisionPortal;
 @Autonomous(name = "Red Backstage Parking Auto", group = "Parking Autos")
 
 public class RedBackAuto extends LinearOpMode {
-
+//you fixed the turns on this one
     Pose2d placePose;
     String auto;
     private VisionPortal portal;
@@ -60,9 +60,8 @@ public class RedBackAuto extends LinearOpMode {
         //left prop traj
         TrajectorySequence rbLeftProp1 = drive.trajectorySequenceBuilder(rbTraj1.end())
                 .lineTo(new Vector2d(8.00, -30.00))
-                .turn(Math.toRadians(-45))
+                .turn(Math.toRadians(90))
                 .waitSeconds(2)
-                .turn(Math.toRadians(135))
                 .build();
         TrajectorySequence rbLeftProp2 = drive.trajectorySequenceBuilder(rbLeftProp1.end())
                 .lineTo(new Vector2d(52.00, -30.00))
@@ -72,11 +71,12 @@ public class RedBackAuto extends LinearOpMode {
         //right prop traj
         TrajectorySequence rbRightProp1 = drive.trajectorySequenceBuilder(rbTraj1.end())
                 .lineTo(new Vector2d(16.00, -30.00))
-                .turn(Math.toRadians(90))
+                .turn(Math.toRadians(-90))
                 .waitSeconds(2)
                 .build();
         TrajectorySequence rbRightProp2 = drive.trajectorySequenceBuilder(rbRightProp1.end())
                 .lineTo(new Vector2d(16.00, -42.50))
+                .turn(Math.toRadians(180))
                 .build();
         TrajectorySequence rbRightProp3 = drive.trajectorySequenceBuilder(rbRightProp2.end())
                 .lineTo(new Vector2d(52.00, -42.50))

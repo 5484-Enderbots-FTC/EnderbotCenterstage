@@ -17,8 +17,8 @@ import org.firstinspires.ftc.vision.VisionPortal;
 @Config
 @Autonomous(name = "Blue Frontstage Parking Auto", group = "Parking Autos")
 
-public class ParkingAuto extends LinearOpMode {
-
+public class BlueFrontAuto extends LinearOpMode {
+//you fixed the turning on this one
     Pose2d visPose;
     Pose2d placePose;
     String auto;

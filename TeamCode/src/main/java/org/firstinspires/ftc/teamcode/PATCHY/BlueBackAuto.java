@@ -17,7 +17,7 @@ import org.firstinspires.ftc.vision.VisionPortal;
 @Autonomous(name = "Blue Backstage Parking Auto", group = "Parking Autos")
 
 public class BlueBackAuto extends LinearOpMode {
-
+//turns fixed on this one
     Pose2d visPose;
     Pose2d placePose;
     String auto;
@@ -61,8 +61,9 @@ public class BlueBackAuto extends LinearOpMode {
         //left trajectories
         TrajectorySequence blueLeftProp1 = drive.trajectorySequenceBuilder(bbTraj1.end())
             .lineTo(new Vector2d(18.00, 30.00))
-            .turn(Math.toRadians(-90))
+            .turn(Math.toRadians(90))
             .waitSeconds(2)
+            .turn(Math.toRadians(180))
             .build();
         TrajectorySequence blueLeftProp2 = drive.trajectorySequenceBuilder(blueLeftProp1.end())
             .lineTo(new Vector2d(18.00, 42.50))
@@ -90,9 +91,8 @@ public class BlueBackAuto extends LinearOpMode {
         //right trajectories
         TrajectorySequence blueRightProp1 = drive.trajectorySequenceBuilder(bbTraj1.end())
                 .lineTo(new Vector2d(8.00, 30.00))
-                .turn(Math.toRadians(45))
+                .turn(Math.toRadians(-90))
                 .waitSeconds(2)
-                .turn(Math.toRadians(-135))
                 .build();
 
         TrajectorySequence blueRightProp2 = drive.trajectorySequenceBuilder(blueRightProp1.end())
