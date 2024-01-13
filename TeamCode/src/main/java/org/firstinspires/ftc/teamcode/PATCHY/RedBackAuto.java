@@ -72,9 +72,8 @@ public class RedBackAuto extends LinearOpMode {
         //right prop traj
         TrajectorySequence rbRightProp1 = drive.trajectorySequenceBuilder(rbTraj1.end())
                 .lineTo(new Vector2d(16.00, -30.00))
-                .turn(Math.toRadians(45))
+                .turn(Math.toRadians(90))
                 .waitSeconds(2)
-                .turn(Math.toRadians(45))
                 .build();
         TrajectorySequence rbRightProp2 = drive.trajectorySequenceBuilder(rbRightProp1.end())
                 .lineTo(new Vector2d(16.00, -42.50))
@@ -114,18 +113,21 @@ public class RedBackAuto extends LinearOpMode {
                 drive.followTrajectorySequence(rbLeftProp1);
                 drive.followTrajectorySequence(rbLeftProp2);
                 placePose = rbRightProp2.end();
+                drive.setPoseEstimate(placePose);
 
             } else if (auto == "right") {
                 drive.followTrajectorySequence(rbRightProp1);
                 drive.followTrajectorySequence(rbRightProp2);
                 drive.followTrajectorySequence(rbRightProp3);
                 placePose = rbRightProp3.end();
+                drive.setPoseEstimate(placePose);
 
             } else {
                 drive.followTrajectorySequence(rbCenterProp1);
                 drive.followTrajectorySequence(rbCenterProp2);
                 drive.followTrajectorySequence(rbCenterProp3);
                 placePose = rbCenterProp3.end();
+                drive.setPoseEstimate(placePose);
 
             }
 

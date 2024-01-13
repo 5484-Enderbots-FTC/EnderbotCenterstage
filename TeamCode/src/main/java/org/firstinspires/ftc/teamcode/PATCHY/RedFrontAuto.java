@@ -135,18 +135,21 @@ public class RedFrontAuto extends LinearOpMode {
                     drive.followTrajectorySequence(rfLeftTraj1);
                     drive.followTrajectorySequence(rfLeftTraj2);
                     visPose = rfLeftTraj2.end();
+                    drive.setPoseEstimate(visPose);
 
                 } else if (auto == "right") {
                     //right side traj
                     drive.followTrajectorySequence(rfRightTraj1);
                     drive.followTrajectorySequence(rfRightTraj2);
                     visPose = rfRightTraj2.end();
+                    drive.setPoseEstimate(visPose);
 
                 } else {
                     //center traj
                     drive.followTrajectorySequence(rfCenterTraj1);
                     drive.followTrajectorySequence(rfCenterTraj2);
                     visPose = rfCenterTraj2.end();
+                    drive.setPoseEstimate(visPose);
                 }
 
                 //final trajes
