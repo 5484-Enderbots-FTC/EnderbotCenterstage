@@ -18,7 +18,6 @@ import org.firstinspires.ftc.vision.VisionPortal;
 
 public class BlueBackAuto extends LinearOpMode {
 //turns fixed on this one
-    Pose2d visPose;
     Pose2d placePose;
     String auto;
     private VisionPortal portal;

@@ -1,5 +1,5 @@
 package org.firstinspires.ftc.teamcode.PATCHY;
-
+//shart
 import android.graphics.Canvas;
 import android.util.Log;
 
@@ -17,7 +17,7 @@ public class bluepropPipeline implements VisionProcessor {
     Mat highMat = new Mat();
     Mat lowMat = new Mat();
     Mat finalMat = new Mat();
-    double redThreshold = 0.5; //actually blue obv but dw
+    double blueThreshold = 0.1;
 
     String outStr = "left";
 
@@ -38,20 +38,14 @@ public class bluepropPipeline implements VisionProcessor {
     public Object processFrame(Mat frame, long captureTimeNanos) {
         Imgproc.cvtColor(frame, testMat, Imgproc.COLOR_RGB2HSV);
 
-        Scalar blueHSVBlueLower = new Scalar(100, 100, 100);
-        Scalar highHSVBlueUpper = new Scalar(200, 255, 255);
+        Scalar blueLower = new Scalar(90, 80, 125); //Wraps around Color Wheel
+        Scalar blueHigher = new Scalar(105, 255, 255);
 
-
-        Core.inRange(testMat, blueHSVBlueLower, highHSVBlueUpper, lowMat);
+        Core.inRange(testMat, blueLower, blueHigher, finalMat);
 
         testMat.release();
-
         lowMat.release();
         highMat.release();
-
-        //testMat.release();
-        //lowMat.release();
-        //highMat.release();
 
         //Log.e("Testtesttest", String.format("width=%d, height=%d", finalMat.width(), finalMat.height()));
 
@@ -61,12 +55,12 @@ public class bluepropPipeline implements VisionProcessor {
         double averagedLeftBox = leftBox / LEFT_RECTANGLE.area() / 255;
         double averagedRightBox = rightBox / RIGHT_RECTANGLE.area() / 255;
 
-        if (averagedLeftBox > redThreshold){
+        if (averagedLeftBox > blueThreshold){
             outStr = "left";
-        } else if(averagedRightBox > redThreshold){
-            outStr = "center";
-        }else {
+        } else if(averagedRightBox > blueThreshold){
             outStr = "right";
+        }else {
+            outStr = "center";
         }
         // comment this stuff out when done
         finalMat.copyTo(frame);
@@ -74,7 +68,7 @@ public class bluepropPipeline implements VisionProcessor {
         Imgproc.rectangle(frame, RIGHT_RECTANGLE, new Scalar(255, 255, 255), 7);
         //end comment
 
-        return finalMat;
+        return null;
     }
 
     @Override

@@ -17,7 +17,7 @@ public class redpropPipeline implements VisionProcessor {
     Mat highMat = new Mat();
     Mat lowMat = new Mat();
     Mat finalMat = new Mat();
-    double redThreshold = 0.6;
+    double redThreshold = 0.05;
 
     String outStr = "left";
 
@@ -38,11 +38,11 @@ public class redpropPipeline implements VisionProcessor {
     public Object processFrame(Mat frame, long captureTimeNanos) {
         Imgproc.cvtColor(frame, testMat, Imgproc.COLOR_RGB2HSV);
 
-        Scalar lowHSVRedLower = new Scalar(0, 60, 125);  //Beginning of Color Wheel
-        Scalar lowHSVRedUpper = new Scalar(40, 255, 255);
+        Scalar lowHSVRedLower = new Scalar(0, 10, 100);  //Beginning of Color Wheel
+        Scalar lowHSVRedUpper = new Scalar(10, 105, 255);
 
-        Scalar redHSVRedLower = new Scalar(141, 60, 125); //Wraps around Color Wheel
-        Scalar highHSVRedUpper = new Scalar(180, 255, 255);
+        Scalar redHSVRedLower = new Scalar(135, 10, 100); //Wraps around Color Wheel
+        Scalar highHSVRedUpper = new Scalar(179, 105, 255);
 
 
         Core.inRange(testMat, lowHSVRedLower, lowHSVRedUpper, lowMat);
@@ -80,7 +80,7 @@ public class redpropPipeline implements VisionProcessor {
         Imgproc.rectangle(frame, RIGHT_RECTANGLE, new Scalar(255, 255, 255), 7);
         //end comment
 
-        return finalMat;
+        return null;
     }
 
     @Override

@@ -48,7 +48,7 @@ public class BlueFrontAuto extends LinearOpMode {
         }
 
         auto = bluepropPipeline.getPropPosition();
-        telemetry.addData("Red Prop Position", bluepropPipeline.getPropPosition());
+        telemetry.addData("blue Prop Position", bluepropPipeline.getPropPosition());
         telemetry.update();
 
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
