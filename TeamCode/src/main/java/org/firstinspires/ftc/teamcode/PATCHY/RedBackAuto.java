@@ -51,6 +51,15 @@ public class RedBackAuto extends LinearOpMode {
 
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
         Pose2d startPose = new Pose2d(12,-62, Math.toRadians(90));
+
+        if (auto == "left"){
+            placePose = new Pose2d(50.00, -30.00, Math.toRadians(180));
+        } else if (auto == "right") {
+            placePose = new Pose2d(50.00, -42.50, Math.toRadians(180));
+        } else{
+            placePose = new Pose2d(50.00, -36.00, Math.toRadians(180));
+        }
+
         drive.setPoseEstimate(startPose);
 
         TrajectorySequence rbTraj1 = drive.trajectorySequenceBuilder(startPose)
@@ -59,12 +68,12 @@ public class RedBackAuto extends LinearOpMode {
 
         //left prop traj
         TrajectorySequence rbLeftProp1 = drive.trajectorySequenceBuilder(rbTraj1.end())
-                .lineTo(new Vector2d(8.00, -30.00))
+                .lineTo(new Vector2d(10.00, -30.00))
                 .turn(Math.toRadians(90))
                 .waitSeconds(2)
                 .build();
         TrajectorySequence rbLeftProp2 = drive.trajectorySequenceBuilder(rbLeftProp1.end())
-                .lineTo(new Vector2d(52.00, -30.00))
+                .lineTo(new Vector2d(50.00, -30.00))
                 .waitSeconds(3)
                 .build();
 
@@ -79,7 +88,7 @@ public class RedBackAuto extends LinearOpMode {
                 .turn(Math.toRadians(180))
                 .build();
         TrajectorySequence rbRightProp3 = drive.trajectorySequenceBuilder(rbRightProp2.end())
-                .lineTo(new Vector2d(52.00, -42.50))
+                .lineTo(new Vector2d(50.00, -42.50))
                 .waitSeconds(3)
                 .build();
 
@@ -93,15 +102,14 @@ public class RedBackAuto extends LinearOpMode {
                 .turn(Math.toRadians(90))
                 .build();
         TrajectorySequence rbCenterProp3 = drive.trajectorySequenceBuilder(rbCenterProp2.end())
-                .lineTo(new Vector2d(52.00, -36.00))
+                .lineTo(new Vector2d(50.00, -36.00))
                 .waitSeconds(3)
                 .build();
 
         //final trajectories
         TrajectorySequence rbFinalTraj1 = drive.trajectorySequenceBuilder(placePose)
-                .lineTo(new Vector2d(52.00, -62.00))
+                .lineTo(new Vector2d(50.00, -62.00))
                 .build();
-
 
         waitForStart();
 
@@ -112,25 +120,19 @@ public class RedBackAuto extends LinearOpMode {
             if (auto == "left"){
                 drive.followTrajectorySequence(rbLeftProp1);
                 drive.followTrajectorySequence(rbLeftProp2);
-                placePose = rbRightProp2.end();
-                drive.setPoseEstimate(placePose);
 
             } else if (auto == "right") {
                 drive.followTrajectorySequence(rbRightProp1);
                 drive.followTrajectorySequence(rbRightProp2);
                 drive.followTrajectorySequence(rbRightProp3);
-                placePose = rbRightProp3.end();
-                drive.setPoseEstimate(placePose);
 
             } else {
                 drive.followTrajectorySequence(rbCenterProp1);
                 drive.followTrajectorySequence(rbCenterProp2);
                 drive.followTrajectorySequence(rbCenterProp3);
-                placePose = rbCenterProp3.end();
-                drive.setPoseEstimate(placePose);
 
             }
-
+            drive.setPoseEstimate(placePose);
             drive.followTrajectorySequence(rbFinalTraj1);
 
         }
