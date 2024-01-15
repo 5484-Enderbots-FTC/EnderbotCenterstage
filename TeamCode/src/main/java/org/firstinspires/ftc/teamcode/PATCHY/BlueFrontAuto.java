@@ -51,6 +51,20 @@ public class BlueFrontAuto extends LinearOpMode {
         telemetry.addData("blue Prop Position", bluepropPipeline.getPropPosition());
         telemetry.update();
 
+        if (auto == "left"){
+            visPose = new Pose2d(-36.00,35.00, Math.toRadians(270));
+            placePose = new Pose2d(51.00, 42.50, Math.toRadians(180));
+
+        }else if (auto == "right"){
+            visPose = new Pose2d(-36.00,35.00, Math.toRadians(270));
+            placePose = new Pose2d(51.00, 30.00, Math.toRadians(180));
+
+        }else {
+            visPose = new Pose2d(-52.00, 30.00, Math.toRadians(270));
+            placePose = new Pose2d(51.00, 36.00, Math.toRadians(180));
+
+        }
+
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
         Pose2d startPose = new Pose2d(-36,60, Math.toRadians(270));
         drive.setPoseEstimate(startPose);
@@ -93,7 +107,7 @@ public class BlueFrontAuto extends LinearOpMode {
         //everyone does
         TrajectorySequence bfTraj2 = drive.trajectorySequenceBuilder(visPose)
                 .lineTo(new Vector2d(-36.00, 10.00))
-                .turn(Math.toRadians(90))
+                .turn(Math.toRadians(-90))
                 .build();
         TrajectorySequence bfTraj3 = drive.trajectorySequenceBuilder(bfTraj2.end())
                 .lineTo(new Vector2d(36.00, 10.00))
@@ -104,7 +118,7 @@ public class BlueFrontAuto extends LinearOpMode {
                 .lineTo(new Vector2d(36.00, 42.50))
                 .build();
         TrajectorySequence bfLeftProp4 = drive.trajectorySequenceBuilder(bfLeftProp3.end())
-                .lineTo(new Vector2d(52.00, 42.50))
+                .lineTo(new Vector2d(51.00, 42.50))
                 .waitSeconds(3)
                 .build();
 
@@ -113,7 +127,7 @@ public class BlueFrontAuto extends LinearOpMode {
                 .lineTo(new Vector2d(36.00, 30.00))
                 .build();
         TrajectorySequence bfRightProp4 = drive.trajectorySequenceBuilder(bfRightProp3.end())
-                .lineTo(new Vector2d(52.00, 30.00))
+                .lineTo(new Vector2d(51.00, 30.00))
                 .waitSeconds(3)
                 .build();
 
@@ -122,7 +136,7 @@ public class BlueFrontAuto extends LinearOpMode {
                 .lineTo(new Vector2d(36.00, 36.00))
                 .build();
         TrajectorySequence bfCenterProp4 = drive.trajectorySequenceBuilder(bfCenterProp3.end())
-                .lineTo(new Vector2d(52.00, 36.00))
+                .lineTo(new Vector2d(51.00, 36.00))
                 .waitSeconds(3)
                 .build();
 
@@ -136,24 +150,20 @@ public class BlueFrontAuto extends LinearOpMode {
 
         waitForStart();
 
-        while (!isStopRequested()) {
 
             drive.followTrajectorySequence(bfTraj1);
 
             if (auto == "left"){
                 drive.followTrajectorySequence(bfLeftProp1);
                 drive.followTrajectorySequence(bfLeftProp2);
-                visPose = bfLeftProp2.end();
 
             } else if (auto == "right") {
                 drive.followTrajectorySequence(bfRightProp1);
                 drive.followTrajectorySequence(bfRightProp2);
-                visPose = bfRightProp2.end();
 
             } else {
                 drive.followTrajectorySequence(bfCenterProp1);
                 drive.followTrajectorySequence(bfCenterProp2);
-                visPose = bfCenterProp2.end();
 
             }
 
@@ -164,17 +174,14 @@ public class BlueFrontAuto extends LinearOpMode {
             if (auto == "left"){
                 drive.followTrajectorySequence(bfLeftProp3);
                 drive.followTrajectorySequence(bfLeftProp4);
-                placePose = bfLeftProp4.end();
 
             } else if (auto == "right") {
                 drive.followTrajectorySequence(bfRightProp3);
                 drive.followTrajectorySequence(bfRightProp4);
-                placePose = bfRightProp4.end();
 
             } else {
                 drive.followTrajectorySequence(bfCenterProp3);
                 drive.followTrajectorySequence(bfCenterProp4);
-                placePose = bfCenterProp4.end();
 
             }
 
@@ -184,4 +191,3 @@ public class BlueFrontAuto extends LinearOpMode {
         }
 
     }
-}

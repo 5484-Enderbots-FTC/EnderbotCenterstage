@@ -49,6 +49,14 @@ public class BlueBackAuto extends LinearOpMode {
         telemetry.addData("Blue Prop Position", bluepropPipeline.getPropPosition());
         telemetry.update();
 
+        if (auto == "left"){
+            placePose = new Pose2d(51.00, 42.50, Math.toRadians(180));
+        }else if (auto == "right"){
+            placePose = new Pose2d(51.00, 30.00, Math.toRadians(180));
+        }else {
+            placePose = new Pose2d(51.00, 36.00, Math.toRadians(180));
+        }
+
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
         Pose2d startPose = new Pose2d(12,62,Math.toRadians(270));
         drive.setPoseEstimate(startPose);
@@ -68,7 +76,7 @@ public class BlueBackAuto extends LinearOpMode {
             .lineTo(new Vector2d(18.00, 42.50))
             .build();
         TrajectorySequence blueLeftProp3 = drive.trajectorySequenceBuilder(blueLeftProp2.end())
-            .lineTo(new Vector2d(52.00, 42.50))
+            .lineTo(new Vector2d(51.00, 42.50))
             .waitSeconds(3)
             .build();
 
@@ -83,7 +91,7 @@ public class BlueBackAuto extends LinearOpMode {
                 .turn(Math.toRadians(-90))
                 .build();
         TrajectorySequence blueCenterProp3 = drive.trajectorySequenceBuilder(blueCenterProp2.end())
-                .lineTo(new Vector2d(52.00, 36.00))
+                .lineTo(new Vector2d(51.00, 36.00))
                 .build();
 
 
@@ -95,19 +103,18 @@ public class BlueBackAuto extends LinearOpMode {
                 .build();
 
         TrajectorySequence blueRightProp2 = drive.trajectorySequenceBuilder(blueRightProp1.end())
-                .lineTo(new Vector2d(52.00, 30.00))
+                .lineTo(new Vector2d(51.00, 30.00))
                 .waitSeconds(3)
                 .build();
 
         //final trajectories
         TrajectorySequence bbFinalTraj1 = drive.trajectorySequenceBuilder(placePose)
-                .lineTo(new Vector2d(52.00, 62.00))
+                .lineTo(new Vector2d(51.00, 62.00))
                 .build();
 
 
         waitForStart();
 
-        while (!isStopRequested()) {
             
             drive.followTrajectorySequence(bbTraj1);
 
@@ -115,18 +122,15 @@ public class BlueBackAuto extends LinearOpMode {
                 drive.followTrajectorySequence(blueLeftProp1);
                 drive.followTrajectorySequence(blueLeftProp2);
                 drive.followTrajectorySequence(blueLeftProp3);
-                placePose = blueLeftProp3.end();
 
             } else if (auto == "right") {
                 drive.followTrajectorySequence(blueRightProp1);
                 drive.followTrajectorySequence(blueRightProp2);
-                placePose = blueRightProp2.end();
 
             } else {
                 drive.followTrajectorySequence(blueCenterProp1);
                 drive.followTrajectorySequence(blueCenterProp2);
                 drive.followTrajectorySequence(blueCenterProp3);
-                placePose = blueCenterProp3.end();
 
             }
 
@@ -136,4 +140,3 @@ public class BlueBackAuto extends LinearOpMode {
         }
 
     }
-}
