@@ -50,6 +50,20 @@ public class RedFrontAuto extends LinearOpMode {
         telemetry.addData("Red Prop Position", redpropPipeline.getPropPosition());
         telemetry.update();
 
+        if (auto == "left"){
+            visPose = new Pose2d(-36.00, -37.00, Math.toRadians(90));
+            placePose = new Pose2d(51.00, -29.50, Math.toRadians(180));
+
+        }else if (auto == "right") {
+            visPose = new Pose2d(-36.00, -37.00, Math.toRadians(90));
+            placePose = new Pose2d(51.00, -42.25, Math.toRadians(180));
+
+        } else {
+            visPose = new Pose2d(-54.00, -30.00, Math.toRadians(90));
+            placePose = new Pose2d(51.00, -36.00, Math.toRadians(180));
+
+        }
+
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
         Pose2d startPose = new Pose2d(-36, -61, Math.toRadians(90));
         drive.setPoseEstimate(startPose);
@@ -63,6 +77,7 @@ public class RedFrontAuto extends LinearOpMode {
                 .lineTo(new Vector2d(-40.00, -33.00))
                 .turn(Math.toRadians(90))
                 .waitSeconds(2)
+                .turn(Math.toRadians(-90))
                 .build();
 
         TrajectorySequence rfLeftTraj2 = drive.trajectorySequenceBuilder(rfLeftTraj1.end())
@@ -77,7 +92,7 @@ public class RedFrontAuto extends LinearOpMode {
                 .build();
 
         TrajectorySequence rfRightTraj2 = drive.trajectorySequenceBuilder(rfRightTraj1.end())
-                .turn(Math.toRadians(180))
+                .turn(Math.toRadians(90))
                 .lineTo(new Vector2d(-36.00, -37.00))
                 .build();
 
@@ -86,7 +101,6 @@ public class RedFrontAuto extends LinearOpMode {
                 .lineTo(new Vector2d(-36.00, -30.00))
                 .build();
         TrajectorySequence rfCenterTraj2 = drive.trajectorySequenceBuilder(rfCenterTraj1.end())
-                .turn(Math.toRadians(90))
                 .lineTo(new Vector2d(-54.00, -30.00))
                 .build();
 
@@ -94,6 +108,7 @@ public class RedFrontAuto extends LinearOpMode {
         //final trajectories
         TrajectorySequence rfFinalTraj1 = drive.trajectorySequenceBuilder(visPose)
                 .lineTo(new Vector2d(-36.00, -10.00))
+                .turn(Math.toRadians(90))
                 .build();
         TrajectorySequence rfFinalTraj2 = drive.trajectorySequenceBuilder(rfFinalTraj1.end())
                 .lineTo(new Vector2d(36.00, -10.00))
@@ -101,17 +116,17 @@ public class RedFrontAuto extends LinearOpMode {
 
         //traj to place pixels
         TrajectorySequence rfTagLeft = drive.trajectorySequenceBuilder(rfFinalTraj2.end())
-            .lineTo(new Vector2d(52.00, -29.50))
+            .lineTo(new Vector2d(51.00, -29.50))
             .waitSeconds(2)
             .build();
 
         TrajectorySequence rfTagCenter = drive.trajectorySequenceBuilder(rfFinalTraj2.end())
-            .lineTo(new Vector2d(52.00, -36.00))
+            .lineTo(new Vector2d(51.00, -36.00))
             .waitSeconds(2)
             .build();
 
         TrajectorySequence rfTagRight = drive.trajectorySequenceBuilder(rfFinalTraj2.end())
-            .lineTo(new Vector2d(52.00, -42.25))
+            .lineTo(new Vector2d(51.00, -42.25))
             .waitSeconds(2)
             .build();
 
@@ -122,9 +137,6 @@ public class RedFrontAuto extends LinearOpMode {
 
 
         waitForStart();
-        while (opModeIsActive()) {
-
-            while (!isStopRequested()) {
 
                 drive.followTrajectorySequence(redfronttraj1);
 
@@ -133,24 +145,19 @@ public class RedFrontAuto extends LinearOpMode {
                     //left side traj
                     drive.followTrajectorySequence(rfLeftTraj1);
                     drive.followTrajectorySequence(rfLeftTraj2);
-                    visPose = rfLeftTraj2.end();
-                    drive.setPoseEstimate(visPose);
 
                 } else if (auto == "right") {
                     //right side traj
                     drive.followTrajectorySequence(rfRightTraj1);
                     drive.followTrajectorySequence(rfRightTraj2);
-                    visPose = rfRightTraj2.end();
-                    drive.setPoseEstimate(visPose);
 
                 } else {
                     //center traj
                     drive.followTrajectorySequence(rfCenterTraj1);
                     drive.followTrajectorySequence(rfCenterTraj2);
-                    visPose = rfCenterTraj2.end();
-                    drive.setPoseEstimate(visPose);
                 }
 
+                drive.setPoseEstimate(visPose);
                 //final trajes
                 drive.followTrajectorySequence(rfFinalTraj1);
                 drive.followTrajectorySequence(rfFinalTraj2);
@@ -158,17 +165,14 @@ public class RedFrontAuto extends LinearOpMode {
                 if (auto == "left") {
                     //left tag traj
                     drive.followTrajectorySequence(rfTagLeft);
-                    placePose = rfTagLeft.end();
 
                 } else if (auto == "right") {
                     //right side traj
                     drive.followTrajectorySequence(rfTagRight);
-                    placePose = rfTagRight.end();
 
                 } else {
                     //center traj
                     drive.followTrajectorySequence(rfTagCenter);
-                    placePose = rfTagCenter.end();
 
                 }
 
@@ -178,5 +182,3 @@ public class RedFrontAuto extends LinearOpMode {
             }
 
         }
-    }
-}

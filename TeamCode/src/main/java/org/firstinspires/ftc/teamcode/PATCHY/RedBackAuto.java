@@ -113,8 +113,6 @@ public class RedBackAuto extends LinearOpMode {
 
         waitForStart();
 
-        while (!isStopRequested()) {
-
             drive.followTrajectorySequence(rbTraj1);
 
             if (auto == "left"){
@@ -135,7 +133,6 @@ public class RedBackAuto extends LinearOpMode {
             drive.setPoseEstimate(placePose);
             drive.followTrajectorySequence(rbFinalTraj1);
 
-        }
 
     }
 }
