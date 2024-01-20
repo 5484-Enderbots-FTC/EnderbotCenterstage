@@ -1,6 +1,8 @@
 package org.firstinspires.ftc.teamcode.PATCHY;
 
 
+import static com.qualcomm.robotcore.hardware.DcMotor.ZeroPowerBehavior.BRAKE;
+
 import android.util.Size;
 
 import com.acmerobotics.dashboard.config.Config;
@@ -8,6 +10,8 @@ import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.acmerobotics.roadrunner.geometry.Vector2d;
+import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.teamcode.RoadrunnerUtilStuff.drive.SampleMecanumDrive;
@@ -24,6 +28,8 @@ public class BlueFrontAuto extends LinearOpMode {
     String auto;
     private VisionPortal portal;
     private org.firstinspires.ftc.teamcode.PATCHY.bluepropPipeline bluepropPipeline;
+    DcMotorEx mtrI;
+
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -64,6 +70,11 @@ public class BlueFrontAuto extends LinearOpMode {
             placePose = new Pose2d(51.00, 36.00, Math.toRadians(180));
 
         }
+
+        mtrI =  hardwareMap.get(DcMotorEx.class, "mtrI");
+        mtrI.setZeroPowerBehavior(BRAKE);
+        mtrI.setDirection(DcMotor.Direction.REVERSE);
+        mtrI.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
         Pose2d startPose = new Pose2d(-36,60, Math.toRadians(270));
