@@ -21,7 +21,6 @@ public class LiftCode extends LinearOpMode {
     Servo grab;
     double armOffset = 0;
     DcMotorEx mtrLift;
-    TouchSensor lowLimit;
 
     int LiftOffset = 0;
 
@@ -55,7 +54,6 @@ public class LiftCode extends LinearOpMode {
         mtrLift.setDirection(DcMotor.Direction.REVERSE);
         mtrLift.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
-        lowLimit = hardwareMap.get(TouchSensor.class, "lowLimit");
 
         while (opModeIsActive()) {
 
@@ -65,31 +63,7 @@ public class LiftCode extends LinearOpMode {
             telemetry.addData("y", poseEstimate.getY());
             telemetry.addData("heading", poseEstimate.getHeading());
             telemetry.addData("mtrLift", "whee " + mtrLift.getCurrentPosition());
-            telemetry.addData("limit", "whee " + lowLimit.isPressed());
 
-            if (lowLimit.isPressed()) {
-                telemetry.addData("skreeblo", lowLimit.isPressed());
-            } else {
-                telemetry.addData("skwimble", lowLimit.isPressed());
-            }
-
-            if (gamepad2.x && gripCloseButton == false && gripClose == false) {
-                gripClose = true;
-                gripCloseButton = true;
-
-            }
-            if (gamepad2.x && gripCloseButton == false && gripClose == true) {
-                gripClose = false;
-                gripCloseButton = true;
-
-            }
-            }
-
-            if (gamepad2.b) {
-                LiftOffset = 0;
-            }
-
-            LiftOffset = (int) (LiftOffset - (gamepad2.left_stick_y * 4));
             //grab.setPosition(gamepad2.right_trigger);
 
             if (mtrLift.getCurrentPosition() <= 4500 && armOut == true) {
@@ -194,8 +168,9 @@ public class LiftCode extends LinearOpMode {
             drive.update();
 
 
-            }
+        }
     }
+}
 
 
 
