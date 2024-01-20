@@ -39,10 +39,10 @@ public class redpropPipeline implements VisionProcessor {
         Imgproc.cvtColor(frame, testMat, Imgproc.COLOR_RGB2HSV);
 
         Scalar lowHSVRedLower = new Scalar(0, 10, 100);  //Beginning of Color Wheel
-        Scalar lowHSVRedUpper = new Scalar(10, 105, 255);
+        Scalar lowHSVRedUpper = new Scalar(139, 0, 0);
 
         Scalar redHSVRedLower = new Scalar(135, 10, 100); //Wraps around Color Wheel
-        Scalar highHSVRedUpper = new Scalar(179, 105, 255);
+        Scalar highHSVRedUpper = new Scalar(255, 0,0);
 
 
         Core.inRange(testMat, lowHSVRedLower, lowHSVRedUpper, lowMat);
