@@ -88,7 +88,15 @@ public class BlueFrontAuto extends LinearOpMode {
         TrajectorySequence bfLeftProp1 = drive.trajectorySequenceBuilder(bfTraj1.end())
                 .lineTo(new Vector2d(-32.00, 30.00))
                 .turn(Math.toRadians(90))
-                .waitSeconds(2)
+                .addDisplacementMarker(() -> {
+                    mtrI.setPower(0.5);
+
+                })
+                .waitSeconds(.5)
+                .addDisplacementMarker(() -> {
+                    mtrI.setPower(0);
+
+                })
                 .turn(Math.toRadians(-90))
                 .build();
         TrajectorySequence bfLeftProp2 = drive.trajectorySequenceBuilder(bfLeftProp1.end())
@@ -99,7 +107,15 @@ public class BlueFrontAuto extends LinearOpMode {
         TrajectorySequence bfRightProp1 = drive.trajectorySequenceBuilder(bfTraj1.end())
                 .lineTo(new Vector2d(-40.00, 30.00))
                 .turn(Math.toRadians(-90))
-                .waitSeconds(2)
+                .addDisplacementMarker(() -> {
+                    mtrI.setPower(0.5);
+
+                })
+                .waitSeconds(.5)
+                .addDisplacementMarker(() -> {
+                    mtrI.setPower(0);
+
+                })
                 .turn(Math.toRadians(90))
                 .build();
         TrajectorySequence bfRightProp2 = drive.trajectorySequenceBuilder(bfRightProp1.end())
@@ -109,7 +125,15 @@ public class BlueFrontAuto extends LinearOpMode {
         //center trajs
         TrajectorySequence bfCenterProp1 = drive.trajectorySequenceBuilder(bfTraj1.end())
                 .lineTo(new Vector2d(-36.00, 30.00))
-                .waitSeconds(2)
+                .addDisplacementMarker(() -> {
+                    mtrI.setPower(0.5);
+
+                })
+                .waitSeconds(.5)
+                .addDisplacementMarker(() -> {
+                    mtrI.setPower(0);
+
+                })
                 .build();
         TrajectorySequence bfCenterProp2 = drive.trajectorySequenceBuilder(bfCenterProp1.end())
                 .lineTo(new Vector2d(-52.00, 30.00))

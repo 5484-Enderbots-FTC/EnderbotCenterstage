@@ -11,6 +11,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.teamcode.RoadrunnerUtilStuff.drive.SampleMecanumDrive;
@@ -64,7 +65,7 @@ public class BlueBackAuto extends LinearOpMode {
 
         mtrI =  hardwareMap.get(DcMotorEx.class, "mtrI");
         mtrI.setZeroPowerBehavior(BRAKE);
-        mtrI.setDirection(DcMotor.Direction.REVERSE);
+        mtrI.setDirection(DcMotor.Direction.FORWARD);
         mtrI.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
@@ -79,8 +80,15 @@ public class BlueBackAuto extends LinearOpMode {
         TrajectorySequence blueLeftProp1 = drive.trajectorySequenceBuilder(bbTraj1.end())
             .lineTo(new Vector2d(18.00, 30.00))
             .turn(Math.toRadians(90))
-            .waitSeconds(2)
+            .addDisplacementMarker(() -> {
+                mtrI.setPower(.5);
+
+            })
             .turn(Math.toRadians(180))
+            .addDisplacementMarker(() -> {
+                mtrI.setPower(0);
+
+            })
             .build();
         TrajectorySequence blueLeftProp2 = drive.trajectorySequenceBuilder(blueLeftProp1.end())
             .lineTo(new Vector2d(18.00, 42.50))
@@ -94,11 +102,19 @@ public class BlueBackAuto extends LinearOpMode {
         //center trajectories
         TrajectorySequence blueCenterProp1 = drive.trajectorySequenceBuilder(bbTraj1.end())
             .lineTo(new Vector2d(12.00, 30.00))
-            .waitSeconds(2)
+            .addDisplacementMarker(() -> {
+                mtrI.setPower(.5);
+
+            })
+                .waitSeconds(.5)
             .build();
         TrajectorySequence blueCenterProp2 = drive.trajectorySequenceBuilder(blueCenterProp1.end())
-                .lineTo(new Vector2d(12.00, 36.00))
+                .addDisplacementMarker(() -> {
+                    mtrI.setPower(0);
+
+                })
                 .turn(Math.toRadians(-90))
+                .lineTo(new Vector2d(12.00, 36.00))
                 .build();
         TrajectorySequence blueCenterProp3 = drive.trajectorySequenceBuilder(blueCenterProp2.end())
                 .lineTo(new Vector2d(51.00, 36.00))
@@ -109,10 +125,18 @@ public class BlueBackAuto extends LinearOpMode {
         TrajectorySequence blueRightProp1 = drive.trajectorySequenceBuilder(bbTraj1.end())
                 .lineTo(new Vector2d(8.00, 30.00))
                 .turn(Math.toRadians(-90))
-                .waitSeconds(2)
+                .addDisplacementMarker(() -> {
+                    mtrI.setPower(.5);
+
+                })
+                .waitSeconds(0.5)
                 .build();
 
         TrajectorySequence blueRightProp2 = drive.trajectorySequenceBuilder(blueRightProp1.end())
+                .addDisplacementMarker(() -> {
+                    mtrI.setPower(0);
+
+                })
                 .lineTo(new Vector2d(51.00, 30.00))
                 .waitSeconds(3)
                 .build();

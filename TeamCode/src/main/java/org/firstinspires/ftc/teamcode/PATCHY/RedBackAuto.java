@@ -11,6 +11,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.teamcode.RoadrunnerUtilStuff.drive.SampleMecanumDrive;
@@ -67,7 +68,7 @@ public class RedBackAuto extends LinearOpMode {
 
         mtrI =  hardwareMap.get(DcMotorEx.class, "mtrI");
         mtrI.setZeroPowerBehavior(BRAKE);
-        mtrI.setDirection(DcMotor.Direction.REVERSE);
+        mtrI.setDirection(DcMotor.Direction.FORWARD);
         mtrI.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
         drive.setPoseEstimate(startPose);
@@ -80,9 +81,17 @@ public class RedBackAuto extends LinearOpMode {
         TrajectorySequence rbLeftProp1 = drive.trajectorySequenceBuilder(rbTraj1.end())
                 .lineTo(new Vector2d(10.00, -30.00))
                 .turn(Math.toRadians(90))
-                .waitSeconds(2)
+                .addDisplacementMarker(() -> {
+                    mtrI.setPower(0.5);
+
+                })
+                .waitSeconds(.5)
                 .build();
         TrajectorySequence rbLeftProp2 = drive.trajectorySequenceBuilder(rbLeftProp1.end())
+                .addDisplacementMarker(() -> {
+                    mtrI.setPower(0);
+
+                })
                 .lineTo(new Vector2d(50.00, -30.00))
                 .waitSeconds(3)
                 .build();
@@ -91,9 +100,17 @@ public class RedBackAuto extends LinearOpMode {
         TrajectorySequence rbRightProp1 = drive.trajectorySequenceBuilder(rbTraj1.end())
                 .lineTo(new Vector2d(16.00, -30.00))
                 .turn(Math.toRadians(-90))
-                .waitSeconds(2)
+                .addDisplacementMarker(() -> {
+                    mtrI.setPower(0.5);
+
+                })
+                .waitSeconds(.5)
                 .build();
         TrajectorySequence rbRightProp2 = drive.trajectorySequenceBuilder(rbRightProp1.end())
+                .addDisplacementMarker(() -> {
+                    mtrI.setPower(0);
+
+                })
                 .lineTo(new Vector2d(16.00, -42.50))
                 .turn(Math.toRadians(180))
                 .build();
@@ -105,9 +122,17 @@ public class RedBackAuto extends LinearOpMode {
         //center prop traj
         TrajectorySequence rbCenterProp1 = drive.trajectorySequenceBuilder(rbTraj1.end())
                 .lineTo(new Vector2d(12.00, -30.00))
-                .waitSeconds(2)
+                .addDisplacementMarker(() -> {
+                    mtrI.setPower(0.5);
+
+                })
+                .waitSeconds(.5)
                 .build();
         TrajectorySequence rbCenterProp2 = drive.trajectorySequenceBuilder(rbCenterProp1.end())
+                .addDisplacementMarker(() -> {
+                    mtrI.setPower(0);
+
+                })
                 .lineTo(new Vector2d(12.00, -36.00))
                 .turn(Math.toRadians(90))
                 .build();

@@ -71,7 +71,7 @@ public class RedFrontAuto extends LinearOpMode {
 
         mtrI =  hardwareMap.get(DcMotorEx.class, "mtrI");
         mtrI.setZeroPowerBehavior(BRAKE);
-        mtrI.setDirection(DcMotor.Direction.REVERSE);
+        mtrI.setDirection(DcMotor.Direction.FORWARD);
         mtrI.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
@@ -86,8 +86,17 @@ public class RedFrontAuto extends LinearOpMode {
         TrajectorySequence rfLeftTraj1 = drive.trajectorySequenceBuilder(redfronttraj1.end())
                 .lineTo(new Vector2d(-40.00, -33.00))
                 .turn(Math.toRadians(90))
-                .waitSeconds(2)
+                .addDisplacementMarker(() -> {
+                    mtrI.setPower(0.5);
+
+                })
+                .waitSeconds(.5)
+                .addDisplacementMarker(() -> {
+                    mtrI.setPower(0);
+
+                })
                 .turn(Math.toRadians(-90))
+
                 .build();
 
         TrajectorySequence rfLeftTraj2 = drive.trajectorySequenceBuilder(rfLeftTraj1.end())
@@ -98,7 +107,15 @@ public class RedFrontAuto extends LinearOpMode {
         TrajectorySequence rfRightTraj1 = drive.trajectorySequenceBuilder(redfronttraj1.end())
                 .lineTo(new Vector2d(-31.00, -33.00))
                 .turn(Math.toRadians(-90))
-                .waitSeconds(2)
+                .addDisplacementMarker(() -> {
+                    mtrI.setPower(0.5);
+
+                })
+                .waitSeconds(.5)
+                .addDisplacementMarker(() -> {
+                    mtrI.setPower(0);
+
+                })
                 .build();
 
         TrajectorySequence rfRightTraj2 = drive.trajectorySequenceBuilder(rfRightTraj1.end())
@@ -109,6 +126,15 @@ public class RedFrontAuto extends LinearOpMode {
         //center trajectories
         TrajectorySequence rfCenterTraj1 = drive.trajectorySequenceBuilder(redfronttraj1.end())
                 .lineTo(new Vector2d(-36.00, -30.00))
+                .addDisplacementMarker(() -> {
+                    mtrI.setPower(0.5);
+
+                })
+                .waitSeconds(.5)
+                .addDisplacementMarker(() -> {
+                    mtrI.setPower(0);
+
+                })
                 .build();
         TrajectorySequence rfCenterTraj2 = drive.trajectorySequenceBuilder(rfCenterTraj1.end())
                 .lineTo(new Vector2d(-54.00, -30.00))
