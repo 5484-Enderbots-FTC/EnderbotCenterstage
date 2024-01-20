@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.pocCode;
 import static com.qualcomm.robotcore.hardware.DcMotor.ZeroPowerBehavior.BRAKE;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
@@ -13,162 +14,101 @@ import org.firstinspires.ftc.teamcode.RoadrunnerUtilStuff.drive.SampleMecanumDri
 //
 
 
-@TeleOp(name = "LiftCode", group = "Linear Opmode")
-//@Disabled
-public class LiftCode extends LinearOpMode {
+@TeleOp(name="Lift Code")
+public class LiftCode extends OpMode {
+    // An Enum is used to represent lift states.
+    // (This is one thing enums are designed to do)
+    public enum LiftState {
+        LIFT_START,
+        LIFT_EXTEND,
+        LIFT_DUMP,
+        LIFT_RETRACT
+    };
 
-    ElapsedTime runtime = new ElapsedTime();
-    Servo grab;
-    double armOffset = 0;
-    DcMotorEx mtrLift;
+    // The liftState variable is declared out here
+    // so its value persists between loop() calls
+    LiftState liftState = LiftState.LIFT_START;
 
-    int LiftOffset = 0;
+    // Some hardware access boilerplate; these would be initialized in init()
+    // the lift motor, it's in RUN_TO_POSITION mode
+    public DcMotorEx mtrLift;
 
-    int floor = 0;
-    boolean floorBool = true;
-    int firstHeight = 1600;
+    // the dump servo
+    // used with the dump servo, this will get covered in a bit
+    ElapsedTime liftTimer = new ElapsedTime();
 
-    boolean firstHeightBool = false;
-    int secondHeight = 3300;
-    boolean secondHeightBool = false;
-    int fullHeight = 5250;
-    boolean fullHeightBool = false;
-    boolean neutralHoldBool = false;
-    boolean lowGrab = false;
-    boolean highGrab = false;
-    //servos
-    boolean armOutButton = false;
-    boolean gripCloseButton = false;
-    boolean armOut = false;
-    boolean gripClose = false;
-    int PlacingMode = 1;
+    private int LIFT_LOW = 100; // the low encoder position for the lift
+    private int LIFT_HIGH = 150;// the high encoder position for the lift
 
-    @Override
-    public void runOpMode() {
-        SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
-        telemetry.addData("Status", "Initialized");
-        telemetry.update();
+    private double DUMP_TIME = 1.00;
 
+    public void init() {
+        liftTimer.reset();
+
+        // hardware initialization code goes here
+        // this needs to correspond with the configuration used
         mtrLift = hardwareMap.get(DcMotorEx.class, "mtrLift");
-        mtrLift.setZeroPowerBehavior(BRAKE);
-        mtrLift.setDirection(DcMotor.Direction.REVERSE);
-        mtrLift.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+        mtrLift.setTargetPosition(LIFT_LOW);
+        mtrLift.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+    }
 
 
-        while (opModeIsActive()) {
+    public void loop() {
+        mtrLift.setPower(1.0);
 
+        switch (liftState) {
+            case LIFT_START:
+                // Waiting for some input
+                if (gamepad1.x) {
+                    // x is pressed, start extending
+                    mtrLift.setTargetPosition(LIFT_HIGH);
+                    liftState = LiftState.LIFT_EXTEND;
+                }
+                break;
+            case LIFT_EXTEND:
+                // check if the lift has finished extending,
+                // otherwise do nothing.
+                if (Math.abs(mtrLift.getCurrentPosition() - LIFT_HIGH) < 10) {
+                    // our threshold is within
+                    // 10 encoder ticks of our target.
+                    // this is pretty arbitrary, and would have to be
+                    // tweaked for each robot.
 
-            Pose2d poseEstimate = drive.getPoseEstimate();
-            telemetry.addData("x", poseEstimate.getX());
-            telemetry.addData("y", poseEstimate.getY());
-            telemetry.addData("heading", poseEstimate.getHeading());
-            telemetry.addData("mtrLift", "whee " + mtrLift.getCurrentPosition());
+                    // set the lift dump to dump
 
-            //grab.setPosition(gamepad2.right_trigger);
-
-            if (mtrLift.getCurrentPosition() <= 4500 && armOut == true) {
-                grab.setPosition(.94 - armOffset);
-            } else if (mtrLift.getCurrentPosition() > 4500 && armOut == true) {
-                grab.setPosition(.94 - armOffset);
-            } else if (armOut == false) {
-                grab.setPosition(.15 - armOffset);
-            }
-
-            if (armOut == false) {
-                PlacingMode = 1;
-            } else {
-                PlacingMode = -1;
-            }
-
-            if (!gamepad2.x) {
-                gripCloseButton = false;
-            }
-            if (!gamepad2.a) {
-                armOutButton = false;
-            }
-
-            telemetry.addData("lowgrab", lowGrab);
-            telemetry.addData("highgrab", highGrab);
-
-            if (gamepad2.dpad_left) {
-                floorBool = false;
-                firstHeightBool = true;
-                secondHeightBool = false;
-                fullHeightBool = false;
-                neutralHoldBool = false;
-            }
-            if (gamepad2.dpad_down) {
-                floorBool = true;
-                firstHeightBool = false;
-                secondHeightBool = false;
-                fullHeightBool = false;
-                neutralHoldBool = false;
-            }
-            if (gamepad2.dpad_right) {
-                floorBool = false;
-                firstHeightBool = false;
-                secondHeightBool = false;
-                fullHeightBool = true;
-                neutralHoldBool = false;
-            }
-            if (gamepad2.dpad_up) {
-                floorBool = false;
-                firstHeightBool = false;
-                secondHeightBool = true;
-                fullHeightBool = false;
-                neutralHoldBool = false;
-            }
-
-            if (gamepad2.a) {
-                floorBool = false;
-                firstHeightBool = false;
-                secondHeightBool = false;
-                fullHeightBool = false;
-                neutralHoldBool = true;
-            }
-
-            if (floorBool) {
-                mtrLift.setTargetPosition(floor + LiftOffset);
-                mtrLift.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
-                mtrLift.setVelocity(5000);
-                armOut = false;
-            }
-
-            if (neutralHoldBool) {
-                mtrLift.setTargetPosition(floor + LiftOffset);
-                mtrLift.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
-                mtrLift.setVelocity(5000);
-                armOut = true;
-            }
-
-            if (firstHeightBool) {
-                mtrLift.setTargetPosition(firstHeight + LiftOffset);
-                mtrLift.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
-                mtrLift.setVelocity(5000);
-                armOut = true;
-            }
-            if (secondHeightBool) {
-                mtrLift.setTargetPosition(secondHeight + LiftOffset);
-                mtrLift.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
-                mtrLift.setVelocity(5000);
-                armOut = true;
-            }
-            if (fullHeightBool) {
-                mtrLift.setTargetPosition(fullHeight + LiftOffset);
-                mtrLift.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
-                mtrLift.setVelocity(5000);
-                armOut = true;
-            }
-
-            telemetry.addData("floorGoal", floorBool);
-            telemetry.addData("firstGoal", firstHeightBool);
-            telemetry.addData("secondGoal", secondHeightBool);
-            telemetry.addData("floorGoal", fullHeightBool);
-            telemetry.update();
-            drive.update();
-
-
+                    liftTimer.reset();
+                    liftState = LiftState.LIFT_DUMP;
+                }
+                break;
+            case LIFT_DUMP:
+                if (liftTimer.seconds() >= DUMP_TIME) {
+                    // The robot waited long enough, time to start
+                    // retracting the lift
+                    mtrLift.setTargetPosition(LIFT_LOW);
+                    liftState = LiftState.LIFT_RETRACT;
+                }
+                break;
+            case LIFT_RETRACT:
+                if (Math.abs(mtrLift.getCurrentPosition() - LIFT_LOW) < 10) {
+                    liftState = LiftState.LIFT_START;
+                }
+                break;
+            default:
+                // should never be reached, as liftState should never be null
+                liftState = LiftState.LIFT_START;
         }
+
+        // small optimization, instead of repeating ourselves in each
+        // lift state case besides LIFT_START for the cancel action,
+        // it's just handled here
+        if (gamepad1.y && liftState != LiftState.LIFT_START) {
+            liftState = LiftState.LIFT_START;
+        }
+
+        // mecanum drive code goes here
+        // But since none of the stuff in the switch case stops
+        // the robot, this will always run!
     }
 }
 
