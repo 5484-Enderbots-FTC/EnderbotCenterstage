@@ -23,4 +23,4 @@ android {
     namespace = 'com.qualcomm.ftcrobotcontroller'
 }
 
-apply from: '../build.dependencies.gradle'
+apply from: '../build.dependencies-Santi-LENOVO.gradle'
