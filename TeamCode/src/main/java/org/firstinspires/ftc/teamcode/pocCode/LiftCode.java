@@ -23,7 +23,7 @@ public class LiftCode extends OpMode {
         LIFT_EXTEND,
         LIFT_DUMP,
         LIFT_RETRACT
-    };
+    }
 
     // The liftState variable is declared out here
     // so its value persists between loop() calls
