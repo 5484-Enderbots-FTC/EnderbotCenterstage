@@ -48,14 +48,15 @@ public class LiftCode extends OpMode {
         // hardware initialization code goes here
         // this needs to correspond with the configuration used
         mtrLift = hardwareMap.get(DcMotorEx.class, "mtrLift");
-
         mtrLift.setTargetPosition(LIFT_LOW);
+        mtrLift.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         mtrLift.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
     }
 
 
     public void loop() {
-        mtrLift.setPower(1.0);
+        mtrLift.setPower(.4);
 
         switch (liftState) {
             case LIFT_START:
