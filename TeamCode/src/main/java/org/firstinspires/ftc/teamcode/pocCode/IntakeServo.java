@@ -13,6 +13,14 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 public class IntakeServo extends LinearOpMode {
 
+    public enum intakeState {
+        intakeMiddle,
+        intakeOut,
+        intakeIn
+
+    }
+    intakeState intakePos = intakeState.intakeOut;
+
     Servo intakeLeft;
     Servo intakeRight;
 
@@ -27,7 +35,7 @@ public class IntakeServo extends LinearOpMode {
         intakeLeft = hardwareMap.get(Servo.class, "leftSvr");
         intakeRight = hardwareMap.get(Servo.class, "rightSvr");
 
-        mtrI =  hardwareMap.get(DcMotorEx.class, "mtrI");
+        mtrI = hardwareMap.get(DcMotorEx.class, "mtrI");
         mtrI.setZeroPowerBehavior(BRAKE);
         mtrI.setDirection(DcMotor.Direction.REVERSE);
         mtrI.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
@@ -43,7 +51,7 @@ public class IntakeServo extends LinearOpMode {
         intakeLeft.setPosition(0.15);
 
         while (opModeIsActive()) {
-            if (gamepad1.dpad_up) {
+          /*  if (gamepad1.dpad_up) {
                 mtrI.setDirection(DcMotor.Direction.REVERSE);
                 mtrI.setPower(0.62);
             }
@@ -93,12 +101,79 @@ public class IntakeServo extends LinearOpMode {
                    intakeLeft.setPosition(0.15);
                }
 
-           }
-        telemetry.addData("left servo ", intakeLeft.getPosition());
-        telemetry.addData("right servo ", intakeRight.getPosition());
-        telemetry.addData("servo time: ", servoTime.time());
-        telemetry.addData("last btn: ", lastBtn);
-        telemetry.update();
+           } */
+
+            switch (intakePos) {
+                case intakeIn:
+                    if (gamepad1.x) {
+                        intakeRight.setPosition(0.85);
+                        lastBtn = 'x';
+                        intakePos = intakeState.intakeOut;
+                    }
+                    if (gamepad1.b) {
+                        intakeRight.setPosition(.82);
+                        servoTime.reset();
+                        lastBtn = 'b';
+                        intakePos = intakeState.intakeMiddle;
+                    }
+
+                    break;
+
+                case intakeMiddle:
+                    if (gamepad1.x) {
+                        intakeRight.setPosition(0.85);
+                        lastBtn = 'x';
+                        intakePos = intakeState.intakeOut;
+                    }
+                    if (gamepad1.y) {
+                        intakeLeft.setPosition(.557);
+                        servoTime.reset();
+                        lastBtn = 'y';
+                        intakePos = intakeState.intakeIn;
+                    }
+
+                    break;
+
+                case intakeOut:
+                    if (gamepad1.y) {
+                        intakeLeft.setPosition(.557);
+                        servoTime.reset();
+                        lastBtn = 'y';
+                        intakePos = intakeState.intakeIn;
+                    }
+                    if (gamepad1.b) {
+                        intakeRight.setPosition(.82);
+                        servoTime.reset();
+                        lastBtn = 'b';
+                        intakePos = intakeState.intakeMiddle;
+                    }
+
+                    break;
+
+                default:
+                    intakePos = intakeState.intakeOut;
+            }
+
+            if (servoTime.time() > .75) {
+
+                if (lastBtn == 'b') {
+                    intakeLeft.setPosition(0.25);
+                }
+
+                if (lastBtn == 'y') {
+                    intakeRight.setPosition(0.672);
+                }
+                if (lastBtn == 'x') {
+                    intakeLeft.setPosition(0.15);
+                }
+
+            }
+
+            telemetry.addData("left servo ", intakeLeft.getPosition());
+            telemetry.addData("right servo ", intakeRight.getPosition());
+            telemetry.addData("servo time: ", servoTime.time());
+            telemetry.addData("last btn: ", lastBtn);
+            telemetry.update();
         }
     }
 }
