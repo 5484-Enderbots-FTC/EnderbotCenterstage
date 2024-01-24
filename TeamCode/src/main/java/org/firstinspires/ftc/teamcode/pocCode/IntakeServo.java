@@ -5,7 +5,10 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.hardware.DistanceSensor;
+import com.qualcomm.robotcore.hardware.TouchSensor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 //
 
@@ -19,10 +22,20 @@ public class IntakeServo extends LinearOpMode {
         intakeIn
 
     }
+
+    public enum intakeSpin {
+        intakeReverse,
+        intakeForward,
+        intakeStop
+    }
     intakeState intakePos = intakeState.intakeOut;
+    intakeSpin intakeMtr = intakeSpin.intakeStop;
 
     Servo intakeLeft;
     Servo intakeRight;
+
+    DistanceSensor intakeOne;
+    DistanceSensor intakeTwo;
 
     DcMotorEx mtrI;
     ElapsedTime runtime = new ElapsedTime();
@@ -167,6 +180,22 @@ public class IntakeServo extends LinearOpMode {
                     intakeLeft.setPosition(0.15);
                 }
 
+            }
+
+            switch (intakeMtr) {
+                case intakeForward:
+                    mtrI.setDirection(DcMotorSimple.Direction.REVERSE);
+                    mtrI.setPower(0.45);
+                    break;
+                case intakeReverse:
+                    mtrI.setDirection(DcMotorSimple.Direction.FORWARD);
+                    mtrI.setPower(0.45);
+                    break;
+                case intakeStop:
+                    mtrI.setPower(0);
+                    break;
+                default:
+                    intakeMtr = intakeSpin.intakeStop;
             }
 
             telemetry.addData("left servo ", intakeLeft.getPosition());

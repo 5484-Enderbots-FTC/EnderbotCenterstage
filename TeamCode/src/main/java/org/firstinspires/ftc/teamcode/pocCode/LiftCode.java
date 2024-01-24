@@ -37,8 +37,8 @@ public class LiftCode extends OpMode {
     // used with the dump servo, this will get covered in a bit
     ElapsedTime liftTimer = new ElapsedTime();
 
-    private int LIFT_LOW = 100; // the low encoder position for the lift
-    private int LIFT_HIGH = 150;// the high encoder position for the lift
+    private int LIFT_LOW = 400; // the low encoder position for the lift
+    private int LIFT_HIGH = 500;// the high encoder position for the lift
 
     private double DUMP_TIME = 1.00;
 
@@ -70,12 +70,11 @@ public class LiftCode extends OpMode {
             case LIFT_EXTEND:
                 // check if the lift has finished extending,
                 // otherwise do nothing.
-                if (Math.abs(mtrLift.getCurrentPosition() - LIFT_HIGH) < 10) {
+                if (Math.abs(mtrLift.getCurrentPosition() - LIFT_HIGH) < 20) {
                     // our threshold is within
-                    // 10 encoder ticks of our target.
+                    // 20 encoder ticks of our target.
                     // this is pretty arbitrary, and would have to be
                     // tweaked for each robot.
-
                     // set the lift dump to dump
 
                     liftTimer.reset();
@@ -104,6 +103,7 @@ public class LiftCode extends OpMode {
         // lift state case besides LIFT_START for the cancel action,
         // it's just handled here
         if (gamepad1.y && liftState != LiftState.LIFT_START) {
+            mtrLift.setTargetPosition(LIFT_LOW);
             liftState = LiftState.LIFT_START;
         }
 
