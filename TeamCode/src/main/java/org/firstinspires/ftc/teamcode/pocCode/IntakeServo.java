@@ -33,6 +33,7 @@ public class IntakeServo extends LinearOpMode {
 
     Servo intakeLeft;
     Servo intakeRight;
+    Servo droneLauncher;
 
     DistanceSensor intakeOne;
     DistanceSensor intakeTwo;
@@ -47,6 +48,7 @@ public class IntakeServo extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
         intakeLeft = hardwareMap.get(Servo.class, "leftSvr");
         intakeRight = hardwareMap.get(Servo.class, "rightSvr");
+        droneLauncher = hardwareMap.get(Servo.class, "svrDrone");
 
         mtrI = hardwareMap.get(DcMotorEx.class, "mtrI");
         mtrI.setZeroPowerBehavior(BRAKE);
@@ -56,6 +58,7 @@ public class IntakeServo extends LinearOpMode {
         waitForStart();
         telemetry.addData("left servo ", intakeLeft.getPosition());
         telemetry.addData("right servo ", intakeRight.getPosition());
+        telemetry.addData("drone servo: ", droneLauncher.getPosition());
         telemetry.addData("servo time: ", servoTime.time());
         telemetry.update();
 
@@ -76,11 +79,13 @@ public class IntakeServo extends LinearOpMode {
                 mtrI.setPower(0);
             }
 
-            if (gamepad1.a) {
+            */if (gamepad1.a) {
                 intakeLeft.setPosition(intakeLeft.getPosition() - (gamepad1.left_stick_y * 0.001));
                 intakeRight.setPosition(intakeRight.getPosition() - (gamepad1.right_stick_y * 0.001));
+                droneLauncher.setPosition(intakeRight.getPosition() - (gamepad1.left_stick_x * 0.001));
             }
             //middle pos
+            /*
             if (gamepad1.b) {
                 intakeRight.setPosition(.82);
                 servoTime.reset();
