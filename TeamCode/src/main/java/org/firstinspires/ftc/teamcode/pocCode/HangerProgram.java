@@ -28,14 +28,26 @@ public class HangerProgram extends LinearOpMode {
             mtrHang.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
             mtrHang.setDirection(DcMotor.Direction.REVERSE);
 
-            if (gamepad2.a) { //&& !limitSwitch.isPressed() && runtime.time() > 60) { <- comment back in when ready
+            while (gamepad1.a /*&& elapsedTime.time() > 60)*/) {
                 mtrHang.setDirection(DcMotorSimple.Direction.REVERSE);
                 mtrHang.setPower(0.3);
 
-            } else if (gamepad2.b) {//&& limitSwitch.isPressed() && runtime.time() > 60) { <- comment back in when ready
+                if (!gamepad1.a) {
+                    mtrHang.setPower(0);
+                    break;
+                }
+
+            while  (gamepad1.b) {
                 mtrHang.setDirection(DcMotor.Direction.FORWARD);
-                mtrHang.setZeroPowerBehavior(BRAKE);
-                mtrHang.setPower(0.5);
+                mtrHang.setPower(0.5 * (1 - (gamepad1.right_trigger * 0.6)));
+
+                if (!gamepad1.b) {
+                    mtrHang.setPower(0);
+                    break;
+                }
+
+            }
+
             }
 
         }
