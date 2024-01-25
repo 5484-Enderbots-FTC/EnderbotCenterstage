@@ -6,6 +6,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.TouchSensor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
@@ -16,40 +17,48 @@ public class HangerProgram extends LinearOpMode {
     DcMotor mtrHang;
     TouchSensor limitSwitch;
 
+    Servo svrHang;
+
     ElapsedTime elapsedTime;
 
     @Override
     public void runOpMode() throws InterruptedException {
 
+        mtrHang = hardwareMap.get(DcMotor.class, "mtrHang");
+        mtrHang.setZeroPowerBehavior(BRAKE);
+        mtrHang.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        mtrHang.setDirection(DcMotor.Direction.REVERSE);
+
+        svrHang = hardwareMap.get(Servo.class, "svrHang");
+        svrHang.setPosition(0.53);
+
+        waitForStart();
+
         while (opModeIsActive()) {
+            while (!isStopRequested()) {
+//down
+                if (gamepad1.a /*&& elapsedTime.time() > 60)*/) {
+                    mtrHang.setDirection(DcMotorSimple.Direction.REVERSE);
+                    mtrHang.setPower(1.0);
+                }
+//up
+                if (gamepad1.b) {
+                    mtrHang.setDirection(DcMotor.Direction.FORWARD);
+                    mtrHang.setPower(0.7);
 
-            mtrHang = hardwareMap.get(DcMotor.class, "mtrHang");
-            mtrHang.setZeroPowerBehavior(BRAKE);
-            mtrHang.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-            mtrHang.setDirection(DcMotor.Direction.REVERSE);
-
-            while (gamepad1.a /*&& elapsedTime.time() > 60)*/) {
-                mtrHang.setDirection(DcMotorSimple.Direction.REVERSE);
-                mtrHang.setPower(0.3);
-
-                if (!gamepad1.a) {
-                    mtrHang.setPower(0);
-                    break;
                 }
 
-            while  (gamepad1.b) {
-                mtrHang.setDirection(DcMotor.Direction.FORWARD);
-                mtrHang.setPower(0.5 * (1 - (gamepad1.right_trigger * 0.6)));
-
-                if (!gamepad1.b) {
+                if (!gamepad1.a || !gamepad1.b) {
                     mtrHang.setPower(0);
-                    break;
                 }
 
-            }
+                if (gamepad1.x) {
+                    svrHang.setPosition(.9);
+                }
 
+                telemetry.addData("Servo Pos: ", svrHang.getPosition());
+                telemetry.update();
             }
-
         }
     }
 }
