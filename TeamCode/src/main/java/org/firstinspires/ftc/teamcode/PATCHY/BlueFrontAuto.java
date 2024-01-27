@@ -108,10 +108,10 @@ public class BlueFrontAuto extends LinearOpMode {
                 .lineTo(new Vector2d(-40.00, 30.00))
                 .turn(Math.toRadians(-90))
                 .addDisplacementMarker(() -> {
-                    mtrI.setPower(0.5);
+                    mtrI.setPower(1.0);
 
                 })
-                .waitSeconds(.5)
+                .waitSeconds(1.0)
                 .addDisplacementMarker(() -> {
                     mtrI.setPower(0);
 

@@ -123,10 +123,10 @@ public class RedBackAuto extends LinearOpMode {
         TrajectorySequence rbCenterProp1 = drive.trajectorySequenceBuilder(rbTraj1.end())
                 .lineTo(new Vector2d(12.00, -30.00))
                 .addDisplacementMarker(() -> {
-                    mtrI.setPower(0.5);
+                    mtrI.setPower(1.0);
 
                 })
-                .waitSeconds(.5)
+                .waitSeconds(1.0)
                 .build();
         TrajectorySequence rbCenterProp2 = drive.trajectorySequenceBuilder(rbCenterProp1.end())
                 .addDisplacementMarker(() -> {

@@ -127,10 +127,10 @@ public class RedFrontAuto extends LinearOpMode {
         TrajectorySequence rfCenterTraj1 = drive.trajectorySequenceBuilder(redfronttraj1.end())
                 .lineTo(new Vector2d(-36.00, -30.00))
                 .addDisplacementMarker(() -> {
-                    mtrI.setPower(0.5);
+                    mtrI.setPower(1.0);
 
                 })
-                .waitSeconds(.5)
+                .waitSeconds(1.0)
                 .addDisplacementMarker(() -> {
                     mtrI.setPower(0);
 

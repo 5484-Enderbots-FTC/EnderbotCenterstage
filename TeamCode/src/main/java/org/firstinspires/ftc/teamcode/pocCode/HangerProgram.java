@@ -39,7 +39,7 @@ public class HangerProgram extends LinearOpMode {
 //down
                 if (gamepad1.a /*&& elapsedTime.time() > 60)*/) {
                     mtrHang.setDirection(DcMotorSimple.Direction.REVERSE);
-                    mtrHang.setPower(1.0);
+                    mtrHang.setPower(0.9);
                 }
 //up
                 if (gamepad1.b) {
@@ -48,7 +48,7 @@ public class HangerProgram extends LinearOpMode {
 
                 }
 
-                if (!gamepad1.a || !gamepad1.b) {
+               if (!gamepad1.a && !gamepad1.b) {
                     mtrHang.setPower(0);
                 }
 

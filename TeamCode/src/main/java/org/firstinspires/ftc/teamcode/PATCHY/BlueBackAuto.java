@@ -103,10 +103,10 @@ public class BlueBackAuto extends LinearOpMode {
         TrajectorySequence blueCenterProp1 = drive.trajectorySequenceBuilder(bbTraj1.end())
             .lineTo(new Vector2d(12.00, 30.00))
             .addDisplacementMarker(() -> {
-                mtrI.setPower(.5);
+                mtrI.setPower(1.0);
 
             })
-                .waitSeconds(.5)
+                .waitSeconds(1)
             .build();
         TrajectorySequence blueCenterProp2 = drive.trajectorySequenceBuilder(blueCenterProp1.end())
                 .addDisplacementMarker(() -> {

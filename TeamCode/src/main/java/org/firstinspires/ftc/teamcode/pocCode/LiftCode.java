@@ -41,6 +41,7 @@ public class LiftCode extends LinearOpMode {
     Servo droneLauncher;
     int state = 0;
     int Lift_State = 0;
+    boolean gripperPressed;
 
     // the dump servo
     // used with the dump servo, this will get covered in a bit
@@ -73,9 +74,11 @@ public class LiftCode extends LinearOpMode {
 
         joggingup = false;
         joggingdown = false;
+        gripperPressed = false;
         mtrLift.setVelocity(0);
         mtrLift2.setVelocity(0);
         droneLauncher.setPosition(0.0);
+        gripper.setPosition(0.37);
 
         waitForStart();
 
@@ -229,11 +232,22 @@ public class LiftCode extends LinearOpMode {
             telemetry.update();
 
             if (!gamepad1.a) {
-                armSwing.setPosition(armSwing.getPosition() - (gamepad1.left_stick_y * .001));
+                armSwing.setPosition(armSwing.getPosition() - (gamepad1.left_stick_y * .01));
                 gripper.setPosition(gripper.getPosition() - (gamepad1.right_stick_y * .001));
             }
             telemetry.update();
 
+            if (gamepad2.left_bumper && !gripperPressed) {
+                if (!gamepad2.left_bumper) {
+                    gripper.setPosition(0.57);
+                    gripperPressed = true;
+                }
+            } else if (gamepad2.left_bumper && gripperPressed){
+                if (!gamepad2.left_bumper) {
+                    gripper.setPosition(.32);
+                    gripperPressed = false;
+                }
+            }
 
         }
     }
