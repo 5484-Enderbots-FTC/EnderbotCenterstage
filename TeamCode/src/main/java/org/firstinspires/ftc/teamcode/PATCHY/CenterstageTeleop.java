@@ -12,9 +12,11 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 //import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.Servo;
 //import com.qualcomm.robotcore.hardware.TouchSensor;
+import com.qualcomm.robotcore.hardware.TouchSensor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.RoadrunnerUtilStuff.drive.SampleMecanumDrive;
+import org.firstinspires.ftc.teamcode.pocCode.IntakeServo;
 //
 
 
@@ -42,6 +44,24 @@ public class CenterstageTeleop extends LinearOpMode {
     //servos when we get to it
     Servo intakeLeft;
     Servo intakeRight;
+    Servo svrHang;
+
+    //copy and paste from LiftCode.java
+    public DcMotorEx mtrLift;
+    public DcMotorEx mtrLift2;
+    Servo armSwing;
+    Servo gripper;
+    TouchSensor bottomLimit;
+    Servo droneLauncher;
+
+    //couple variables controlling our lift
+    boolean joggingup;
+    boolean joggingdown;
+
+    ElapsedTime servoTime = new ElapsedTime();
+    IntakeServo.intakeState intakePos = IntakeServo.intakeState.intakeOut;
+
+
     @Override
     public void runOpMode() throws InterruptedException {
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
@@ -51,7 +71,6 @@ public class CenterstageTeleop extends LinearOpMode {
         telemetry.update();
 
         // motors
-
         mtrBL = hardwareMap.get(DcMotor.class, "mtrBL");
         mtrBL.setZeroPowerBehavior(BRAKE);
         mtrBL.setDirection(DcMotor.Direction.FORWARD);
@@ -82,9 +101,37 @@ public class CenterstageTeleop extends LinearOpMode {
         mtrHang.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         mtrHang.setDirection(DcMotor.Direction.FORWARD);
 
+        droneLauncher = hardwareMap.get(Servo.class, "svrDrone");
+
+        // hardware initialization code goes here
+        // this needs to correspond with the configuration used
+        mtrLift = hardwareMap.get(DcMotorEx.class, "mtrLift1");
+        mtrLift.setDirection(DcMotorSimple.Direction.REVERSE);
+        mtrLift.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+        mtrLift2 = hardwareMap.get(DcMotorEx.class, "mtrLift2");
+        mtrLift2.setDirection(DcMotorSimple.Direction.FORWARD);
+        mtrLift2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+        gripper = hardwareMap.get(Servo.class, "svrGrip");
+        armSwing = hardwareMap.get(Servo.class, "svrSwing");
+
+        bottomLimit = hardwareMap.get(TouchSensor.class, "BL Lift");
+
+        joggingup = false;
+        joggingdown = false;
+        mtrLift.setVelocity(0);
+        mtrLift2.setVelocity(0);
+        droneLauncher.setPosition(0.0);
+
         //servos
         intakeLeft = hardwareMap.get(Servo.class, "leftSvr");
         intakeRight = hardwareMap.get(Servo.class, "rightSvr");
+        svrHang = hardwareMap.get(Servo.class, "svrHang");
+        svrHang.setPosition(0.53);
+
+        intakeRight.setPosition(0.85);
+        intakeLeft.setPosition(0.15);
 
 
         //start
@@ -106,63 +153,200 @@ public class CenterstageTeleop extends LinearOpMode {
             // adding gamepad two controls here fellas
             /*
              Controls:
+                Drone Launcher:
+                    Left Bumper = Launch Drone
                 Intake:
-                    A = Take in pixels
-                    B = Shoot them out
-                    X = Kill Intake power
-                    Right Bumper = Pull servo arms back in
+                    Dpad Left = Intake
+                    Dpad Right = Outtake
+                    B = Kill Power
+                    Arm Positions:
+                        Y = Intake arms out
+                        X = Intake arms middle
+                        A = Intake arms in
                 Hanger:
-                    DPad.Up = Extend hanger
-                    Dpad.Down = Retract hanger
-                    Dpad.Right = Kill Hanger power
+                    Gamepad 1:
+                        X = Release the lift
+                    Gamepad 2:
+                        Dpad Up = Extend hanger
+                        Dpad Down = Retract Hanger
+                        Neither = Kill Power
+                Lift:
+                    Right Trigger = Lift move up
+                    Left Trigger = Lift move down
+                Subcontrols:
+                    Left stick = Move arm
+                    Right Bumper = Open gripper
+                    !Right Bumper = Close gripper
              */
 
+            //hanger servo
+            if (gamepad1.x) {
+                svrHang.setPosition(.9);
+            }
+
             //intake
-            if (gamepad2.a) {
+            if (gamepad2.dpad_left) {
                 mtrI.setDirection(DcMotor.Direction.REVERSE);
                 mtrI.setPower(0.75);
             }
-            if (gamepad2.b) {
+            if (gamepad2.dpad_right) {
                 mtrI.setDirection(DcMotor.Direction.FORWARD);
                 mtrI.setPower(0.75);
             }
-            if (gamepad2.x) {
+            if (gamepad2.b) {
                 mtrI.setPower(0);
             }
-            //intake servos
+
+            switch (intakePos) {
+                case intakeIn:
+                    if (gamepad2.y) {
+                        intakeRight.setPosition(0.85);
+                        intakePos = IntakeServo.intakeState.intakeOut;
+                    }
+                    if (gamepad2.x) {
+                        intakeRight.setPosition(.82);
+                        servoTime.reset();
+                        intakePos = IntakeServo.intakeState.intakeMiddle;
+                    }
+
+                    break;
+
+                case intakeMiddle:
+                    if (gamepad2.y) {
+                        intakeRight.setPosition(0.85);
+                        intakePos = IntakeServo.intakeState.intakeOut;
+                    }
+                    if (gamepad2.a) {
+                        intakeLeft.setPosition(.557);
+                        servoTime.reset();
+                        intakePos = IntakeServo.intakeState.intakeIn;
+                    }
+
+                    break;
+
+                case intakeOut:
+                    if (gamepad2.a) {
+                        intakeLeft.setPosition(.557);
+                        servoTime.reset();
+                        intakePos = IntakeServo.intakeState.intakeIn;
+                    }
+                    if (gamepad2.x) {
+                        intakeRight.setPosition(.82);
+                        servoTime.reset();
+                        intakePos = IntakeServo.intakeState.intakeMiddle;
+                    }
+
+                    break;
+
+                default:
+                    intakePos = IntakeServo.intakeState.intakeOut;
+            }
+
+            //middle pos
             /*
-            if (gamepad2.right_bumper) {
-
-             intakeRight.setPosition(0.5);
-             servoTime.reset();
-
-                if (servoTime.time() > 0.5) {
-                    intakeLeft.setPosition(0.0);
-                }
-
-             }  else if (!gamepad2.right_bumper){
-
-                intakeLeft.setPosition(0.5);
+            if (gamepad1.b) {
+                intakeRight.setPosition(.82);
                 servoTime.reset();
+                lastBtn = 'b';
 
-                 if (servoTime.time() > 0.5) {
-                    intakeRight.setPosition(0.0);
-                 }
+            }
+            //inside pos
+            if (gamepad1.y) {
+                intakeLeft.setPosition(.557);
+                servoTime.reset();
+                lastBtn = 'y';
 
-             }
-             */
+            }
+
+            if (gamepad1.x) {
+                intakeRight.setPosition(0.85);
+                lastBtn = 'x';
+            }
+
+            //after x seconds have passed, what button was last pressed? then set position.
+           if (servoTime.time() > .75) {
+
+               if (lastBtn == 'b') {
+                   intakeLeft.setPosition(0.25);
+               }
+
+               if (lastBtn == 'y') {
+                   intakeRight.setPosition(0.672);
+               }
+               if (lastBtn == 'x') {
+                   intakeLeft.setPosition(0.15);
+               }
+
+           } */
+
             //hanging
-            if (gamepad2.dpad_up) { //&& !limitSwitch.isPressed() && runtime.time() > 60) { <- comment back in when ready
+            if (gamepad2.dpad_down /*&& elapsedTime.time() > 60)*/) {
                 mtrHang.setDirection(DcMotorSimple.Direction.REVERSE);
-                mtrHang.setPower(0.3);
-
-            } else if (gamepad2.dpad_down) {//&& limitSwitch.isPressed() && runtime.time() > 60) { <- comment back in when ready
+                mtrHang.setPower(1.0);
+            }
+//up
+            if (gamepad2.dpad_up) {
                 mtrHang.setDirection(DcMotor.Direction.FORWARD);
-                mtrHang.setZeroPowerBehavior(BRAKE);
-                mtrHang.setPower(0.5);
-            } else if (gamepad2.dpad_right) {
+                mtrHang.setPower(0.7);
+
+            }
+
+            if (!gamepad2.dpad_down || !gamepad2.dpad_up) {
                 mtrHang.setPower(0);
             }
+
+            //slides
+
+            if (gamepad2.right_trigger >= .9) {
+                mtrLift.setDirection(DcMotorSimple.Direction.REVERSE);
+                mtrLift2.setDirection(DcMotorSimple.Direction.FORWARD);
+                mtrLift.setVelocity(500);
+                mtrLift2.setVelocity(500);
+                joggingup = true;
+
+            }
+
+
+            if (gamepad2.right_trigger == 0 && joggingup) {
+                mtrLift.setVelocity(0);
+                mtrLift2.setVelocity(0);
+                joggingup = false;
+            } else if (gamepad2.left_trigger >= .9 && !bottomLimit.isPressed()) {
+                mtrLift.setDirection(DcMotorSimple.Direction.FORWARD);
+                mtrLift2.setDirection(DcMotorSimple.Direction.REVERSE);
+                mtrLift.setVelocity(500);
+                mtrLift2.setVelocity(500);
+                joggingdown = true;
+
+            }
+
+            if (joggingdown && bottomLimit.isPressed()) {
+                mtrLift.setVelocity(0);
+                mtrLift2.setVelocity(0);
+                joggingdown = false;
+            }
+
+
+            if (gamepad2.left_trigger == 0 && joggingdown) {
+                mtrLift.setVelocity(0);
+                mtrLift2.setVelocity(0);
+                joggingdown = false;
+            }
+
+            //drone launcher
+            if (gamepad2.left_bumper) {
+                droneLauncher.setPosition(.15);
+            }
+
+            //when we get there
+           /* if (gamepad2.right_bumper) {
+                gripper.setPosition(0.5);
+            } else if (!gamepad2.right_bumper) {
+                gripper.setPosition(0.5);
+            }*/
+
+            armSwing.setPosition(armSwing.getPosition() - (gamepad2.left_stick_y * .001));
+
 
             Pose2d poseEstimate = drive.getPoseEstimate();
             telemetry.addData("x:", poseEstimate.getX());

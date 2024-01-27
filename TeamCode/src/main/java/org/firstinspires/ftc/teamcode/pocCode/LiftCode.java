@@ -193,9 +193,7 @@ public class LiftCode extends LinearOpMode {
                 mtrLift.setVelocity(0);
                 mtrLift2.setVelocity(0);
                 joggingup = false;
-            }
-
-            if (gamepad1.left_trigger >= .9 && !bottomLimit.isPressed()) {
+            } else if (gamepad1.left_trigger >= .9 && !bottomLimit.isPressed()) {
                 mtrLift.setDirection(DcMotorSimple.Direction.FORWARD);
                 mtrLift2.setDirection(DcMotorSimple.Direction.REVERSE);
                 mtrLift.setVelocity(500);
@@ -221,9 +219,6 @@ public class LiftCode extends LinearOpMode {
                 droneLauncher.setPosition(.15);
             }
 
-            // mecanum drive code goes here
-            // But since none of the stuff in the switch case stops
-            // the robot, this will always run!
             telemetry.addData("Top motor encoder: ", mtrLift.getCurrentPosition());
             //telemetry.addData("Lcase: ", Lift_State);
             telemetry.addData("Jogging?: ", joggingup);
@@ -233,37 +228,6 @@ public class LiftCode extends LinearOpMode {
             telemetry.addData("Limit Switch: ", bottomLimit.isPressed());
             telemetry.update();
 
-            /*if (gamepad1.b) {
-                mtrLift.setDirection(DcMotorSimple.Direction.REVERSE);
-                mtrLift2.setDirection(DcMotorSimple.Direction.FORWARD);
-                mtrLift.setTargetPosition(LIFT_HIGH);
-                mtrLift.setVelocity(2000);
-                mtrLift2.setVelocity(2000);
-
-            }
-
-            if (gamepad1.x){
-                mtrLift.setDirection(DcMotorSimple.Direction.FORWARD);
-                mtrLift2.setDirection(DcMotorSimple.Direction.REVERSE);
-                mtrLift.setTargetPosition(LIFT_LOW);
-                mtrLift2.setTargetPosition(LIFT_LOW);
-                mtrLift.setVelocity(2000);
-                mtrLift2.setVelocity(2000);
-            }
-
-            if (mtrLift.getCurrentPosition() >= LIFT_HIGH){
-                mtrLift2.setVelocity(0);
-            }
-            if (mtrLift.getCurrentPosition() <= LIFT_LOW){
-                mtrLift2.setVelocity(0);
-
-            }
-
-            if (gamepad1.y) {
-                mtrLift.setVelocity(0);
-                mtrLift2.setVelocity(0);
-            }
-            */
             if (!gamepad1.a) {
                 armSwing.setPosition(armSwing.getPosition() - (gamepad1.left_stick_y * .001));
                 gripper.setPosition(gripper.getPosition() - (gamepad1.right_stick_y * .001));
