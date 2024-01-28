@@ -63,11 +63,12 @@ public class CenterstageTeleop extends LinearOpMode {
     IntakeServo.intakeState intakePos = IntakeServo.intakeState.intakeOut;
 
 
+    Servo DroneShooter;
     @Override
     public void runOpMode() throws InterruptedException {
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
         telemetry.addData("Status", "Initialized");
-        telemetry.addLine("Have fun!");
+        telemetry.addLine("Really Chat :|");
         telemetry.addLine("Get your TeleOp! Hot and fresh!");
         telemetry.update();
 
@@ -135,6 +136,7 @@ public class CenterstageTeleop extends LinearOpMode {
         intakeRight.setPosition(0.85);
         intakeLeft.setPosition(0.15);
 
+        DroneShooter = hardwareMap.get(Servo.class, "Shooter");
 
         //start
         waitForStart();
