@@ -309,8 +309,8 @@ public class CenterstageTeleop extends LinearOpMode {
             if (gamepad2.right_trigger >= .9) {
                 mtrLift.setDirection(DcMotorSimple.Direction.REVERSE);
                 mtrLift2.setDirection(DcMotorSimple.Direction.FORWARD);
-                mtrLift.setVelocity(500);
-                mtrLift2.setVelocity(500);
+                mtrLift.setVelocity(700);
+                mtrLift2.setVelocity(700);
                 joggingup = true;
 
             }
@@ -322,8 +322,8 @@ public class CenterstageTeleop extends LinearOpMode {
             } else if (gamepad2.left_trigger >= .9 && !bottomLimit.isPressed()) {
                 mtrLift.setDirection(DcMotorSimple.Direction.FORWARD);
                 mtrLift2.setDirection(DcMotorSimple.Direction.REVERSE);
-                mtrLift.setVelocity(500);
-                mtrLift2.setVelocity(500);
+                mtrLift.setVelocity(700);
+                mtrLift2.setVelocity(700);
                 joggingdown = true;
 
             }
