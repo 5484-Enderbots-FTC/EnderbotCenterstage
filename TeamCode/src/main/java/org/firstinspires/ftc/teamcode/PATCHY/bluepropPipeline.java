@@ -17,7 +17,8 @@ public class bluepropPipeline implements VisionProcessor {
     Mat highMat = new Mat();
     Mat lowMat = new Mat();
     Mat finalMat = new Mat();
-    double blueThreshold = 0.1;
+    double blueThreshold = 0.01;
+    double rightboxBlueThreshold = 0.1;
 
     String outStr = "left";
 
@@ -38,7 +39,9 @@ public class bluepropPipeline implements VisionProcessor {
     public Object processFrame(Mat frame, long captureTimeNanos) {
         Imgproc.cvtColor(frame, testMat, Imgproc.COLOR_RGB2HSV);
 
-        Scalar blueLower = new Scalar(90, 80, 125); //Wraps around Color Wheel
+        //87 and 98 do NOT work
+        //90 and 105 DID not work for right, worked for others
+        Scalar blueLower = new Scalar(85, 70, 90); //Wraps around Color Wheel
         Scalar blueHigher = new Scalar(105, 255, 255);
 
         Core.inRange(testMat, blueLower, blueHigher, finalMat);
@@ -55,9 +58,11 @@ public class bluepropPipeline implements VisionProcessor {
         double averagedLeftBox = leftBox / LEFT_RECTANGLE.area() / 255;
         double averagedRightBox = rightBox / RIGHT_RECTANGLE.area() / 255;
 
-        if (averagedLeftBox > blueThreshold){
+        if (averagedLeftBox > blueThreshold && averagedRightBox > blueThreshold){
+           outStr = "center";
+        } else if (averagedLeftBox > averagedRightBox){
             outStr = "left";
-        } else if(averagedRightBox > blueThreshold){
+        } else if(averagedRightBox > averagedLeftBox){
             outStr = "right";
         }else {
             outStr = "center";

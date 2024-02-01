@@ -53,6 +53,7 @@ public class BlueFrontAuto extends LinearOpMode {
             telemetry.update();
         }
 
+//prop position for autonomous, auto = prop position
         auto = bluepropPipeline.getPropPosition();
         telemetry.addData("blue Prop Position", bluepropPipeline.getPropPosition());
         telemetry.update();
