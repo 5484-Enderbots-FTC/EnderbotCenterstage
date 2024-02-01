@@ -17,7 +17,8 @@ public class redpropPipeline implements VisionProcessor {
     Mat highMat = new Mat();
     Mat lowMat = new Mat();
     Mat finalMat = new Mat();
-    double redThreshold = 0.05;
+    double blueThreshold = 0.01;
+    double rightboxBlueThreshold = 0.1;
 
     String outStr = "left";
 
@@ -27,7 +28,7 @@ public class redpropPipeline implements VisionProcessor {
     );
     static final Rect RIGHT_RECTANGLE = new Rect(
             new Point(1280-640,0),
-            new Point(1280,720)
+            new Point(1279,720)
     );
     @Override
     public void init(int width, int height, CameraCalibration calibration) {
@@ -38,6 +39,8 @@ public class redpropPipeline implements VisionProcessor {
     public Object processFrame(Mat frame, long captureTimeNanos) {
         Imgproc.cvtColor(frame, testMat, Imgproc.COLOR_RGB2HSV);
 
+        //87 and 98 do NOT work
+        //90 and 105 DID not work for right, worked for others
         Scalar lowHSVRedLower = new Scalar(0, 170, 130);  //Beginning of Color Wheel
         Scalar lowHSVRedUpper = new Scalar(7, 255, 255);
 
@@ -55,21 +58,17 @@ public class redpropPipeline implements VisionProcessor {
         lowMat.release();
         highMat.release();
 
-        //testMat.release();
-        //lowMat.release();
-        //highMat.release();
-
-        //Log.e("Testtesttest", String.format("width=%d, height=%d", finalMat.width(), finalMat.height()));
-
         double leftBox = Core.sumElems(finalMat.submat(LEFT_RECTANGLE)).val[0];
         double rightBox = Core.sumElems(finalMat.submat(RIGHT_RECTANGLE)).val[0];
 
         double averagedLeftBox = leftBox / LEFT_RECTANGLE.area() / 255;
         double averagedRightBox = rightBox / RIGHT_RECTANGLE.area() / 255;
 
-        if (averagedLeftBox > redThreshold){
+        if (averagedLeftBox > blueThreshold && averagedRightBox > blueThreshold){
+            outStr = "center";
+        } else if (averagedLeftBox > averagedRightBox){
             outStr = "left";
-        } else if(averagedRightBox > redThreshold){
+        } else if(averagedRightBox > averagedLeftBox){
             outStr = "right";
         }else {
             outStr = "center";
@@ -92,3 +91,4 @@ public class redpropPipeline implements VisionProcessor {
         return outStr;
     }
 }
+
