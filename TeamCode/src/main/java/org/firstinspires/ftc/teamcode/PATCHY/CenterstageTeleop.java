@@ -16,6 +16,7 @@ import com.qualcomm.robotcore.hardware.TouchSensor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.RoadrunnerUtilStuff.drive.SampleMecanumDrive;
+import org.firstinspires.ftc.teamcode.hardwareCS;
 import org.firstinspires.ftc.teamcode.pocCode.IntakeServo;
 //
 
@@ -29,12 +30,12 @@ public class CenterstageTeleop extends LinearOpMode {
     //ElapsedTime servoTime = new ElapsedTime();
 
     //motors
-    DcMotor mtrBL;
-    DcMotor mtrBR;
-    DcMotor mtrFL;
-    DcMotor mtrFR;
-    DcMotor mtrI;
-    DcMotor mtrHang;
+    public DcMotor mtrBL;
+    public DcMotor mtrBR;
+    public DcMotor mtrFL;
+    public DcMotor mtrFR;
+    public DcMotor mtrI;
+    public DcMotor mtrHang;
 
     //limit switch
     //TouchSensor limitSwitch;
@@ -42,17 +43,18 @@ public class CenterstageTeleop extends LinearOpMode {
     //time
 
     //servos when we get to it
-    Servo intakeLeft;
-    Servo intakeRight;
-    Servo svrHang;
+    public Servo intakeLeft;
+    public Servo intakeRight;
+    public Servo svrHang;
 
     //copy and paste from LiftCode.java
     public DcMotorEx mtrLift;
     public DcMotorEx mtrLift2;
-    Servo armSwing;
-    Servo gripper;
-    TouchSensor bottomLimit;
-    Servo droneLauncher;
+    public Servo armSwing;
+    public Servo gripper;
+    public TouchSensor bottomLimit;
+    public Servo droneLauncher;
+    public Servo DroneShooter;
 
     //couple variables controlling our lift
     boolean joggingup;
@@ -63,7 +65,6 @@ public class CenterstageTeleop extends LinearOpMode {
     IntakeServo.intakeState intakePos = IntakeServo.intakeState.intakeOut;
 
 
-    Servo DroneShooter;
     @Override
     public void runOpMode() throws InterruptedException {
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
@@ -71,9 +72,8 @@ public class CenterstageTeleop extends LinearOpMode {
         telemetry.addLine("Really Chat :|");
         telemetry.addLine("Get your TeleOp! Hot and fresh!");
         telemetry.update();
-
         // motors
-        mtrBL = hardwareMap.get(DcMotor.class, "mtrBL");
+        /*mtrBL = hardwareMap.get(DcMotor.class, "mtrBL");
         mtrBL.setZeroPowerBehavior(BRAKE);
         mtrBL.setDirection(DcMotor.Direction.FORWARD);
         mtrBL.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
@@ -133,10 +133,13 @@ public class CenterstageTeleop extends LinearOpMode {
         svrHang = hardwareMap.get(Servo.class, "svrHang");
         svrHang.setPosition(0.53);
 
-        intakeRight.setPosition(0.85);
-        intakeLeft.setPosition(0.15);
+        intakeRight.setPosition(1.0);
+        intakeLeft.setPosition(0.027);
 
-        DroneShooter = hardwareMap.get(Servo.class, "Shooter");
+        DroneShooter = hardwareMap.get(Servo.class, "svrDrone"); */
+
+        hardwareCS robot = new hardwareCS();
+        robot.inithardware(hardwareMap);
 
         //start
         waitForStart();
@@ -148,9 +151,9 @@ public class CenterstageTeleop extends LinearOpMode {
 
             drive.setWeightedDrivePower(
                     new Pose2d(
-                            gamepad1.left_stick_y * (1 - (gamepad1.right_trigger * 0.6)),
-                            gamepad1.left_stick_x * .8 * (1 - (gamepad1.right_trigger * 0.6)),
-                            gamepad1.right_stick_x * (1 - (gamepad1.right_trigger * 0.6))
+                            gamepad1.left_stick_y * (1 - (gamepad1.right_trigger * 0.7)),
+                            gamepad1.left_stick_x * (1 - (gamepad1.right_trigger * 0.7)),
+                            gamepad1.right_stick_x * (1 - (gamepad1.right_trigger * 0.7))
                     )
             );
 
@@ -309,8 +312,8 @@ public class CenterstageTeleop extends LinearOpMode {
             if (gamepad2.right_trigger >= .9) {
                 mtrLift.setDirection(DcMotorSimple.Direction.REVERSE);
                 mtrLift2.setDirection(DcMotorSimple.Direction.FORWARD);
-                mtrLift.setVelocity(500);
-                mtrLift2.setVelocity(500);
+                mtrLift.setVelocity(1000);
+                mtrLift2.setVelocity(1000);
                 joggingup = true;
 
             }
@@ -322,8 +325,8 @@ public class CenterstageTeleop extends LinearOpMode {
             } else if (gamepad2.left_trigger >= .9 && !bottomLimit.isPressed()) {
                 mtrLift.setDirection(DcMotorSimple.Direction.FORWARD);
                 mtrLift2.setDirection(DcMotorSimple.Direction.REVERSE);
-                mtrLift.setVelocity(500);
-                mtrLift2.setVelocity(500);
+                mtrLift.setVelocity(1000);
+                mtrLift2.setVelocity(1000);
                 joggingdown = true;
 
             }
