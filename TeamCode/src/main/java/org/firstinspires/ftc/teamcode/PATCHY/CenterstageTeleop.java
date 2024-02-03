@@ -314,6 +314,8 @@ public class CenterstageTeleop extends LinearOpMode {
                 mtrLift2.setDirection(DcMotorSimple.Direction.FORWARD);
                 mtrLift.setVelocity(1000);
                 mtrLift2.setVelocity(1000);
+                mtrLift.setVelocity(700);
+                mtrLift2.setVelocity(700);
                 joggingup = true;
 
             }
@@ -327,6 +329,8 @@ public class CenterstageTeleop extends LinearOpMode {
                 mtrLift2.setDirection(DcMotorSimple.Direction.REVERSE);
                 mtrLift.setVelocity(1000);
                 mtrLift2.setVelocity(1000);
+                mtrLift.setVelocity(700);
+                mtrLift2.setVelocity(700);
                 joggingdown = true;
 
             }

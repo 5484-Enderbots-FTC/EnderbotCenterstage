@@ -185,8 +185,8 @@ public class LiftCode extends LinearOpMode {
             if (gamepad1.right_trigger >= .9) {
                 mtrLift.setDirection(DcMotorSimple.Direction.REVERSE);
                 mtrLift2.setDirection(DcMotorSimple.Direction.FORWARD);
-                mtrLift.setVelocity(500);
-                mtrLift2.setVelocity(500);
+                mtrLift.setVelocity(700);
+                mtrLift2.setVelocity(700);
                 joggingup = true;
 
             }
@@ -199,8 +199,8 @@ public class LiftCode extends LinearOpMode {
             } else if (gamepad1.left_trigger >= .9 && !bottomLimit.isPressed()) {
                 mtrLift.setDirection(DcMotorSimple.Direction.FORWARD);
                 mtrLift2.setDirection(DcMotorSimple.Direction.REVERSE);
-                mtrLift.setVelocity(500);
-                mtrLift2.setVelocity(500);
+                mtrLift.setVelocity(700);
+                mtrLift2.setVelocity(700);
                 joggingdown = true;
 
             }
