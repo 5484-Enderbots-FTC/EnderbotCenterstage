@@ -64,6 +64,14 @@ public class CenterstageTeleop extends LinearOpMode {
     ElapsedTime servoTime = new ElapsedTime();
     IntakeServo.intakeState intakePos = IntakeServo.intakeState.intakeOut;
 
+    public double gamepadlsy;
+
+    public double gamepadlsx;
+
+    public int n = 0;
+
+    public int m = 0;
+
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -148,11 +156,39 @@ public class CenterstageTeleop extends LinearOpMode {
         while (opModeIsActive()) {
 
              //GAMEPAD 1 CONTROLS
+            //if statements controlling the gamepadlsy variable, allows us to ramp us and accel along the robot's x
+            if (gamepad1.left_stick_y > .1) {
+                gamepadlsy = .1 + (.1 * n);
+                n += 1;
+
+                if (n >= 9) {
+                    n = 9;
+                }
+
+
+            } else if (gamepadlsy < .1) {
+                n = 0;
+                gamepadlsy = 0;
+            }
+//if statements controlling the gamepadlsx variable, allows us to ramp us and accel along the robot's y
+            if (gamepad1.left_stick_x > .1) {
+                gamepadlsx = .1 + (.1 * n);
+                m += 1;
+
+                if (m >= 9) {
+                    m = 9;
+                }
+
+
+            } else if (gamepadlsx < .1) {
+                m = 0;
+                gamepadlsx = 0;
+            }
 
             drive.setWeightedDrivePower(
                     new Pose2d(
-                            gamepad1.left_stick_y * (1 - (gamepad1.right_trigger * 0.7)),
-                            gamepad1.left_stick_x * (1 - (gamepad1.right_trigger * 0.7)),
+                            gamepadlsy * (1 - (gamepad1.right_trigger * 0.7)),
+                            gamepadlsx * (1 - (gamepad1.right_trigger * 0.7)),
                             gamepad1.right_stick_x * (1 - (gamepad1.right_trigger * 0.7))
                     )
             );
@@ -314,8 +350,6 @@ public class CenterstageTeleop extends LinearOpMode {
                 mtrLift2.setDirection(DcMotorSimple.Direction.FORWARD);
                 mtrLift.setVelocity(1000);
                 mtrLift2.setVelocity(1000);
-                mtrLift.setVelocity(700);
-                mtrLift2.setVelocity(700);
                 joggingup = true;
 
             }
@@ -324,13 +358,12 @@ public class CenterstageTeleop extends LinearOpMode {
                 mtrLift.setVelocity(0);
                 mtrLift2.setVelocity(0);
                 joggingup = false;
+
             } else if (gamepad2.left_trigger >= .9 && !bottomLimit.isPressed()) {
                 mtrLift.setDirection(DcMotorSimple.Direction.FORWARD);
                 mtrLift2.setDirection(DcMotorSimple.Direction.REVERSE);
                 mtrLift.setVelocity(1000);
                 mtrLift2.setVelocity(1000);
-                mtrLift.setVelocity(700);
-                mtrLift2.setVelocity(700);
                 joggingdown = true;
 
             }
