@@ -156,39 +156,11 @@ public class CenterstageTeleop extends LinearOpMode {
         while (opModeIsActive()) {
 
              //GAMEPAD 1 CONTROLS
-            //if statements controlling the gamepadlsy variable, allows us to ramp us and accel along the robot's x
-            if (gamepad1.left_stick_y > .1) {
-                gamepadlsy = .1 + (.1 * n);
-                n += 1;
-
-                if (n >= 9) {
-                    n = 9;
-                }
-
-
-            } else if (gamepadlsy < .1) {
-                n = 0;
-                gamepadlsy = 0;
-            }
-//if statements controlling the gamepadlsx variable, allows us to ramp us and accel along the robot's y
-            if (gamepad1.left_stick_x > .1) {
-                gamepadlsx = .1 + (.1 * n);
-                m += 1;
-
-                if (m >= 9) {
-                    m = 9;
-                }
-
-
-            } else if (gamepadlsx < .1) {
-                m = 0;
-                gamepadlsx = 0;
-            }
 
             drive.setWeightedDrivePower(
                     new Pose2d(
-                            gamepadlsy * (1 - (gamepad1.right_trigger * 0.7)),
-                            gamepadlsx * (1 - (gamepad1.right_trigger * 0.7)),
+                            gamepad1.left_stick_y * (1 - (gamepad1.right_trigger * 0.7)),
+                            gamepad1.left_stick_x * (1 - (gamepad1.right_trigger * 0.7)),
                             gamepad1.right_stick_x * (1 - (gamepad1.right_trigger * 0.7))
                     )
             );

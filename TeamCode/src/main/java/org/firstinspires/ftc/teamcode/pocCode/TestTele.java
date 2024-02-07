@@ -160,13 +160,28 @@ public class TestTele extends LinearOpMode {
             }
 
             if (gamepad1.left_stick_x == 0) {
-                m = 0;
-                gamepadlsx = 0;
+                m -= 1;
+                if (m < 0) {
+                    m = 0;
+                }
+
+                if (m > 5) {
+                    gamepadlsx = .1 + ((.01 * m) / 2);
+                } else {
+                    gamepadlsx = 0;
+                }
             }
 
             if (gamepad1.left_stick_y == 0) {
-                n = 0;
-                gamepadlsy = 0;
+                n -=1;
+                if (n < 0) {
+                    n = 0;
+                }
+                if (n > 5) {
+                    gamepadlsy = .1 + ((.01 * n) / 2);
+                } else {
+                    gamepadlsy = 0;
+                }
             }
 
             drive.setWeightedDrivePower(
