@@ -78,6 +78,38 @@ public class CenterstageTeleop extends LinearOpMode {
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
         telemetry.addData("Status", "Initialized");
         telemetry.addLine("Really Chat :|");
+        telemetry.addData("" +
+        "              ⠀⠀⠘⡀⠀⠀⠀have a nice day nerd!⡜⠀⠀⠀\n" +
+                "             * ⠀⠀⠀⠑⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⡔⠁⠀⠀⠀\n" +
+                "             * ⠀⠀⠀⠀⠈⠢⢄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⠴⠊⠀⠀⠀⠀⠀\n" +
+                "             * ⠀⠀⠀⠀⠀⠀⠀⢸⠀⠀⠀⢀⣀⣀⣀⣀⣀⡀⠤⠄⠒⠈⠀⠀⠀⠀⠀⠀⠀⠀\n" +
+                "             * ⠀⠀⠀⠀⠀⠀⠀⠘⣀⠄⠊⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀\n" +
+                "             * ⠀\n" +
+                "             * ⣿⣿⣿⣿⣿⣿⣿⣿⡿⠿⠛⠛⠛⠋⠉⠈⠉⠉⠉⠉⠛⠻⢿⣿⣿⣿⣿⣿⣿⣿\n" +
+                "             * ⣿⣿⣿⣿⣿⡿⠋⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠉⠛⢿⣿⣿⣿⣿\n" +
+                "             * ⣿⣿⣿⣿⡏⣀⠀⠀⠀⠀⠀⠀⠀⣀⣤⣤⣤⣄⡀⠀⠀⠀⠀⠀⠀⠀⠙⢿⣿⣿\n" +
+                "             * ⣿⣿⣿⢏⣴⣿⣷⠀⠀⠀⠀⠀⢾⣿⣿⣿⣿⣿⣿⡆⠀⠀⠀⠀⠀⠀⠀⠈⣿⣿\n" +
+                "             * ⣿⣿⣟⣾⣿⡟⠁⠀⠀⠀⠀⠀⢀⣾⣿⣿⣿⣿⣿⣷⢢⠀⠀⠀⠀⠀⠀⠀⢸⣿\n" +
+                "             * ⣿⣿⣿⣿⣟⠀⡴⠄⠀⠀⠀⠀⠀⠀⠙⠻⣿⣿⣿⣿⣷⣄⠀⠀⠀⠀⠀⠀⠀⣿\n" +
+                "             * ⣿⣿⣿⠟⠻⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠶⢴⣿⣿⣿⣿⣿⣧⠀⠀⠀⠀⠀⠀⣿\n" +
+                "             * ⣿⣁⡀⠀⠀⢰⢠⣦⠀⠀⠀⠀⠀⠀⠀⠀⢀⣼⣿⣿⣿⣿⣿⡄⠀⣴⣶⣿⡄⣿\n" +
+                "             * ⣿⡋⠀⠀⠀⠎⢸⣿⡆⠀⠀⠀⠀⠀⠀⣴⣿⣿⣿⣿⣿⣿⣿⠗⢘⣿⣟⠛⠿⣼\n" +
+                "             * ⣿⣿⠋⢀⡌⢰⣿⡿⢿⡀⠀⠀⠀⠀⠀⠙⠿⣿⣿⣿⣿⣿⡇⠀⢸⣿⣿⣧⢀⣼\n" +
+                "             * ⣿⣿⣷⢻⠄⠘⠛⠋⠛⠃⠀⠀⠀⠀⠀⢿⣧⠈⠉⠙⠛⠋⠀⠀⠀⣿⣿⣿⣿⣿\n" +
+                "             * ⣿⣿⣧⠀⠈⢸⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠟⠀⠀⠀⠀⢀⢃⠀⠀⢸⣿⣿⣿⣿\n" +
+                "             * ⣿⣿⡿⠀⠴⢗⣠⣤⣴⡶⠶⠖⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⡸⠀⣿⣿⣿⣿\n" +
+                "             * ⣿⣿⣿⡀⢠⣾⣿⠏⠀⠠⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠛⠉⠀⣿⣿⣿⣿\n" +
+                "             * ⣿⣿⣿⣧⠈⢹⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣰⣿⣿⣿⣿\n" +
+                "             * ⣿⣿⣿⣿⡄⠈⠃⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣠⣴⣾⣿⣿⣿⣿⣿\n" +
+                "             * ⣿⣿⣿⣿⣧⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣠⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿\n" +
+                "             * ⣿⣿⣿⣿⣷⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣴⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿\n" +
+                "             * ⣿⣿⣿⣿⣿⣦⣄⣀⣀⣀⣀⠀⠀⠀⠀⠘⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿\n" +
+                "             * ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣷⡄⠀⠀⠀⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿\n" +
+                "             * ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣧⠀⠀⠀⠙⣿⣿⡟⢻⣿⣿⣿⣿⣿⣿⣿⣿⣿\n" +
+                "             * ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠇⠀⠁⠀⠀⠹⣿⠃⠀⣿⣿⣿⣿⣿⣿⣿⣿⣿\n" +
+                "             * ⣿⣿⣿⣿⣿⣿⣿⣿⡿⠛⣿⣿⠀⠀⠀⠀⠀⠀⠀⠀⢐⣿⣿⣿⣿⣿⣿⣿⣿⣿\n" +
+                "             * ⣿⣿⣿⣿⠿⠛⠉⠉⠁⠀⢻⣿⡇⠀⠀⠀⠀⠀⠀⢀⠈⣿⣿⡿⠉⠛⠛⠛⠉⠉\n" +
+                "             * ⣿⡿⠋⠁⠀⠀⢀⣀⣠⡴⣸⣿⣇⡄⠀⠀⠀⠀⢀⡿⠄⠙⠛⠀⣀⣠⣤⣤⠄\n",0);
         telemetry.addLine("Get your TeleOp! Hot and fresh!");
         telemetry.update();
         // motors
@@ -145,9 +177,9 @@ public class CenterstageTeleop extends LinearOpMode {
         intakeLeft.setPosition(0.027);
 
         DroneShooter = hardwareMap.get(Servo.class, "svrDrone"); */
-
         hardwareCS robot = new hardwareCS();
         robot.inithardware(hardwareMap);
+        robot.armSwing.setPosition(.25);
 
         //start
         waitForStart();
@@ -196,25 +228,25 @@ public class CenterstageTeleop extends LinearOpMode {
 
             //hanger servo
             if (gamepad2.back) {
-                svrHang.setPosition(.9);
+                robot.svrHang.setPosition(.9);
             }
 
             //intake
             if (gamepad2.dpad_right) {
-                mtrI.setDirection(DcMotor.Direction.REVERSE);
-                mtrI.setPower(0.75);
+                robot.mtrI.setDirection(DcMotor.Direction.REVERSE);
+                robot.mtrI.setPower(0.75);
             }
             if (gamepad2.dpad_left) {
-                mtrI.setDirection(DcMotor.Direction.FORWARD);
-                mtrI.setPower(0.75);
+                robot.mtrI.setDirection(DcMotor.Direction.FORWARD);
+                robot.mtrI.setPower(0.75);
             }
             if (gamepad2.b) {
-                mtrI.setPower(0);
+                robot.mtrI.setPower(0);
             }
 
             if (gamepad2.y){
-                intakeLeft.setPosition(0.25);
-                intakeRight.setPosition(.82);
+                robot.intakeLeft.setPosition(0.25);
+                robot.intakeRight.setPosition(.82);
             }
 
            /* switch (intakePos) {
@@ -301,61 +333,61 @@ public class CenterstageTeleop extends LinearOpMode {
 
             //hanging
             if (gamepad2.dpad_down /*&& elapsedTime.time() > 60)*/) {
-                mtrHang.setDirection(DcMotorSimple.Direction.FORWARD);
-                mtrHang.setPower(1.0);
+                robot.mtrHang.setDirection(DcMotorSimple.Direction.FORWARD);
+                robot.mtrHang.setPower(1.0);
             }
 //up
             if (gamepad2.dpad_up) {
-                mtrHang.setDirection(DcMotor.Direction.REVERSE);
-                mtrHang.setPower(1.0);
+                robot.mtrHang.setDirection(DcMotor.Direction.REVERSE);
+                robot.mtrHang.setPower(1.0);
 
             }
 
             if (!gamepad2.dpad_down && !gamepad2.dpad_up) {
-                mtrHang.setPower(0);
+                robot.mtrHang.setPower(0);
             }
 
             //slides
 
             if (gamepad2.right_trigger >= .9) {
-                mtrLift.setDirection(DcMotorSimple.Direction.REVERSE);
-                mtrLift2.setDirection(DcMotorSimple.Direction.FORWARD);
-                mtrLift.setVelocity(1000);
-                mtrLift2.setVelocity(1000);
+                robot.mtrLift.setDirection(DcMotorSimple.Direction.FORWARD);
+                robot.mtrLift2.setDirection(DcMotorSimple.Direction.REVERSE);
+                robot.mtrLift.setVelocity(1000);
+                robot.mtrLift2.setVelocity(1000);
                 joggingup = true;
 
             }
 
             if (gamepad2.right_trigger == 0 && joggingup) {
-                mtrLift.setVelocity(0);
-                mtrLift2.setVelocity(0);
+                robot.mtrLift.setVelocity(0);
+                robot.mtrLift2.setVelocity(0);
                 joggingup = false;
 
-            } else if (gamepad2.left_trigger >= .9 && !bottomLimit.isPressed()) {
-                mtrLift.setDirection(DcMotorSimple.Direction.FORWARD);
-                mtrLift2.setDirection(DcMotorSimple.Direction.REVERSE);
-                mtrLift.setVelocity(1000);
-                mtrLift2.setVelocity(1000);
+            } else if (gamepad2.left_trigger >= .9 && !robot.bottomLimit.isPressed()) {
+                robot.mtrLift.setDirection(DcMotorSimple.Direction.REVERSE);
+                robot.mtrLift2.setDirection(DcMotorSimple.Direction.FORWARD);
+                robot.mtrLift.setVelocity(1000);
+                robot.mtrLift2.setVelocity(1000);
                 joggingdown = true;
 
             }
 
-            if (joggingdown && bottomLimit.isPressed()) {
-                mtrLift.setVelocity(0);
-                mtrLift2.setVelocity(0);
+            if (joggingdown && robot.bottomLimit.isPressed()) {
+                robot.mtrLift.setVelocity(0);
+                robot.mtrLift2.setVelocity(0);
                 joggingdown = false;
             }
 
 
             if (gamepad2.left_trigger == 0 && joggingdown) {
-                mtrLift.setVelocity(0);
-                mtrLift2.setVelocity(0);
+                robot.mtrLift.setVelocity(0);
+                robot.mtrLift2.setVelocity(0);
                 joggingdown = false;
             }
 
             //drone launcher
             if (gamepad1.left_bumper) {
-                droneLauncher.setPosition(.15);
+                robot.droneLauncher.setPosition(.15);
             }
 
             //when we get there
@@ -365,18 +397,17 @@ public class CenterstageTeleop extends LinearOpMode {
                 gripper.setPosition(0.5);
             }*/
 
-            armSwing.setPosition(armSwing.getPosition() - (gamepad2.left_stick_y * .01));
+            robot.armSwing.setPosition(robot.armSwing.getPosition() - (gamepad2.left_stick_y * .01));
 
-            if (gamepad2.left_bumper && !gripperPressed) {
-                if (!gamepad2.left_bumper) {
-                    gripper.setPosition(0.57);
-                    gripperPressed = true;
-                }
-            } else if (gamepad2.left_bumper && gripperPressed){
-                if (!gamepad2.left_bumper) {
-                    gripper.setPosition(.32);
-                    gripperPressed = false;
-                }
+            if (gamepad2.left_bumper) {
+                robot.gripper.setPosition(0.57);
+                gripperPressed = true;
+                break;
+
+            } else if (gamepad2.right_bumper){
+                robot.gripper.setPosition(.32);
+                gripperPressed = false;
+                break;
             }
 
 

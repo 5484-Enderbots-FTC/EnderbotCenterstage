@@ -160,7 +160,7 @@ public class TestTele extends LinearOpMode {
             }
 
             if (gamepad1.left_stick_x == 0) {
-                m -= 1;
+                m -= 100;
                 if (m < 0) {
                     m = 0;
                 }
@@ -173,7 +173,7 @@ public class TestTele extends LinearOpMode {
             }
 
             if (gamepad1.left_stick_y == 0) {
-                n -=1;
+                n -=100;
                 if (n < 0) {
                     n = 0;
                 }

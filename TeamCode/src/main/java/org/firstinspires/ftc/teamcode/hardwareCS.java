@@ -82,19 +82,19 @@ public class hardwareCS {
 
         mtrBL = hw.get(DcMotorEx.class, "mtrBL");
         mtrBL.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
-        mtrBL.setDirection(DcMotorEx.Direction.REVERSE);
+        mtrBL.setDirection(DcMotorEx.Direction.FORWARD);
 
         mtrBR = hw.get(DcMotorEx.class, "mtrBR");
         mtrBR.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
-        mtrBR.setDirection(DcMotorEx.Direction.FORWARD);
+        mtrBR.setDirection(DcMotorEx.Direction.REVERSE);
 
         mtrFL = hw.get(DcMotorEx.class, "mtrFL");
         mtrFL.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
-        mtrFL.setDirection(DcMotorEx.Direction.REVERSE);
+        mtrFL.setDirection(DcMotorEx.Direction.FORWARD);
 
         mtrFR = hw.get(DcMotorEx.class, "mtrFR");
         mtrFR.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
-        mtrFR.setDirection(DcMotorEx.Direction.FORWARD);
+        mtrFR.setDirection(DcMotorEx.Direction.REVERSE);
 
         mtrI = hw.get(DcMotorEx.class, "mtrI");
         mtrI.setZeroPowerBehavior(BRAKE);
@@ -109,11 +109,11 @@ public class hardwareCS {
         droneLauncher = hw.get(Servo.class, "svrDrone");
 
         mtrLift = hw.get(DcMotorEx.class, "mtrLift1");
-        mtrLift.setDirection(DcMotorSimple.Direction.REVERSE);
+        mtrLift.setDirection(DcMotorSimple.Direction.FORWARD);
         mtrLift.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
         mtrLift2 = hw.get(DcMotorEx.class, "mtrLift2");
-        mtrLift2.setDirection(DcMotorSimple.Direction.FORWARD);
+        mtrLift2.setDirection(DcMotorSimple.Direction.REVERSE);
         mtrLift2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
         gripper = hw.get(Servo.class, "svrGrip");
@@ -121,7 +121,7 @@ public class hardwareCS {
 
         bottomLimit = hw.get(TouchSensor.class, "BL Lift");
 
-        liftColor = hw.get(ColorSensor.class, "liftColor");
+        //liftColor = hw.get(ColorSensor.class, "liftColor");
 
         intakeLeft = hw.get(Servo.class, "leftSvr");
         intakeRight = hw.get(Servo.class, "rightSvr");
@@ -141,8 +141,8 @@ public class hardwareCS {
         gripperPressed = false;
 
         // set digital channel to input mode.
-        proximityOne.setMode(DigitalChannel.Mode.INPUT);
-        proximityTwo.setMode(DigitalChannel.Mode.INPUT);
+        //proximityOne.setMode(DigitalChannel.Mode.INPUT);
+        //proximityTwo.setMode(DigitalChannel.Mode.INPUT);
     }
 
 
