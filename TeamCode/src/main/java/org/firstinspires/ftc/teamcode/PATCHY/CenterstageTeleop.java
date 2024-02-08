@@ -72,6 +72,8 @@ public class CenterstageTeleop extends LinearOpMode {
 
     public int m = 0;
 
+    public boolean currentlyPressing = false;
+
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -188,7 +190,7 @@ public class CenterstageTeleop extends LinearOpMode {
         while (opModeIsActive()) {
 
              //GAMEPAD 1 CONTROLS
-
+            //set a new pose based off our previous pose utilizing the positions of gamepad sticks
             drive.setWeightedDrivePower(
                     new Pose2d(
                             gamepad1.left_stick_y * (1 - (gamepad1.right_trigger * 0.7)),
@@ -227,19 +229,23 @@ public class CenterstageTeleop extends LinearOpMode {
              */
 
             //hanger servo
+            //release the little mechanism holding the hanger mechanism down
             if (gamepad2.back) {
                 robot.svrHang.setPosition(.9);
             }
 
             //intake
+            //take in pixels
             if (gamepad2.dpad_right) {
                 robot.mtrI.setDirection(DcMotor.Direction.REVERSE);
                 robot.mtrI.setPower(0.75);
             }
+            //spit out pixels
             if (gamepad2.dpad_left) {
                 robot.mtrI.setDirection(DcMotor.Direction.FORWARD);
                 robot.mtrI.setPower(0.75);
             }
+            //kill the power on the intake
             if (gamepad2.b) {
                 robot.mtrI.setPower(0);
             }
@@ -248,7 +254,14 @@ public class CenterstageTeleop extends LinearOpMode {
                 robot.intakeLeft.setPosition(0.25);
                 robot.intakeRight.setPosition(.82);
             }
-
+            
+           /* if (gamepad2.y){
+                intakeLeft.setPosition(0.25);
+                intakeRight.setPosition(.82);
+            } */
+//this *was* a state machine to control the position of the servo arms
+//one day i will fix this, but i can make it work without it. Less code readability,
+//but i can at least make it function
            /* switch (intakePos) {
                 case intakeIn:
                     if (gamepad2.y) {
@@ -332,22 +345,33 @@ public class CenterstageTeleop extends LinearOpMode {
            } */
 
             //hanging
+            //extend the lift
+            //currently, the timer to only make it activate during endgame
+            //is commented out b/c katarina wanted it to be 
             if (gamepad2.dpad_down /*&& elapsedTime.time() > 60)*/) {
                 robot.mtrHang.setDirection(DcMotorSimple.Direction.FORWARD);
                 robot.mtrHang.setPower(1.0);
             }
-//up
+//up         
+            //beam me up, Scotty
             if (gamepad2.dpad_up) {
                 robot.mtrHang.setDirection(DcMotor.Direction.REVERSE);
                 robot.mtrHang.setPower(1.0);
 
             }
-
+            //straightforward, if we're pressing neither then
+            //stop the hanger
             if (!gamepad2.dpad_down && !gamepad2.dpad_up) {
                 robot.mtrHang.setPower(0);
             }
 
-            //slides
+            //slides control
+
+            //if pressing the right trigger, move up, and
+            //set our memory bit to true.
+
+            //motors were connected electrically, so we don't need to control
+            //mtrLift2. However, it makes no difference whether we do or not.
 
             if (gamepad2.right_trigger >= .9) {
                 robot.mtrLift.setDirection(DcMotorSimple.Direction.FORWARD);
@@ -357,7 +381,11 @@ public class CenterstageTeleop extends LinearOpMode {
                 joggingup = true;
 
             }
-
+            //if we were already jogging up, then stop the lift.
+            //we need this extra variable check b/c otherwise
+            //gamepad2 right trigger will be false while we're moving
+            //the lift downward, which will constantly stop our lift
+            //and not let us move down.
             if (gamepad2.right_trigger == 0 && joggingup) {
                 robot.mtrLift.setVelocity(0);
                 robot.mtrLift2.setVelocity(0);
@@ -371,55 +399,86 @@ public class CenterstageTeleop extends LinearOpMode {
                 joggingdown = true;
 
             }
-
+            //if we're moving down but our limit switch pressed, STOP!!!!
             if (joggingdown && robot.bottomLimit.isPressed()) {
                 robot.mtrLift.setVelocity(0);
                 robot.mtrLift2.setVelocity(0);
                 joggingdown = false;
+                
+            //if we're holding down the left trigger & our limit switch isn't pressed
+            //move our lift down, and set our memory/control bit to true.
+            } else if (gamepad2.left_trigger >= .9 && !bottomLimit.isPressed()) {
+                mtrLift.setDirection(DcMotorSimple.Direction.FORWARD);
+                mtrLift2.setDirection(DcMotorSimple.Direction.REVERSE);
+                mtrLift.setVelocity(1000);
+                mtrLift2.setVelocity(1000);
+                joggingdown = true;
+
             }
 
-
+            //if we stop holding down our trigger and
+            //we were moving down to begin with,
+            //stop the lift.
+            //this extra variable check is in place b/c of the
+            //same reasoning as the other trigger check
+            //this also doesn't need the limit switch to stop
             if (gamepad2.left_trigger == 0 && joggingdown) {
                 robot.mtrLift.setVelocity(0);
                 robot.mtrLift2.setVelocity(0);
                 joggingdown = false;
             }
 
-            //drone launcher
+            //shoot the drone launcher
             if (gamepad1.left_bumper) {
                 robot.droneLauncher.setPosition(.15);
             }
 
-            //when we get there
-           /* if (gamepad2.right_bumper) {
-                gripper.setPosition(0.5);
-            } else if (!gamepad2.right_bumper) {
-                gripper.setPosition(0.5);
-            }*/
-
             robot.armSwing.setPosition(robot.armSwing.getPosition() - (gamepad2.left_stick_y * .01));
 
-            if (gamepad2.left_bumper) {
-                robot.gripper.setPosition(0.57);
-                gripperPressed = true;
-                break;
+            //if we are pressing the left bumper, weren't already open, and weren't holding
+            //the button to begin with, then open the gripper to holding position.
+            if (gamepad2.left_bumper && !gripperPressed && !currentlyPressing) {
+                    gripper.setPosition(0.57);
 
-            } else if (gamepad2.right_bumper){
-                robot.gripper.setPosition(.32);
-                gripperPressed = false;
-                break;
+            //if we are pressing the left bumper, were already open, and weren't holding
+            //the button to begin with, the close gripper to placement position
+            } else if (gamepad2.left_bumper && gripperPressed && !currentlyPressing){
+                    gripper.setPosition(.32);
             }
 
+            //variable control telling us where the servo is. Is it open or closed? Change variable based on that.
+            if (gripper.getPosition() > .56) {
+                gripperPressed = true;
+            } else if (gripper.getPosition() < .33) {
+                gripperPressed = false;
+            }
 
+            //are we currently pressing the left bumper? if so, we can't change the position of our gripper until we do.
+            if (gamepad2.left_bumper) {
+                currentlyPressing = true;
+            } else {
+                currentlyPressing = false;
+            }
+
+//this is just adding our data to our code.
+
+            //where are we?
             Pose2d poseEstimate = drive.getPoseEstimate();
             telemetry.addData("x:", poseEstimate.getX());
             telemetry.addData("y:", poseEstimate.getY());
             telemetry.addData("heading:", poseEstimate.getHeading());
 
+            //is our gripper working?
+            if (gripper.getPosition() > .56) {
+                telemetry.addLine("Gripper Position: Pixels being held.");
+            } else {
+                telemetry.addLine("Gripper Position: Not grabbing pixels.");
+            }
+
             telemetry.update();
             drive.update();
 
-        }
+         }
     }
 
 }
