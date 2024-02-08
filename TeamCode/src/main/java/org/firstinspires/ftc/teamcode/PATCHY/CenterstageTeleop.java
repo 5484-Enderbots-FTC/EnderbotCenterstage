@@ -145,7 +145,7 @@ public class CenterstageTeleop extends LinearOpMode {
         intakeLeft.setPosition(0.027);
 
         DroneShooter = hardwareMap.get(Servo.class, "svrDrone"); */
-
+        public bool currentlyPressing = false;
         hardwareCS robot = new hardwareCS();
         robot.inithardware(hardwareMap);
 
@@ -156,7 +156,7 @@ public class CenterstageTeleop extends LinearOpMode {
         while (opModeIsActive()) {
 
              //GAMEPAD 1 CONTROLS
-
+            //set a new pose based off our previous pose utilizing the positions of gamepad sticks
             drive.setWeightedDrivePower(
                     new Pose2d(
                             gamepad1.left_stick_y * (1 - (gamepad1.right_trigger * 0.7)),
@@ -195,28 +195,34 @@ public class CenterstageTeleop extends LinearOpMode {
              */
 
             //hanger servo
+            //release the little mechanism holding the hanger mechanism down
             if (gamepad2.back) {
                 svrHang.setPosition(.9);
             }
 
             //intake
+            //take in pixels
             if (gamepad2.dpad_right) {
                 mtrI.setDirection(DcMotor.Direction.REVERSE);
                 mtrI.setPower(0.75);
             }
+            //spit out pixels
             if (gamepad2.dpad_left) {
                 mtrI.setDirection(DcMotor.Direction.FORWARD);
                 mtrI.setPower(0.75);
             }
+            //kill the power on the intake
             if (gamepad2.b) {
                 mtrI.setPower(0);
             }
-
-            if (gamepad2.y){
+            
+           /* if (gamepad2.y){
                 intakeLeft.setPosition(0.25);
                 intakeRight.setPosition(.82);
-            }
-
+            } */
+//this *was* a state machine to control the position of the servo arms
+//one day i will fix this, but i can make it work without it. Less code readability,
+//but i can at least make it function
            /* switch (intakePos) {
                 case intakeIn:
                     if (gamepad2.y) {
@@ -300,23 +306,30 @@ public class CenterstageTeleop extends LinearOpMode {
            } */
 
             //hanging
+            //extend the lift
+            //currently, the timer to only make it activate during endgame
+            //is commented out b/c katarina wanted it to be 
             if (gamepad2.dpad_down /*&& elapsedTime.time() > 60)*/) {
                 mtrHang.setDirection(DcMotorSimple.Direction.FORWARD);
                 mtrHang.setPower(1.0);
             }
-//up
+//up         
+            //beam me up, Scotty
             if (gamepad2.dpad_up) {
                 mtrHang.setDirection(DcMotor.Direction.REVERSE);
                 mtrHang.setPower(1.0);
 
             }
-
+            //straightforward, if we're pressing neither then
+            //stop the lift
             if (!gamepad2.dpad_down && !gamepad2.dpad_up) {
                 mtrHang.setPower(0);
             }
 
-            //slides
+            //slides control
 
+            //if pressing the right trigger, move up, and
+            //set our memory bit to true.
             if (gamepad2.right_trigger >= .9) {
                 mtrLift.setDirection(DcMotorSimple.Direction.REVERSE);
                 mtrLift2.setDirection(DcMotorSimple.Direction.FORWARD);
@@ -325,12 +338,18 @@ public class CenterstageTeleop extends LinearOpMode {
                 joggingup = true;
 
             }
-
+            //if we were already jogging up, then stop the lift.
+            //we need this extra variable check b/c otherwise
+            //gamepad2 right trigger will be false while we're moving
+            //the lift downward, which will constantly stop our lift
+            //and not let us move down.
             if (gamepad2.right_trigger == 0 && joggingup) {
                 mtrLift.setVelocity(0);
                 mtrLift2.setVelocity(0);
                 joggingup = false;
-
+                
+            //if we're holding down the left trigger & our limit switch isn't pressed
+            //move our lift down, and set our memory/control bit to true.
             } else if (gamepad2.left_trigger >= .9 && !bottomLimit.isPressed()) {
                 mtrLift.setDirection(DcMotorSimple.Direction.FORWARD);
                 mtrLift2.setDirection(DcMotorSimple.Direction.REVERSE);
@@ -339,21 +358,27 @@ public class CenterstageTeleop extends LinearOpMode {
                 joggingdown = true;
 
             }
-
+            //are we moving down (memory/control bit) and our bottom limit switch it pressed?
+            //if so, stop the lift!!!
+            //set our memory bit, joggingdown, to false.
             if (joggingdown && bottomLimit.isPressed()) {
                 mtrLift.setVelocity(0);
                 mtrLift2.setVelocity(0);
                 joggingdown = false;
             }
 
-
+            //if we stop holding down our trigger and
+            //we were moving down to begin with,
+            //stop the lift.
+            //this extra variable check is in place b/c of the
+            //same reasoning as the other trigger check
             if (gamepad2.left_trigger == 0 && joggingdown) {
                 mtrLift.setVelocity(0);
                 mtrLift2.setVelocity(0);
                 joggingdown = false;
             }
 
-            //drone launcher
+            //shoot the drone launcher
             if (gamepad1.left_bumper) {
                 droneLauncher.setPosition(.15);
             }
@@ -367,28 +392,51 @@ public class CenterstageTeleop extends LinearOpMode {
 
             armSwing.setPosition(armSwing.getPosition() - (gamepad2.left_stick_y * .01));
 
-            if (gamepad2.left_bumper && !gripperPressed) {
-                if (!gamepad2.left_bumper) {
+            //if we are pressing the left bumper, weren't already open, and weren't holding
+            //the button to begin with, then open the gripper to holding position.
+            if (gamepad2.left_bumper && !gripperPressed && currentlyPressing == false) {
                     gripper.setPosition(0.57);
-                    gripperPressed = true;
-                }
-            } else if (gamepad2.left_bumper && gripperPressed){
-                if (!gamepad2.left_bumper) {
+
+            //if we are pressing the left bumper, were already open, and weren't holding
+            //the button to begin with, the close gripper to placement position
+            } else if (gamepad2.left_bumper && gripperPressed && currentlyPressing == false){
                     gripper.setPosition(.32);
-                    gripperPressed = false;
-                }
+                
             }
 
+            //variable control telling us where the servo is. Is it open or closed? Change variable based on that.
+            if (gripper.getPosition() > .56) {
+                gripperPressed = true;
+            } else if gripper.getPosition() < .33 {
+                gripperPressed = false;
+            }
 
+            //are we currently pressing the left bumper? if so, we can't change the position of our gripper until we do.
+            if (gamepad2.left_bumper) {
+                currentlyPressing = true;
+            } else {
+                currentlyPressing = false;
+            }
+
+//this is just adding our data to our code.
+
+            //where are we?
             Pose2d poseEstimate = drive.getPoseEstimate();
             telemetry.addData("x:", poseEstimate.getX());
             telemetry.addData("y:", poseEstimate.getY());
             telemetry.addData("heading:", poseEstimate.getHeading());
 
+            //is our gripper working?
+            if (gripper.getPosition() > .56) {
+                telemetry.addData("Gripper Position: Pixels being held.")
+            } else {
+                telemetry.addData("Gripper Position: Not grabbing pixels.")
+            }
+
             telemetry.update();
             drive.update();
 
-        }
+         }
     }
 
 }
