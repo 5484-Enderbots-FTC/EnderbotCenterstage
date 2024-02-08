@@ -437,28 +437,24 @@ public class CenterstageTeleop extends LinearOpMode {
 
             //if we are pressing the left bumper, weren't already open, and weren't holding
             //the button to begin with, then open the gripper to holding position.
-            if (gamepad2.left_bumper && !gripperPressed && !currentlyPressing) {
-                    gripper.setPosition(0.57);
+            if (gamepad2.left_bumper && !gripperPressed) {
+                    gripperPressed = true;
+                    Thread.sleep(1000);
 
             //if we are pressing the left bumper, were already open, and weren't holding
             //the button to begin with, the close gripper to placement position
-            } else if (gamepad2.left_bumper && gripperPressed && !currentlyPressing){
-                    gripper.setPosition(.32);
+            } else if (gamepad2.left_bumper && gripperPressed){
+                    gripperPressed = false;
+                    Thread.sleep(1000);
             }
 
-            //variable control telling us where the servo is. Is it open or closed? Change variable based on that.
-            if (gripper.getPosition() > .56) {
-                gripperPressed = true;
-            } else if (gripper.getPosition() < .33) {
-                gripperPressed = false;
-            }
-
-            //are we currently pressing the left bumper? if so, we can't change the position of our gripper until we do.
-            if (gamepad2.left_bumper) {
-                currentlyPressing = true;
+            if (gripperPressed) {
+                gripper.setPosition(0.57);
             } else {
-                currentlyPressing = false;
+                gripper.setPosition(.32);
             }
+
+
 
 //this is just adding our data to our code.
 
