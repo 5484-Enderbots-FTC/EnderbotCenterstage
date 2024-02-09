@@ -449,9 +449,9 @@ public class CenterstageTeleop extends LinearOpMode {
             }
 
             if (gripperPressed) {
-                gripper.setPosition(0.57);
+                robot.gripper.setPosition(0.57);
             } else {
-                gripper.setPosition(.32);
+                robot.gripper.setPosition(.32);
             }
 
 
@@ -465,7 +465,7 @@ public class CenterstageTeleop extends LinearOpMode {
             telemetry.addData("heading:", poseEstimate.getHeading());
 
             //is our gripper working?
-            if (gripper.getPosition() > .56) {
+            if (robot.gripper.getPosition() > .56) {
                 telemetry.addLine("Gripper Position: Pixels being held.");
             } else {
                 telemetry.addLine("Gripper Position: Not grabbing pixels.");
