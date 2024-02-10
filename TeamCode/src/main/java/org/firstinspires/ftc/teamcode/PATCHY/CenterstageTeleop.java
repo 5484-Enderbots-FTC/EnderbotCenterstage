@@ -74,10 +74,14 @@ public class CenterstageTeleop extends LinearOpMode {
 
     public boolean currentlyPressing = false;
 
+
+    //toggle variables for the various toggle buttons
     public int gripperInt = 0;
     public int oldGripperInt = 0;
     public int intakeArmInt = 0;
     public int oldIntakeArmInt = 0;
+    public int armInt = 0;
+    public int oldArmInt = 0;
 
 
     @Override
@@ -186,7 +190,7 @@ public class CenterstageTeleop extends LinearOpMode {
         DroneShooter = hardwareMap.get(Servo.class, "svrDrone"); */
         hardwareCS robot = new hardwareCS();
         robot.inithardware(hardwareMap);
-        robot.armSwing.setPosition(.25);
+        robot.armSwing.setPosition(0.0);
 
         //start
         waitForStart();
@@ -214,9 +218,7 @@ public class CenterstageTeleop extends LinearOpMode {
                     Dpad Left = Outtake
                     B = Kill Power
                     Arm Positions:
-                        Y = Intake arms out
-                        X = Intake arms middle
-                        A = Intake arms in
+                        Y = Toggle intake arms
                 Hanger:
                     Gamepad 2:
                         Back = Release the lift
@@ -228,7 +230,7 @@ public class CenterstageTeleop extends LinearOpMode {
                     Right Trigger = Lift move up
                     Left Trigger = Lift move down
                 Subcontrols:
-                    Left stick = Move arm
+                    A = Toggle different arm positions
                     Left Bumper Bumper = Open gripper
                     !Right Bumper = Close gripper
              */
@@ -348,12 +350,14 @@ public class CenterstageTeleop extends LinearOpMode {
                 robot.intakeLeft.setPosition(0);
                 robot.intakeRight.setPosition(1);
                 intakeArmInt = 1;
+                oldIntakeArmInt = 1;
             }
             //middle
             if (gamepad2.x && intakeArmInt == 1 && oldIntakeArmInt == 0) {
                 robot.intakeRight.setPosition(0.93);
                 robot.intakeLeft.setPosition(.06);
                 intakeArmInt = 0;
+                oldIntakeArmInt = 1;
             }
 
             //control and make sure we can't activate the above functions unless we aren't pressing the x button
@@ -447,7 +451,23 @@ public class CenterstageTeleop extends LinearOpMode {
 
             //shoot the drone launcher
             if (gamepad2.left_bumper) {
-                robot.droneLauncher.setPosition(.15);
+                robot.droneLauncher.setPosition(.689);
+            }
+
+            //control the arm swing positions
+            if (gamepad2.a && armInt == 0 && oldArmInt == 0) {
+                robot.armSwing.setPosition(1.0);
+                armInt = 1;
+                oldArmInt = 1;
+            }
+            if (gamepad2.a && armInt == 1 && oldArmInt == 0) {
+                robot.armSwing.setPosition(0.0);
+                armInt = 0;
+                oldArmInt = 1;
+            }
+
+            if (!gamepad1.a) {
+                oldArmInt = 0;
             }
 
             robot.armSwing.setPosition(robot.armSwing.getPosition() - (gamepad2.left_stick_y * .01));
@@ -504,11 +524,24 @@ public class CenterstageTeleop extends LinearOpMode {
                 telemetry.addLine("Gripper Position: Not grabbing pixels.");
             }
 
-            telemetry.addData("Gripper Int", gripperInt);
+            if (!robot.proximityOne.getState()) {
+                telemetry.addLine("Proximity 1 detecting.");
+            } else {
+                telemetry.addLine("Proximity 1 not detecting.");
+            }
+
+            if (!robot.proximityTwo.getState()) {
+                telemetry.addLine("Proximity 2 detecting.");
+            } else {
+                telemetry.addLine("Proximity 2 not detecting.");
+            }
+
+            telemetry.addData("Intake Arm Int", intakeArmInt);
             telemetry.addData("Old Gripper Int", oldGripperInt);
 
             telemetry.addData("Jogging up?", joggingup);
             telemetry.addData("Jogging down?", joggingdown);
+            telemetry.addData("Arm swing pos", robot.armSwing.getPosition());
 
             telemetry.update();
             drive.update();

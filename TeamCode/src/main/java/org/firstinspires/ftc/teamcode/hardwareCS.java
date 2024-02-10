@@ -133,18 +133,21 @@ public class hardwareCS {
         intakeRight.setPosition(1.0);
         intakeLeft.setPosition(0.027);
 
-        DroneShooter = hw.get(Servo.class, "svrDrone");
+        proximityOne = hw.get(DigitalChannel.class, "nut1");
+        proximityTwo = hw.get(DigitalChannel.class, "nut2");
 
         joggingup = false;
         joggingdown = false;
         mtrLift.setVelocity(0);
         mtrLift2.setVelocity(0);
-        droneLauncher.setPosition(0.0);
+        droneLauncher.setPosition(1.0);
         gripperPressed = false;
 
         // set digital channel to input mode.
-        //proximityOne.setMode(DigitalChannel.Mode.INPUT);
-        //proximityTwo.setMode(DigitalChannel.Mode.INPUT);
+        proximityOne.setMode(DigitalChannel.Mode.INPUT);
+        proximityTwo.setMode(DigitalChannel.Mode.INPUT);
+
+
     }
 
 
