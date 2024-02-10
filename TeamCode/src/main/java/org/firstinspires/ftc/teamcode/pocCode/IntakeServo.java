@@ -63,8 +63,8 @@ public class IntakeServo extends LinearOpMode {
         telemetry.update();
 
         //outside pos
-        intakeRight.setPosition(0.85);
-        intakeLeft.setPosition(0.15);
+        intakeRight.setPosition(0.83);
+        intakeLeft.setPosition(0.34);
 
         while (opModeIsActive()) {
           /*  if (gamepad1.dpad_up) {
@@ -120,87 +120,15 @@ public class IntakeServo extends LinearOpMode {
                }
 
            } */
-
-            switch (intakePos) {
-                case intakeIn:
-                    if (gamepad1.x) {
-                        intakeRight.setPosition(0.85);
-                        lastBtn = 'x';
-                        intakePos = intakeState.intakeOut;
-                    }
-                    if (gamepad1.b) {
-                        intakeRight.setPosition(.82);
-                        servoTime.reset();
-                        lastBtn = 'b';
-                        intakePos = intakeState.intakeMiddle;
-                    }
-
-                    break;
-
-                case intakeMiddle:
-                    if (gamepad1.x) {
-                        intakeRight.setPosition(0.85);
-                        lastBtn = 'x';
-                        intakePos = intakeState.intakeOut;
-                    }
-                    if (gamepad1.y) {
-                        intakeLeft.setPosition(.557);
-                        servoTime.reset();
-                        lastBtn = 'y';
-                        intakePos = intakeState.intakeIn;
-                    }
-
-                    break;
-
-                case intakeOut:
-                    if (gamepad1.y) {
-                        intakeLeft.setPosition(.557);
-                        servoTime.reset();
-                        lastBtn = 'y';
-                        intakePos = intakeState.intakeIn;
-                    }
-                    if (gamepad1.b) {
-                        intakeRight.setPosition(.82);
-                        servoTime.reset();
-                        lastBtn = 'b';
-                        intakePos = intakeState.intakeMiddle;
-                    }
-
-                    break;
-
-                default:
-                    intakePos = intakeState.intakeOut;
+//open position
+            if (gamepad1.y) {
+                intakeLeft.setPosition(0);
+                intakeRight.setPosition(1);
             }
-
-            if (servoTime.time() > .75) {
-
-                if (lastBtn == 'b') {
-                    intakeLeft.setPosition(0.25);
-                }
-
-                if (lastBtn == 'y') {
-                    intakeRight.setPosition(0.672);
-                }
-                if (lastBtn == 'x') {
-                    intakeLeft.setPosition(0.15);
-                }
-
-            }
-
-            switch (intakeMtr) {
-                case intakeForward:
-                    mtrI.setDirection(DcMotorSimple.Direction.REVERSE);
-                    mtrI.setPower(0.45);
-                    break;
-                case intakeReverse:
-                    mtrI.setDirection(DcMotorSimple.Direction.FORWARD);
-                    mtrI.setPower(0.45);
-                    break;
-                case intakeStop:
-                    mtrI.setPower(0);
-                    break;
-                default:
-                    intakeMtr = intakeSpin.intakeStop;
+  //middle
+            if (gamepad1.x) {
+                intakeRight.setPosition(0.93);
+                intakeLeft.setPosition(.06);
             }
 
             telemetry.addData("left servo ", intakeLeft.getPosition());

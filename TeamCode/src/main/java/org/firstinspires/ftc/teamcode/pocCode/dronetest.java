@@ -17,16 +17,24 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import org.firstinspires.ftc.teamcode.RoadrunnerUtilStuff.drive.SampleMecanumDrive;
 //
 
-
 @TeleOp(name = "dronetest", group = "Linear Opmode")
 //@Disabled
+
 public class dronetest extends LinearOpMode {
+
+    Servo droneLauncher;
 
     ElapsedTime runtime = new ElapsedTime();
 
     @Override
     public void runOpMode() throws InterruptedException {
 
+        droneLauncher = hardwareMap.get(Servo.class, "svrDrone");
+
+        while (opModeIsActive()) {
+            droneLauncher.setPosition(droneLauncher.getPosition() - (gamepad1.left_stick_y * 0.001));
+
+        }
     }
 
     //ElapsedTime servoTime = new ElapsedTime();

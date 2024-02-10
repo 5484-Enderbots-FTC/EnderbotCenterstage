@@ -111,10 +111,12 @@ public class hardwareCS {
         mtrLift = hw.get(DcMotorEx.class, "mtrLift1");
         mtrLift.setDirection(DcMotorSimple.Direction.FORWARD);
         mtrLift.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        mtrLift.setZeroPowerBehavior(BRAKE);
 
         mtrLift2 = hw.get(DcMotorEx.class, "mtrLift2");
         mtrLift2.setDirection(DcMotorSimple.Direction.REVERSE);
         mtrLift2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        mtrLift2.setZeroPowerBehavior(BRAKE);
 
         gripper = hw.get(Servo.class, "svrGrip");
         armSwing = hw.get(Servo.class, "svrSwing");

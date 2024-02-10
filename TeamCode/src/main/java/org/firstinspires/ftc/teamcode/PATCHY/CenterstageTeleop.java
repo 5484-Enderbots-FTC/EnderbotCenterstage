@@ -57,8 +57,8 @@ public class CenterstageTeleop extends LinearOpMode {
     public Servo DroneShooter;
 
     //couple variables controlling our lift
-    boolean joggingup;
-    boolean joggingdown;
+    boolean joggingup = false;
+    boolean joggingdown = false;
     boolean gripperPressed;
 
     ElapsedTime servoTime = new ElapsedTime();
@@ -73,6 +73,11 @@ public class CenterstageTeleop extends LinearOpMode {
     public int m = 0;
 
     public boolean currentlyPressing = false;
+
+    public int gripperInt = 0;
+    public int oldGripperInt = 0;
+    public int intakeArmInt = 0;
+    public int oldIntakeArmInt = 0;
 
 
     @Override
@@ -249,11 +254,6 @@ public class CenterstageTeleop extends LinearOpMode {
             if (gamepad2.b) {
                 robot.mtrI.setPower(0);
             }
-
-            if (gamepad2.y){
-                robot.intakeLeft.setPosition(0.25);
-                robot.intakeRight.setPosition(.82);
-            }
             
            /* if (gamepad2.y){
                 intakeLeft.setPosition(0.25);
@@ -343,6 +343,25 @@ public class CenterstageTeleop extends LinearOpMode {
                }
 
            } */
+//outside
+            if (gamepad2.x && intakeArmInt == 0 && oldIntakeArmInt == 0) {
+                robot.intakeLeft.setPosition(0);
+                robot.intakeRight.setPosition(1);
+                intakeArmInt = 1;
+            }
+            //middle
+            if (gamepad2.x && intakeArmInt == 1 && oldIntakeArmInt == 0) {
+                robot.intakeRight.setPosition(0.93);
+                robot.intakeLeft.setPosition(.06);
+                intakeArmInt = 0;
+            }
+
+            //control and make sure we can't activate the above functions unless we aren't pressing the x button
+            if (gamepad2.x) {
+                oldIntakeArmInt = 1;
+            } else {
+                oldIntakeArmInt = 0;
+            }
 
             //hanging
             //extend the lift
@@ -373,11 +392,11 @@ public class CenterstageTeleop extends LinearOpMode {
             //motors were connected electrically, so we don't need to control
             //mtrLift2. However, it makes no difference whether we do or not.
 
-            if (gamepad2.right_trigger >= .9) {
+            if (gamepad2.right_trigger >= .9 && !joggingdown) {
                 robot.mtrLift.setDirection(DcMotorSimple.Direction.FORWARD);
-                robot.mtrLift2.setDirection(DcMotorSimple.Direction.REVERSE);
+                //robot.mtrLift2.setDirection(DcMotorSimple.Direction.REVERSE);
                 robot.mtrLift.setVelocity(1000);
-                robot.mtrLift2.setVelocity(1000);
+                //robot.mtrLift2.setVelocity(1000);
                 joggingup = true;
 
             }
@@ -388,32 +407,29 @@ public class CenterstageTeleop extends LinearOpMode {
             //and not let us move down.
             if (gamepad2.right_trigger == 0 && joggingup) {
                 robot.mtrLift.setVelocity(0);
-                robot.mtrLift2.setVelocity(0);
+                //robot.mtrLift2.setVelocity(0);
                 joggingup = false;
+                joggingdown = false;
 
-            } else if (gamepad2.left_trigger >= .9 && !robot.bottomLimit.isPressed()) {
+            }
+
+            if (gamepad2.left_trigger >= .9 && !robot.bottomLimit.isPressed() && !joggingup) {
                 robot.mtrLift.setDirection(DcMotorSimple.Direction.REVERSE);
-                robot.mtrLift2.setDirection(DcMotorSimple.Direction.FORWARD);
+                //robot.mtrLift2.setDirection(DcMotorSimple.Direction.FORWARD);
                 robot.mtrLift.setVelocity(1000);
-                robot.mtrLift2.setVelocity(1000);
+                //robot.mtrLift2.setVelocity(1000);
                 joggingdown = true;
 
             }
             //if we're moving down but our limit switch pressed, STOP!!!!
             if (joggingdown && robot.bottomLimit.isPressed()) {
                 robot.mtrLift.setVelocity(0);
-                robot.mtrLift2.setVelocity(0);
+                //robot.mtrLift2.setVelocity(0);
                 joggingdown = false;
+                joggingup = false;
                 
             //if we're holding down the left trigger & our limit switch isn't pressed
             //move our lift down, and set our memory/control bit to true.
-            } else if (gamepad2.left_trigger >= .9 && !bottomLimit.isPressed()) {
-                mtrLift.setDirection(DcMotorSimple.Direction.FORWARD);
-                mtrLift2.setDirection(DcMotorSimple.Direction.REVERSE);
-                mtrLift.setVelocity(1000);
-                mtrLift2.setVelocity(1000);
-                joggingdown = true;
-
             }
 
             //if we stop holding down our trigger and
@@ -424,12 +440,13 @@ public class CenterstageTeleop extends LinearOpMode {
             //this also doesn't need the limit switch to stop
             if (gamepad2.left_trigger == 0 && joggingdown) {
                 robot.mtrLift.setVelocity(0);
-                robot.mtrLift2.setVelocity(0);
+                //robot.mtrLift2.setVelocity(0);
                 joggingdown = false;
+                joggingup = false;
             }
 
             //shoot the drone launcher
-            if (gamepad1.left_bumper) {
+            if (gamepad2.left_bumper) {
                 robot.droneLauncher.setPosition(.15);
             }
 
@@ -437,7 +454,7 @@ public class CenterstageTeleop extends LinearOpMode {
 
             //if we are pressing the left bumper, weren't already open, and weren't holding
             //the button to begin with, then open the gripper to holding position.
-            if (gamepad2.left_bumper && !gripperPressed) {
+            /*if (gamepad2.left_bumper && !gripperPressed) {
                     gripperPressed = true;
                     Thread.sleep(1000);
 
@@ -452,6 +469,22 @@ public class CenterstageTeleop extends LinearOpMode {
                 robot.gripper.setPosition(0.57);
             } else {
                 robot.gripper.setPosition(.32);
+            }*/
+
+            if (gamepad2.right_bumper && gripperInt == 0 && oldGripperInt == 0) {
+                oldGripperInt = 1;
+                robot.gripper.setPosition(.57);
+                gripperInt = 1;
+            }
+
+           if (gamepad2.right_bumper && gripperInt == 1 && oldGripperInt == 0) {
+                robot.gripper.setPosition(.32);
+                gripperInt = 0;
+                oldGripperInt = 1;
+            }
+
+            if (!gamepad2.right_bumper) {
+                oldGripperInt = 0;
             }
 
 
@@ -470,6 +503,12 @@ public class CenterstageTeleop extends LinearOpMode {
             } else {
                 telemetry.addLine("Gripper Position: Not grabbing pixels.");
             }
+
+            telemetry.addData("Gripper Int", gripperInt);
+            telemetry.addData("Old Gripper Int", oldGripperInt);
+
+            telemetry.addData("Jogging up?", joggingup);
+            telemetry.addData("Jogging down?", joggingdown);
 
             telemetry.update();
             drive.update();
