@@ -31,8 +31,18 @@ public class dronetest extends LinearOpMode {
 
         droneLauncher = hardwareMap.get(Servo.class, "svrDrone");
 
+        droneLauncher.setPosition(1.0);
+
+        waitForStart();
+
         while (opModeIsActive()) {
+            if (gamepad1.a){
+                droneLauncher.setPosition(.689);
+            }
             droneLauncher.setPosition(droneLauncher.getPosition() - (gamepad1.left_stick_y * 0.001));
+
+            telemetry.addData("servo pos", droneLauncher.getPosition());
+            telemetry.update();
 
         }
     }
