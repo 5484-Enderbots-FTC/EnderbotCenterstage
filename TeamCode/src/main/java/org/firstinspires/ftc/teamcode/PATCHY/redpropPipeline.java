@@ -17,7 +17,7 @@ public class redpropPipeline implements VisionProcessor {
     Mat highMat = new Mat();
     Mat lowMat = new Mat();
     Mat finalMat = new Mat();
-    double blueThreshold = 0.01;
+    double blueThreshold = 0.009;
     double rightboxBlueThreshold = 0.1;
 
     String outStr = "left";
@@ -28,7 +28,7 @@ public class redpropPipeline implements VisionProcessor {
     );
     static final Rect RIGHT_RECTANGLE = new Rect(
             new Point(1280-640,0),
-            new Point(1279,720)
+            new Point(1280,720)
     );
     @Override
     public void init(int width, int height, CameraCalibration calibration) {
@@ -41,10 +41,10 @@ public class redpropPipeline implements VisionProcessor {
 
         //87 and 98 do NOT work
         //90 and 105 DID not work for right, worked for others
-        Scalar lowHSVRedLower = new Scalar(0, 170, 130);  //Beginning of Color Wheel
-        Scalar lowHSVRedUpper = new Scalar(7, 255, 255);
+        Scalar lowHSVRedLower = new Scalar(0, 100, 20);  //Beginning of Color Wheel
+        Scalar lowHSVRedUpper = new Scalar(10, 255, 255);
 
-        Scalar redHSVRedLower = new Scalar(173, 170, 130); //Wraps around Color Wheel
+        Scalar redHSVRedLower = new Scalar(160, 100, 20); //Wraps around Color Wheel
         Scalar highHSVRedUpper = new Scalar(180, 255, 255);
 
 
@@ -70,7 +70,7 @@ public class redpropPipeline implements VisionProcessor {
             outStr = "left";
         } else if(averagedRightBox > averagedLeftBox){
             outStr = "right";
-        }else {
+        } else {
             outStr = "center";
         }
         // comment this stuff out when done

@@ -41,8 +41,8 @@ public class bluepropPipeline implements VisionProcessor {
 
         //87 and 98 do NOT work
         //90 and 105 DID not work for right, worked for others
-        Scalar blueLower = new Scalar(85, 70, 90); //Wraps around Color Wheel
-        Scalar blueHigher = new Scalar(105, 255, 255);
+        Scalar blueLower = new Scalar(85, 100, 20); //Wraps around Color Wheel
+        Scalar blueHigher = new Scalar(115, 255, 255);
 
         Core.inRange(testMat, blueLower, blueHigher, finalMat);
 
@@ -64,7 +64,7 @@ public class bluepropPipeline implements VisionProcessor {
             outStr = "left";
         } else if(averagedRightBox > averagedLeftBox){
             outStr = "right";
-        }else {
+        } else {
             outStr = "center";
         }
         // comment this stuff out when done

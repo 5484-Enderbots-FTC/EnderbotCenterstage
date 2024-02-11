@@ -257,95 +257,7 @@ public class CenterstageTeleop extends LinearOpMode {
             if (gamepad2.b) {
                 robot.mtrI.setPower(0);
             }
-            
-           /* if (gamepad2.y){
-                intakeLeft.setPosition(0.25);
-                intakeRight.setPosition(.82);
-            } */
-//this *was* a state machine to control the position of the servo arms
-//one day i will fix this, but i can make it work without it. Less code readability,
-//but i can at least make it function
-           /* switch (intakePos) {
-                case intakeIn:
-                    if (gamepad2.y) {
-                        intakeRight.setPosition(0.85);
-                        intakePos = IntakeServo.intakeState.intakeOut;
-                    }
-                    if (gamepad2.x) {
-                        intakeRight.setPosition(.82);
-                        servoTime.reset();
-                        intakePos = IntakeServo.intakeState.intakeMiddle;
-                    }
 
-                    break;
-
-                case intakeMiddle:
-                    if (gamepad2.y) {
-                        intakeRight.setPosition(0.85);
-                        intakePos = IntakeServo.intakeState.intakeOut;
-                    }
-                    if (gamepad2.a) {
-                        intakeLeft.setPosition(.557);
-                        servoTime.reset();
-                        intakePos = IntakeServo.intakeState.intakeIn;
-                    }
-
-                    break;
-
-                case intakeOut:
-                    if (gamepad2.a) {
-                        intakeLeft.setPosition(.557);
-                        servoTime.reset();
-                        intakePos = IntakeServo.intakeState.intakeIn;
-                    }
-                    if (gamepad2.x) {
-                        intakeRight.setPosition(.82);
-                        servoTime.reset();
-                        intakePos = IntakeServo.intakeState.intakeMiddle;
-                    }
-
-                    break;
-
-                default:
-                    intakePos = IntakeServo.intakeState.intakeOut;
-            } */
-
-            //middle pos
-            /*
-            if (gamepad1.b) {
-                intakeRight.setPosition(.82);
-                servoTime.reset();
-                lastBtn = 'b';
-
-            }
-            //inside pos
-            if (gamepad1.y) {
-                intakeLeft.setPosition(.557);
-                servoTime.reset();
-                lastBtn = 'y';
-
-            }
-
-            if (gamepad1.x) {
-                intakeRight.setPosition(0.85);
-                lastBtn = 'x';
-            }
-
-            //after x seconds have passed, what button was last pressed? then set position.
-           if (servoTime.time() > .75) {
-
-               if (lastBtn == 'b') {
-                   intakeLeft.setPosition(0.25);
-               }
-
-               if (lastBtn == 'y') {
-                   intakeRight.setPosition(0.672);
-               }
-               if (lastBtn == 'x') {
-                   intakeLeft.setPosition(0.15);
-               }
-
-           } */
 //outside
             if (gamepad2.x && intakeArmInt == 0 && oldIntakeArmInt == 0) {
                 robot.intakeLeft.setPosition(0);
@@ -474,31 +386,13 @@ public class CenterstageTeleop extends LinearOpMode {
             }
 
             //if we are pressing the left bumper, weren't already open, and weren't holding
-            //the button to begin with, then open the gripper to holding position.
-            /*if (gamepad2.left_bumper && !gripperPressed) {
-                    gripperPressed = true;
-                    Thread.sleep(1000);
-
-            //if we are pressing the left bumper, were already open, and weren't holding
-            //the button to begin with, the close gripper to placement position
-            } else if (gamepad2.left_bumper && gripperPressed){
-                    gripperPressed = false;
-                    Thread.sleep(1000);
-            }
-
-            if (gripperPressed) {
-                robot.gripper.setPosition(0.57);
-            } else {
-                robot.gripper.setPosition(.32);
-            }*/
-
             if (gamepad2.right_bumper && gripperInt == 0 && oldGripperInt == 0) {
                 robot.gripper.setPosition(.57);
                 gripperInt = 1;
                 oldGripperInt = 1;
             }
 
-           if (gamepad2.right_bumper && gripperInt == 1 && oldGripperInt == 0) {
+            if (gamepad2.right_bumper && gripperInt == 1 && oldGripperInt == 0) {
                 robot.gripper.setPosition(.32);
                 gripperInt = 0;
                 oldGripperInt = 1;
@@ -507,6 +401,7 @@ public class CenterstageTeleop extends LinearOpMode {
             if (!gamepad2.right_bumper && oldGripperInt != 0) {
                 oldGripperInt = 0;
             }
+
 
 
 
@@ -536,13 +431,6 @@ public class CenterstageTeleop extends LinearOpMode {
             } else {
                 telemetry.addLine("Proximity 2 not detecting.");
             }
-
-            telemetry.addData("Intake Arm Int", intakeArmInt);
-            telemetry.addData("Old Gripper Int", oldGripperInt);
-
-            telemetry.addData("Jogging up?", joggingup);
-            telemetry.addData("Jogging down?", joggingdown);
-            telemetry.addData("Arm swing pos", robot.armSwing.getPosition());
 
             telemetry.update();
             drive.update();

@@ -79,7 +79,7 @@ public class BluePurplePixel extends LinearOpMode {
         //center traj
         TrajectorySequence traj2b = drive.trajectorySequenceBuilder(traj1.end())
                 .forward(5)
-                .strafeRight(5)
+                .strafeLeft(5)
                 .build();
 
         //right traj
