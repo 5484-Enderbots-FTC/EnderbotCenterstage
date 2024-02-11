@@ -17,7 +17,7 @@ public class redpropPipeline implements VisionProcessor {
     Mat highMat = new Mat();
     Mat lowMat = new Mat();
     Mat finalMat = new Mat();
-    double blueThreshold = 0.009;
+    double redThreshold = 0.09;
     double rightboxBlueThreshold = 0.1;
 
     String outStr = "left";
@@ -64,7 +64,7 @@ public class redpropPipeline implements VisionProcessor {
         double averagedLeftBox = leftBox / LEFT_RECTANGLE.area() / 255;
         double averagedRightBox = rightBox / RIGHT_RECTANGLE.area() / 255;
 
-        if (averagedLeftBox > blueThreshold && averagedRightBox > blueThreshold){
+        if (averagedLeftBox > redThreshold && averagedRightBox > redThreshold){
             outStr = "center";
         } else if (averagedLeftBox > averagedRightBox){
             outStr = "left";

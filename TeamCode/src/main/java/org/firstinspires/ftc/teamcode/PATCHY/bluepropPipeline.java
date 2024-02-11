@@ -17,7 +17,7 @@ public class bluepropPipeline implements VisionProcessor {
     Mat highMat = new Mat();
     Mat lowMat = new Mat();
     Mat finalMat = new Mat();
-    double blueThreshold = 0.01;
+    double blueThreshold = 0.05;
     double rightboxBlueThreshold = 0.1;
 
     String outStr = "left";
