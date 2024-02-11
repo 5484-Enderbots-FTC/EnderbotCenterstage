@@ -420,7 +420,7 @@ public class CenterstageTeleop extends LinearOpMode {
             if (gamepad2.left_trigger >= .9 && !robot.bottomLimit.isPressed() && !joggingup) {
                 robot.mtrLift.setDirection(DcMotorSimple.Direction.REVERSE);
                 //robot.mtrLift2.setDirection(DcMotorSimple.Direction.FORWARD);
-                robot.mtrLift.setVelocity(1000);
+                robot.mtrLift.setVelocity(700);
                 //robot.mtrLift2.setVelocity(1000);
                 joggingdown = true;
 
@@ -468,6 +468,8 @@ public class CenterstageTeleop extends LinearOpMode {
 
             if (!gamepad1.a) {
                 oldArmInt = 0;
+            } else if (gamepad1.a) {
+                oldArmInt = 1;
             }
 
             robot.armSwing.setPosition(robot.armSwing.getPosition() - (gamepad2.left_stick_y * .01));

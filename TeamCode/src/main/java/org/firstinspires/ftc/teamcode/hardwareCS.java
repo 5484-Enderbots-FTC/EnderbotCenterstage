@@ -123,7 +123,7 @@ public class hardwareCS {
 
         bottomLimit = hw.get(TouchSensor.class, "BL Lift");
 
-        //liftColor = hw.get(ColorSensor.class, "liftColor");
+        liftColor = hw.get(ColorSensor.class, "clrSensor");
 
         intakeLeft = hw.get(Servo.class, "leftSvr");
         intakeRight = hw.get(Servo.class, "rightSvr");
