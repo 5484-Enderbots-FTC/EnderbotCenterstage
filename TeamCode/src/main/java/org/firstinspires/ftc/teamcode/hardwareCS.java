@@ -130,7 +130,7 @@ public class hardwareCS {
         svrHang = hw.get(Servo.class, "svrHang");
         svrHang.setPosition(0.53);
 
-        intakeRight.setPosition(1.0);
+        intakeRight.setPosition(0.94);
         intakeLeft.setPosition(0.027);
 
         proximityOne = hw.get(DigitalChannel.class, "nut1");

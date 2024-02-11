@@ -17,7 +17,7 @@ public class bluepropPipeline implements VisionProcessor {
     Mat highMat = new Mat();
     Mat lowMat = new Mat();
     Mat finalMat = new Mat();
-    double blueThreshold = 0.05;
+    double blueThreshold = 0.06;
     double rightboxBlueThreshold = 0.1;
 
     String outStr = "left";
@@ -41,7 +41,7 @@ public class bluepropPipeline implements VisionProcessor {
 
         //87 and 98 do NOT work
         //90 and 105 DID not work for right, worked for others
-        Scalar blueLower = new Scalar(85, 100, 20); //Wraps around Color Wheel
+        Scalar blueLower = new Scalar(85, 100, 50); //Wraps around Color Wheel
         Scalar blueHigher = new Scalar(115, 255, 255);
 
         Core.inRange(testMat, blueLower, blueHigher, finalMat);

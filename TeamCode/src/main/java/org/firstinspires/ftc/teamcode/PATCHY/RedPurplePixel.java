@@ -68,12 +68,12 @@ public class RedPurplePixel extends LinearOpMode {
         Pose2d startPose = new Pose2d(0,0, Math.toRadians(0));
 
         TrajectorySequence traj1 = drive.trajectorySequenceBuilder(startPose)
-                        .forward(20)
+                        .forward(22)
                                 .build();
 
         //left traj
         TrajectorySequence traj2a = drive.trajectorySequenceBuilder(traj1.end())
-                        .turn(Math.toRadians(60))
+                        .turn(Math.toRadians(65))
                                 .build();
 
         //center traj
@@ -84,22 +84,34 @@ public class RedPurplePixel extends LinearOpMode {
 
         //right traj
         TrajectorySequence traj2c = drive.trajectorySequenceBuilder(traj1.end())
-                        .turn(Math.toRadians(-60))
+                        .turn(Math.toRadians(-65))
                                 .build();
 
+        TrajectorySequence blah = drive.trajectorySequenceBuilder(new Pose2d())
+                .waitSeconds(2)
+                .build();
+
         waitForStart();
+
+        if (isStopRequested()) return;
+
         drive.followTrajectorySequence(traj1);
 
         if (auto == "left"){
             drive.followTrajectorySequence(traj2a);
-            mtrI.setPower(.7);
+            mtrI.setPower(.6);
         } else if (auto == "right"){
             drive.followTrajectorySequence(traj2c);
-            mtrI.setPower(.7);
+            mtrI.setPower(.6);
         }else {
             drive.followTrajectorySequence(traj2b);
-            mtrI.setPower(.7);
+            mtrI.setPower(.6);
         }
+
+        drive.followTrajectorySequence(blah);
+        mtrI.setPower(0);
+
+        while (!isStopRequested() && opModeIsActive()) ;
 
     }
 }

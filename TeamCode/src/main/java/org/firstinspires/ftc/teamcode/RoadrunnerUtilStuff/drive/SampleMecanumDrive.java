@@ -53,8 +53,8 @@ import static org.firstinspires.ftc.teamcode.RoadrunnerUtilStuff.drive.DriveCons
  */
 @Config
 public class SampleMecanumDrive extends MecanumDrive {
-    public static PIDCoefficients TRANSLATIONAL_PID = new PIDCoefficients(8, 0, 0);
-    public static PIDCoefficients HEADING_PID = new PIDCoefficients(8, 0, 0);
+    public static PIDCoefficients TRANSLATIONAL_PID = new PIDCoefficients(0, 0, 0);
+    public static PIDCoefficients HEADING_PID = new PIDCoefficients(0, 0, 0);
 
     public static double LATERAL_MULTIPLIER = 1.454;
 
@@ -118,8 +118,11 @@ public class SampleMecanumDrive extends MecanumDrive {
         }
 
         // TODO: reverse any motors using DcMotor.setDirection()
-        mtrFR.setDirection(DcMotorSimple.Direction.REVERSE);
-        mtrBR.setDirection(DcMotorSimple.Direction.REVERSE);
+        mtrFR.setDirection(DcMotorSimple.Direction.FORWARD);
+        mtrBR.setDirection(DcMotorSimple.Direction.FORWARD);
+        mtrFL.setDirection(DcMotorSimple.Direction.REVERSE);
+        mtrBL.setDirection(DcMotorSimple.Direction.REVERSE);
+
 
         List<Integer> lastTrackingEncPositions = new ArrayList<>();
         List<Integer> lastTrackingEncVels = new ArrayList<>();
@@ -287,7 +290,7 @@ public class SampleMecanumDrive extends MecanumDrive {
 
     @Override
     public double getRawExternalHeading() {
-        return 0;
+        return 0.0;
     }
 
     @Override
