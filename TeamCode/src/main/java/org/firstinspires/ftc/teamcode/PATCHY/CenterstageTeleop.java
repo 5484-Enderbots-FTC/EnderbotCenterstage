@@ -191,6 +191,7 @@ public class CenterstageTeleop extends LinearOpMode {
         hardwareCS robot = new hardwareCS();
         robot.inithardware(hardwareMap);
         robot.armSwing.setPosition(0.0);
+        robot.gripper.setPosition(.37);
 
         //start
         waitForStart();
