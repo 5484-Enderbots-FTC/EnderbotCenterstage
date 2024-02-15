@@ -82,8 +82,8 @@ public class BluePurplePixel extends LinearOpMode {
 
         //center traj
         TrajectorySequence traj2b = drive.trajectorySequenceBuilder(traj1.end())
-                .forward(5)
-                .strafeLeft(5)
+                .forward(10)
+                .strafeLeft(20)
                 .build();
 
         //right traj
@@ -109,6 +109,8 @@ public class BluePurplePixel extends LinearOpMode {
 
         drive.followTrajectory(traj1);
 
+
+        auto = bluepropPipeline.getPropPosition();
         if (auto == "left"){
             drive.followTrajectorySequence(traj2a);
             mtrI.setPower(.6);
