@@ -1,6 +1,4 @@
-package org.firstinspires.ftc.teamcode.PATCHY;
-
-import static com.qualcomm.robotcore.hardware.DcMotor.ZeroPowerBehavior.BRAKE;
+package org.firstinspires.ftc.teamcode.PATCHY.TELEOP;
 
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -15,9 +13,9 @@ import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.TouchSensor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import org.firstinspires.ftc.teamcode.PATCHY.hardwareCS;
 import org.firstinspires.ftc.teamcode.RoadrunnerUtilStuff.drive.SampleMecanumDrive;
-import org.firstinspires.ftc.teamcode.hardwareCS;
-import org.firstinspires.ftc.teamcode.pocCode.IntakeServo;
+import org.firstinspires.ftc.teamcode.pocCode.INTAKE.IntakeServo;
 //
 
 

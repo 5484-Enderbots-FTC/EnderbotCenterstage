@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.pocCode;
+package org.firstinspires.ftc.teamcode.pocCode.INTAKE;
 import static com.qualcomm.robotcore.hardware.DcMotor.ZeroPowerBehavior.BRAKE;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;

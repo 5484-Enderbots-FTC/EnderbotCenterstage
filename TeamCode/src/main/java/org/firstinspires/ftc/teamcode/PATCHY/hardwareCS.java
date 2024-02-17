@@ -1,34 +1,23 @@
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.PATCHY;
 
 import static com.qualcomm.robotcore.hardware.DcMotor.ZeroPowerBehavior.BRAKE;
 
 import android.util.Size;
 
 import com.acmerobotics.roadrunner.geometry.Pose2d;
-import com.acmerobotics.roadrunner.geometry.Vector2d;
-import com.qualcomm.hardware.modernrobotics.ModernRoboticsI2cRangeSensor;
-import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.DigitalChannel;
 import com.qualcomm.robotcore.hardware.HardwareMap;
-import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 import com.qualcomm.robotcore.hardware.Servo;
-import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.TouchSensor;
-import com.qualcomm.robotcore.hardware.VoltageSensor;
-import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
-import org.firstinspires.ftc.teamcode.PATCHY.bluepropPipeline;
-import org.firstinspires.ftc.teamcode.RoadrunnerUtilStuff.drive.SampleMecanumDrive;
-import org.firstinspires.ftc.teamcode.RoadrunnerUtilStuff.trajectorysequence.TrajectorySequence;
+import org.firstinspires.ftc.teamcode.PATCHY.AUTOS.PIPELINES.bluepropPipeline;
 import org.firstinspires.ftc.vision.VisionPortal;
 import org.openftc.easyopencv.OpenCvCamera;
-import org.openftc.easyopencv.OpenCvCameraFactory;
-import org.openftc.easyopencv.OpenCvCameraRotation;
 
 
 public class hardwareCS {
@@ -68,7 +57,7 @@ public class hardwareCS {
     //auto things
     public String auto;
     public VisionPortal portal;
-    public org.firstinspires.ftc.teamcode.PATCHY.bluepropPipeline bluepropPipeline;
+    public org.firstinspires.ftc.teamcode.PATCHY.AUTOS.PIPELINES.bluepropPipeline bluepropPipeline;
 
     Pose2d visPose;
     Pose2d placePose;
@@ -130,8 +119,8 @@ public class hardwareCS {
         svrHang = hw.get(Servo.class, "svrHang");
         svrHang.setPosition(0.53);
 
-        intakeRight.setPosition(0.94);
-        intakeLeft.setPosition(0.027);
+        //intakeRight.setPosition(0.94);
+        //intakeLeft.setPosition(0.027);
 
         proximityOne = hw.get(DigitalChannel.class, "nut1");
         proximityTwo = hw.get(DigitalChannel.class, "nut2");

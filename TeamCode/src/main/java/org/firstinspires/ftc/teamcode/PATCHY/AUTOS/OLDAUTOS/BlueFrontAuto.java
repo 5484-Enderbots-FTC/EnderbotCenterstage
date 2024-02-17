@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.pocCode;
+package org.firstinspires.ftc.teamcode.PATCHY.AUTOS.OLDAUTOS;
 
 
 import android.util.Size;
@@ -11,25 +11,24 @@ import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
-import org.firstinspires.ftc.teamcode.PATCHY.bluepropPipeline;
+import org.firstinspires.ftc.teamcode.PATCHY.AUTOS.PIPELINES.bluepropPipeline;
 import org.firstinspires.ftc.teamcode.RoadrunnerUtilStuff.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.RoadrunnerUtilStuff.trajectorysequence.TrajectorySequence;
-import org.firstinspires.ftc.teamcode.hardwareCS;
+import org.firstinspires.ftc.teamcode.PATCHY.hardwareCS;
 import org.firstinspires.ftc.vision.VisionPortal;
 
 @Config
-@Autonomous(name = "Autostate Blue Front", group = "Parking Autos")
+@Autonomous(name = "Blue Frontstage Parking Auto", group = "Parking Autos")
 
-public class AutoStateMachine extends LinearOpMode {
-    //you fixed the turning on this one
+public class BlueFrontAuto extends LinearOpMode {
+//you fixed the turning on this one
     Pose2d visPose;
     Pose2d placePose;
     String auto;
     private VisionPortal portal;
-    private org.firstinspires.ftc.teamcode.PATCHY.bluepropPipeline bluepropPipeline;
+    private org.firstinspires.ftc.teamcode.PATCHY.AUTOS.PIPELINES.bluepropPipeline bluepropPipeline;
 
     DcMotor mtrI;
-    private int state = 0;
 
 
     @Override
@@ -39,29 +38,53 @@ public class AutoStateMachine extends LinearOpMode {
         robot.inithardware(hardwareMap);
 
         mtrI = robot.mtrI;
-//predefining positions for purple and yellow pixel placement because we always know where it is going to end
-        if (auto == "left") {
-            visPose = new Pose2d(-36.00, 35.00, Math.toRadians(270));
-            placePose = new Pose2d(51.00, 42.50, Math.toRadians(180));
-            state = 0;
 
-        } else if (auto == "right") {
-            visPose = new Pose2d(-36.00, 35.00, Math.toRadians(270));
-            placePose = new Pose2d(51.00, 30.00, Math.toRadians(180));
-            state = 10;
+        while (opModeInInit()) {
+            bluepropPipeline = new bluepropPipeline();
 
-        } else {
-            visPose = new Pose2d(-52.00, 30.00, Math.toRadians(270));
-            placePose = new Pose2d(51.00, 36.00, Math.toRadians(180));
-            state = 20;
+            portal = new VisionPortal.Builder()
+                    .setCamera(hardwareMap.get(WebcamName.class, "Webcam 1"))
+                    .setCameraResolution(new Size(1280, 720))
+                    .addProcessor(bluepropPipeline)
+                    .build();
+
+            //portal.saveNextFrameRaw(String.format(Locale.US, "CameraFrameCapture-%06d"));
+            if (portal.getCameraState() != VisionPortal.CameraState.STREAMING) {
+                telemetry.addData("Camera", "Waiting");
+                telemetry.update();
+                while (!isStopRequested() && (portal.getCameraState() != VisionPortal.CameraState.STREAMING)) {
+                    sleep(20);
+                }
+                telemetry.addData("Camera", "Ready");
+                telemetry.update();
+            }
+
+//prop position for autonomous, auto = prop position
+            auto = bluepropPipeline.getPropPosition();
+            telemetry.addData("blue Prop Position", bluepropPipeline.getPropPosition());
+            telemetry.update();
+
+            if (auto == "left"){
+                visPose = new Pose2d(-36.00,35.00, Math.toRadians(270));
+                placePose = new Pose2d(51.00, 42.50, Math.toRadians(180));
+
+            }else if (auto == "right"){
+                visPose = new Pose2d(-36.00,35.00, Math.toRadians(270));
+                placePose = new Pose2d(51.00, 30.00, Math.toRadians(180));
+
+            }else {
+                visPose = new Pose2d(-52.00, 30.00, Math.toRadians(270));
+                placePose = new Pose2d(51.00, 36.00, Math.toRadians(180));
+
+            }
 
         }
-//this is the robot starting from right far back
+
+
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
-        Pose2d startPose = new Pose2d(-36, 60, Math.toRadians(270));
+        Pose2d startPose = new Pose2d(-36,60, Math.toRadians(270));
         drive.setPoseEstimate(startPose);
 
-        //defining movement to placement zone for purple pixel
         TrajectorySequence bfTraj1 = drive.trajectorySequenceBuilder(startPose)
                 .lineTo(new Vector2d(-36.00, 35.00))
                 .build();
@@ -82,7 +105,7 @@ public class AutoStateMachine extends LinearOpMode {
                 .turn(Math.toRadians(-90))
                 .build();
         TrajectorySequence bfLeftProp2 = drive.trajectorySequenceBuilder(bfLeftProp1.end())
-                .lineTo(new Vector2d(-36.00, 35.00))
+                .lineTo(new Vector2d(-36.00,35.00))
                 .build();
 
         //right trajs
@@ -101,7 +124,7 @@ public class AutoStateMachine extends LinearOpMode {
                 .turn(Math.toRadians(90))
                 .build();
         TrajectorySequence bfRightProp2 = drive.trajectorySequenceBuilder(bfRightProp1.end())
-                .lineTo(new Vector2d(-36.00, 35.00))
+                .lineTo(new Vector2d(-36.00,35.00))
                 .build();
 
         //center trajs
@@ -163,30 +186,24 @@ public class AutoStateMachine extends LinearOpMode {
                 .build();
 
 
-        while (opModeInInit()) {
-            robot.initWebcamBlue();
-            auto = robot.getOutString();
-
-        }
-
         waitForStart();
 
 
-        drive.followTrajectorySequence(bfTraj1);
+            drive.followTrajectorySequence(bfTraj1);
 
-        if (auto == "left") {
-            drive.followTrajectorySequence(bfLeftProp1);
-            drive.followTrajectorySequence(bfLeftProp2);
+            if (auto == "left"){
+                drive.followTrajectorySequence(bfLeftProp1);
+                drive.followTrajectorySequence(bfLeftProp2);
 
-        } else if (auto == "right") {
-            drive.followTrajectorySequence(bfRightProp1);
-            drive.followTrajectorySequence(bfRightProp2);
+            } else if (auto == "right") {
+                drive.followTrajectorySequence(bfRightProp1);
+                drive.followTrajectorySequence(bfRightProp2);
 
-        } else {
-            drive.followTrajectorySequence(bfCenterProp1);
-            drive.followTrajectorySequence(bfCenterProp2);
+            } else {
+                drive.followTrajectorySequence(bfCenterProp1);
+                drive.followTrajectorySequence(bfCenterProp2);
 
-        }
+            }
 /*
             drive.setPoseEstimate(visPose);
             drive.followTrajectorySequence(bfTraj2);
@@ -209,6 +226,6 @@ public class AutoStateMachine extends LinearOpMode {
             drive.setPoseEstimate(placePose);
             drive.followTrajectorySequence(bfTraj4); */
 
-    }
-}
+        }
 
+    }

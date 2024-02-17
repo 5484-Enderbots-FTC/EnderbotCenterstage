@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.PATCHY;
+package org.firstinspires.ftc.teamcode.PATCHY.AUTOS.PURPLEPIXELONLY;
 
 import static com.qualcomm.robotcore.hardware.DcMotor.ZeroPowerBehavior.BRAKE;
 
@@ -6,24 +6,26 @@ import android.util.Size;
 
 import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
+import com.acmerobotics.roadrunner.trajectory.Trajectory;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
+import org.firstinspires.ftc.teamcode.PATCHY.AUTOS.PIPELINES.bluepropPipeline;
 import org.firstinspires.ftc.teamcode.RoadrunnerUtilStuff.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.RoadrunnerUtilStuff.trajectorysequence.TrajectorySequence;
-import org.firstinspires.ftc.teamcode.hardwareCS;
+import org.firstinspires.ftc.teamcode.PATCHY.hardwareCS;
 import org.firstinspires.ftc.vision.VisionPortal;
 
 @Config
-@Autonomous(name = "Red Purple Pixel", group = "Purple Pixel Autos")
-public class RedPurplePixel extends LinearOpMode {
+@Autonomous(name = "blue Purple Pixel", group = "Purple Pixel Autos")
+public class BluePurplePixel extends LinearOpMode {
 
     private VisionPortal portal;
-    private org.firstinspires.ftc.teamcode.PATCHY.redpropPipeline redpropPipeline;
+    private org.firstinspires.ftc.teamcode.PATCHY.AUTOS.PIPELINES.bluepropPipeline bluepropPipeline;
     DcMotorEx mtrI;
 
     private String auto;
@@ -33,19 +35,22 @@ public class RedPurplePixel extends LinearOpMode {
         hardwareCS robot = new hardwareCS();
         robot.inithardware(hardwareMap);
 
+        robot.mtrBL.setDirection(DcMotorSimple.Direction.REVERSE);
+        robot.mtrBR.setDirection(DcMotorSimple.Direction.FORWARD);
+        robot.mtrFL.setDirection(DcMotorSimple.Direction.REVERSE);
+        robot.mtrFR.setDirection(DcMotorSimple.Direction.FORWARD);
+
         mtrI =  hardwareMap.get(DcMotorEx.class, "mtrI");
         mtrI.setZeroPowerBehavior(BRAKE);
         mtrI.setDirection(DcMotor.Direction.FORWARD);
         mtrI.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
-        init_loop();
-        {
-            redpropPipeline = new redpropPipeline();
+            bluepropPipeline = new bluepropPipeline();
 
             portal = new VisionPortal.Builder()
                     .setCamera(hardwareMap.get(WebcamName.class, "Webcam 1"))
                     .setCameraResolution(new Size(1280, 720))
-                    .addProcessor(redpropPipeline)
+                    .addProcessor(bluepropPipeline)
                     .build();
 
             //portal.saveNextFrameRaw(String.format(Locale.US, "CameraFrameCapture-%06d"));
@@ -59,57 +64,82 @@ public class RedPurplePixel extends LinearOpMode {
                 telemetry.update();
             }
 
-            auto = redpropPipeline.getPropPosition();
-            telemetry.addData("Red Prop Position", redpropPipeline.getPropPosition());
+            auto = bluepropPipeline.getPropPosition();
+            telemetry.addData("Blue Prop Position", bluepropPipeline.getPropPosition());
             telemetry.update();
-        }
+
 
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
-        Pose2d startPose = new Pose2d(0,0, Math.toRadians(0));
 
-        TrajectorySequence traj1 = drive.trajectorySequenceBuilder(startPose)
-                        .forward(22)
-                                .build();
+        Trajectory traj1 = drive.trajectoryBuilder(new Pose2d())
+                .forward(20)
+                .build();
 
         //left traj
         TrajectorySequence traj2a = drive.trajectorySequenceBuilder(traj1.end())
-                        .turn(Math.toRadians(65))
-                                .build();
+                .turn(Math.toRadians(65))
+                .build();
+        TrajectorySequence traj3a = drive.trajectorySequenceBuilder(traj2a.end())
+                .forward(3)
+                .build();
 
         //center traj
         TrajectorySequence traj2b = drive.trajectorySequenceBuilder(traj1.end())
-                        .forward(5)
-                                .strafeRight(5)
-                                        .build();
+                .forward(4)
+                .strafeLeft(5)
+                .forward(1)
+                .build();
 
         //right traj
         TrajectorySequence traj2c = drive.trajectorySequenceBuilder(traj1.end())
-                        .turn(Math.toRadians(-65))
-                                .build();
-
-        TrajectorySequence blah = drive.trajectorySequenceBuilder(new Pose2d())
-                .waitSeconds(2)
+                .turn(Math.toRadians(-65))
+                .build();
+        TrajectorySequence traj3c = drive.trajectorySequenceBuilder(traj2c.end())
+                .forward(3)
                 .build();
 
-        waitForStart();
+        TrajectorySequence blah = drive.trajectorySequenceBuilder(new Pose2d())
+                        .waitSeconds(2)
+                                .build();
 
+        while (!isStarted() && !isStopRequested()) {
+
+            telemetry.addLine("waitForStart");
+            telemetry.addData("Prop Position", bluepropPipeline.getPropPosition());
+            telemetry.update();
+            sleep(20);
+        }
+
+        waitForStart();
+        auto = bluepropPipeline.getPropPosition();
+
+        telemetry.addLine(auto);
+        telemetry.update();
         if (isStopRequested()) return;
 
-        drive.followTrajectorySequence(traj1);
+        robot.intakeRight.setPosition(0.94);
+        robot.intakeLeft.setPosition(0.027);
+
+        drive.followTrajectory(traj1);
+
+
 
         if (auto == "left"){
             drive.followTrajectorySequence(traj2a);
-            mtrI.setPower(.6);
+            drive.followTrajectorySequence(traj3a);
+            mtrI.setPower(.5);
         } else if (auto == "right"){
             drive.followTrajectorySequence(traj2c);
-            mtrI.setPower(.6);
+            drive.followTrajectorySequence(traj3c);
+            mtrI.setPower(.5);
         }else {
             drive.followTrajectorySequence(traj2b);
-            mtrI.setPower(.6);
+            mtrI.setPower(.5);
         }
 
         drive.followTrajectorySequence(blah);
         mtrI.setPower(0);
+
 
         while (!isStopRequested() && opModeIsActive()) ;
 

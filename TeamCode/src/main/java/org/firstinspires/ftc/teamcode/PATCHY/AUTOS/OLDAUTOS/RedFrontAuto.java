@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.PATCHY;
+package org.firstinspires.ftc.teamcode.PATCHY.AUTOS.OLDAUTOS;
 
 import static com.qualcomm.robotcore.hardware.DcMotor.ZeroPowerBehavior.BRAKE;
 
@@ -12,6 +12,7 @@ import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 
+import org.firstinspires.ftc.teamcode.PATCHY.AUTOS.PIPELINES.redpropPipeline;
 import org.firstinspires.ftc.teamcode.RoadrunnerUtilStuff.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.RoadrunnerUtilStuff.trajectorysequence.TrajectorySequence;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
@@ -26,7 +27,7 @@ public class RedFrontAuto extends LinearOpMode {
     Pose2d placePose;
     String auto;
     private VisionPortal portal;
-    private org.firstinspires.ftc.teamcode.PATCHY.redpropPipeline redpropPipeline;
+    private org.firstinspires.ftc.teamcode.PATCHY.AUTOS.PIPELINES.redpropPipeline redpropPipeline;
     DcMotorEx mtrI;
 
     @Override
