@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.pocCode.DRIVE;
+package org.firstinspires.ftc.teamcode.PATCHY.pocCode.DRIVE;
 
 
 import com.acmerobotics.dashboard.config.Config;
@@ -22,7 +22,7 @@ public class AutoStateMachine extends LinearOpMode {
     Pose2d placePose;
     String auto;
     private VisionPortal portal;
-    private org.firstinspires.ftc.teamcode.PATCHY.AUTOS.PIPELINES.bluepropPipeline bluepropPipeline;
+    private org.firstinspires.ftc.teamcode.PATCHY.PIPELINES.bluepropPipeline bluepropPipeline;
 
     DcMotor mtrI;
     private int state = 0;

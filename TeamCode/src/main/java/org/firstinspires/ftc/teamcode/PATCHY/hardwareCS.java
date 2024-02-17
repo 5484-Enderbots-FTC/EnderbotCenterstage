@@ -15,7 +15,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.TouchSensor;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
-import org.firstinspires.ftc.teamcode.PATCHY.AUTOS.PIPELINES.bluepropPipeline;
+import org.firstinspires.ftc.teamcode.PATCHY.PIPELINES.bluepropPipeline;
 import org.firstinspires.ftc.vision.VisionPortal;
 import org.openftc.easyopencv.OpenCvCamera;
 
@@ -57,7 +57,7 @@ public class hardwareCS {
     //auto things
     public String auto;
     public VisionPortal portal;
-    public org.firstinspires.ftc.teamcode.PATCHY.AUTOS.PIPELINES.bluepropPipeline bluepropPipeline;
+    public org.firstinspires.ftc.teamcode.PATCHY.PIPELINES.bluepropPipeline bluepropPipeline;
 
     Pose2d visPose;
     Pose2d placePose;

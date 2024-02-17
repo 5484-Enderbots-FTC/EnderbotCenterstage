@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.pocCode.VISION;
+package org.firstinspires.ftc.teamcode.PATCHY.pocCode.VISION;
 
 import android.util.Size;
 
@@ -6,7 +6,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
-import org.firstinspires.ftc.teamcode.PATCHY.AUTOS.PIPELINES.redpropPipeline;
+import org.firstinspires.ftc.teamcode.PATCHY.PIPELINES.redpropPipeline;
 import org.firstinspires.ftc.vision.VisionPortal;
 
 @Autonomous(name = "Red Vision Test")
@@ -14,7 +14,7 @@ public class redvisiontest extends LinearOpMode {
 
 
     private VisionPortal portal;
-    private org.firstinspires.ftc.teamcode.PATCHY.AUTOS.PIPELINES.redpropPipeline redpropPipeline;
+    private org.firstinspires.ftc.teamcode.PATCHY.PIPELINES.redpropPipeline redpropPipeline;
 
     @Override
     public void runOpMode() throws InterruptedException {

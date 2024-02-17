@@ -11,7 +11,7 @@ import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
-import org.firstinspires.ftc.teamcode.PATCHY.AUTOS.PIPELINES.bluepropPipeline;
+import org.firstinspires.ftc.teamcode.PATCHY.PIPELINES.bluepropPipeline;
 import org.firstinspires.ftc.teamcode.RoadrunnerUtilStuff.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.RoadrunnerUtilStuff.trajectorysequence.TrajectorySequence;
 import org.firstinspires.ftc.teamcode.PATCHY.hardwareCS;
@@ -26,7 +26,7 @@ public class BlueFrontAuto extends LinearOpMode {
     Pose2d placePose;
     String auto;
     private VisionPortal portal;
-    private org.firstinspires.ftc.teamcode.PATCHY.AUTOS.PIPELINES.bluepropPipeline bluepropPipeline;
+    private org.firstinspires.ftc.teamcode.PATCHY.PIPELINES.bluepropPipeline bluepropPipeline;
 
     DcMotor mtrI;
 

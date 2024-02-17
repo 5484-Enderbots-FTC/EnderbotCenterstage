@@ -13,7 +13,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
-import org.firstinspires.ftc.teamcode.PATCHY.AUTOS.PIPELINES.redpropPipeline;
+import org.firstinspires.ftc.teamcode.PATCHY.PIPELINES.redpropPipeline;
 import org.firstinspires.ftc.teamcode.RoadrunnerUtilStuff.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.RoadrunnerUtilStuff.trajectorysequence.TrajectorySequence;
 import org.firstinspires.ftc.vision.VisionPortal;
@@ -26,7 +26,7 @@ public class RedBackAuto extends LinearOpMode {
     Pose2d placePose;
     String auto;
     private VisionPortal portal;
-    private org.firstinspires.ftc.teamcode.PATCHY.AUTOS.PIPELINES.redpropPipeline redpropPipeline;
+    private org.firstinspires.ftc.teamcode.PATCHY.PIPELINES.redpropPipeline redpropPipeline;
     DcMotorEx mtrI;
 
     @Override

@@ -15,7 +15,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.PATCHY.hardwareCS;
 import org.firstinspires.ftc.teamcode.RoadrunnerUtilStuff.drive.SampleMecanumDrive;
-import org.firstinspires.ftc.teamcode.pocCode.INTAKE.IntakeServo;
+import org.firstinspires.ftc.teamcode.PATCHY.pocCode.INTAKE.IntakeServo;
 //
 
 
