@@ -11,6 +11,8 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.teamcode.PATCHY.PIPELINES.redpropPipeline;
@@ -28,6 +30,9 @@ public class RedBackdropNew extends LinearOpMode {
     DcMotorEx mtrI;
 
     int state;
+    ElapsedTime lifttime;
+
+    double resolution;
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -66,17 +71,51 @@ public class RedBackdropNew extends LinearOpMode {
     Pose2d startPose = new Pose2d(12.00, -62.75, Math.toRadians(90.00));
 
 
-    // all of the center trajectories
-    TrajectorySequence redBackdropCenterTrajsOutsidePark = drive.trajectorySequenceBuilder(startPose)
+
+
+    //one universal trajectory
+    TrajectorySequence redBackdropUniversalTraj1 = drive.trajectorySequenceBuilder(startPose)
             .lineTo(new Vector2d(12.00, -34.50))
+            .addTemporalMarker(0, () -> {
+                robot.intakeRight.setPosition(.94);
+                robot.gripper.setPosition(.57);
+            })
+            .addTemporalMarker(0.3, () -> {
+                robot.intakeLeft.setPosition(.027);
+            })
+            .build();
+
+    //center trajectories
+    TrajectorySequence redBackdropCenterTrajs1 = drive.trajectorySequenceBuilder(redBackdropUniversalTraj1.end())
             .lineTo(new Vector2d(17.00, -34.50))
+            .addTemporalMarker(2, () -> {
+                mtrI.setPower(.6);
+            })
+            .waitSeconds(2)
             .build();
-    TrajectorySequence redBackdropCenterTrajsOutsidePark2 = drive.trajectorySequenceBuilder(redBackdropCenterTrajsOutsidePark.end())
+    TrajectorySequence redBackdropCenterTrajs2 = drive.trajectorySequenceBuilder(redBackdropCenterTrajs1.end())
             .lineTo(new Vector2d(51.50, -34.50))
+            .waitSeconds(1)
+            .addTemporalMarker(1, () -> {
+                mtrI.setPower(0);
+            })
+            .addTemporalMarker(2.5, () -> {
+                robot.mtrLift.setVelocity(1000);
+            })
+            .addTemporalMarker(3.25, () -> {
+                robot.mtrLift.setVelocity(0);
+            })
+            .turn(Math.toRadians(-90))
             .build();
-    TrajectorySequence redBackdropCenterTrajsOutsidePark3 = drive.trajectorySequenceBuilder(redBackdropCenterTrajsOutsidePark2.end())
+    TrajectorySequence redBackdropCenterTrajs3 = drive.trajectorySequenceBuilder(redBackdropCenterTrajs2.end())
             .lineTo(new Vector2d(48.00, -34.50))
+            .waitSeconds(2)
+            .addTemporalMarker(1, () -> {
+                robot.gripper.setPosition(.32);
+            })
             .build();
+
+    //right trajectories
 
 
 
@@ -105,15 +144,26 @@ public class RedBackdropNew extends LinearOpMode {
 
                 break;
             case (30):
-                drive.followTrajectorySequence(redBackdropCenterTrajsOutsidePark);
-                drive.followTrajectorySequence(redBackdropCenterTrajsOutsidePark2);
-                drive.followTrajectorySequence(redBackdropCenterTrajsOutsidePark3);
+                drive.followTrajectorySequence(redBackdropCenterTrajs1);
+                drive.followTrajectorySequence(redBackdropCenterTrajs2);
+                drive.followTrajectorySequence(redBackdropCenterTrajs3);
                 break;
         }
 
         //if switch == high or whatever, we'll put this in
+        drive.followTrajectorySequence(outsidePark);
         //else
         //inside park trajectory
+        while (!robot.bottomLimit.isPressed()) {
+            robot.mtrLift.setDirection(DcMotorSimple.Direction.REVERSE);
+            lifttime.reset();
+            robot.mtrLift.setVelocity(1000);
+            if (robot.bottomLimit.isPressed() || lifttime.time() >= .75 || robot.bottomLimit.isPressed() && lifttime.time() >= .75) {
+                robot.mtrLift.setVelocity(0);
+                break;
+            }
+        }
+
 
     }
 }

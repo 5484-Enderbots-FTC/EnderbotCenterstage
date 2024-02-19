@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.PATCHY.pocCode.DRIVE;
 
 import com.acmerobotics.roadrunner.geometry.Pose2d;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -14,7 +15,7 @@ import org.firstinspires.ftc.teamcode.RoadrunnerUtilStuff.drive.SampleMecanumDri
 
 
 @TeleOp(name = "Test Tele", group = "Linear Opmode")
-//@Disabled
+@Disabled
 public class TestTele extends LinearOpMode {
 
     ElapsedTime runtime = new ElapsedTime();

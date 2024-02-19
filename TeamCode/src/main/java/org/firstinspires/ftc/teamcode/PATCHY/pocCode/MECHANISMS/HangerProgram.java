@@ -11,7 +11,7 @@ import com.qualcomm.robotcore.hardware.TouchSensor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 @TeleOp(name = "Hanger Program", group = "Linear Opmode")
-
+@Disabled
 public class HangerProgram extends LinearOpMode {
 
     DcMotor mtrHang;

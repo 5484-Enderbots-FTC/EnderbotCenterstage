@@ -6,6 +6,7 @@ import android.util.Size;
 import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -19,7 +20,7 @@ import org.firstinspires.ftc.vision.VisionPortal;
 
 @Config
 @Autonomous(name = "Blue Frontstage Parking Auto", group = "Parking Autos")
-
+@Disabled
 public class BlueFrontAuto extends LinearOpMode {
 //you fixed the turning on this one
     Pose2d visPose;

@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.PATCHY.pocCode.MECHANISMS;
 import static com.qualcomm.robotcore.hardware.DcMotor.ZeroPowerBehavior.BRAKE;
 
 import com.acmerobotics.roadrunner.geometry.Pose2d;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -19,7 +20,7 @@ import org.firstinspires.ftc.teamcode.RoadrunnerUtilStuff.drive.SampleMecanumDri
 
 @TeleOp(name = "dronetest", group = "Linear Opmode")
 //@Disabled
-
+@Disabled
 public class dronetest extends LinearOpMode {
 
     Servo droneLauncher;

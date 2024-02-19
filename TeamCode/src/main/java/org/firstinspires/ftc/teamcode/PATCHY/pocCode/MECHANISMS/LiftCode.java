@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.PATCHY.pocCode.MECHANISMS;
 
 import static com.qualcomm.robotcore.hardware.DcMotor.ZeroPowerBehavior.BRAKE;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
@@ -17,6 +18,7 @@ import org.firstinspires.ftc.teamcode.RoadrunnerUtilStuff.drive.SampleMecanumDri
 
 
 @TeleOp(name="Lift Code")
+@Disabled
 public class LiftCode extends LinearOpMode {
     // An Enum is used to represent lift states.
     // (This is one thing enums are designed to do)
