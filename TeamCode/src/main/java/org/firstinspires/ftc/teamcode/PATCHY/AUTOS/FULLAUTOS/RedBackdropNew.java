@@ -27,7 +27,7 @@ public class RedBackdropNew extends LinearOpMode {
     private org.firstinspires.ftc.teamcode.PATCHY.PIPELINES.redpropPipeline redpropPipeline;
     DcMotorEx mtrI;
 
-    private String auto;
+    int state;
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -59,27 +59,61 @@ public class RedBackdropNew extends LinearOpMode {
             telemetry.update();
         }
 
-        auto = redpropPipeline.getPropPosition();
         telemetry.addData("Red Prop Position", redpropPipeline.getPropPosition());
         telemetry.update();
 
     SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
     Pose2d startPose = new Pose2d(12.00, -62.75, Math.toRadians(90.00));
 
+
+    // all of the center trajectories
     TrajectorySequence redBackdropCenterTrajsOutsidePark = drive.trajectorySequenceBuilder(startPose)
             .lineTo(new Vector2d(12.00, -34.50))
             .lineTo(new Vector2d(17.00, -34.50))
+            .build();
+    TrajectorySequence redBackdropCenterTrajsOutsidePark2 = drive.trajectorySequenceBuilder(redBackdropCenterTrajsOutsidePark.end())
             .lineTo(new Vector2d(51.50, -34.50))
+            .build();
+    TrajectorySequence redBackdropCenterTrajsOutsidePark3 = drive.trajectorySequenceBuilder(redBackdropCenterTrajsOutsidePark2.end())
             .lineTo(new Vector2d(48.00, -34.50))
+            .build();
+
+
+
+    //outside parking trajectory
+    TrajectorySequence outsidePark = drive.trajectorySequenceBuilder(new Pose2d())
             .lineTo(new Vector2d(48.00, -60.00))
             .build();
 
 
         waitForStart();
-        auto = redpropPipeline.getPropPosition();
+        if (redpropPipeline.getPropPosition() == "left"){
+            state = 10;
+        } else if (redpropPipeline.getPropPosition() == "right") {
+            state = 20;
+        } else {
+            state = 30;
+        }
 
         if (isStopRequested()) return;
 
-        drive.followTrajectorySequence(redBackdropCenterTrajsOutsidePark);
+        switch (state){
+            case (10):
+
+                break;
+            case (20):
+
+                break;
+            case (30):
+                drive.followTrajectorySequence(redBackdropCenterTrajsOutsidePark);
+                drive.followTrajectorySequence(redBackdropCenterTrajsOutsidePark2);
+                drive.followTrajectorySequence(redBackdropCenterTrajsOutsidePark3);
+                break;
+        }
+
+        //if switch == high or whatever, we'll put this in
+        //else
+        //inside park trajectory
+
     }
 }
