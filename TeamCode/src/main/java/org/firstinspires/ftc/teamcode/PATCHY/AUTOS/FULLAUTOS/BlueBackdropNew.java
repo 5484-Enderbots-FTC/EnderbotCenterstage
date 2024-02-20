@@ -33,7 +33,9 @@ public class BlueBackdropNew extends LinearOpMode {
 
     private int state;
 
-    ElapsedTime lifttime;
+    ElapsedTime lifttime = new ElapsedTime();
+
+    Pose2d parkPose;
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -69,13 +71,11 @@ public class BlueBackdropNew extends LinearOpMode {
             telemetry.update();
         }
 
-        auto = bluepropPipeline.getPropPosition();
-        telemetry.addData("Blue Prop Position", bluepropPipeline.getPropPosition());
-        telemetry.update();
 
 
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
         Pose2d startPose = new Pose2d(12.00, 62.75, Math.toRadians(270.00));
+        drive.setPoseEstimate(startPose);
 
         TrajectorySequence blueBackdropUniversalTraj1 = drive.trajectorySequenceBuilder(startPose)
                 .lineTo(new Vector2d(12.00, 34.50))
@@ -91,11 +91,12 @@ public class BlueBackdropNew extends LinearOpMode {
 
         //if prop is in the center
         TrajectorySequence blueBackdropCenterTrajs1 = drive.trajectorySequenceBuilder(blueBackdropUniversalTraj1.end())
-                .lineTo(new Vector2d(17.00, 34.50))
-                .addTemporalMarker(2, () -> {
+                .lineTo(new Vector2d(17.00, 37.50))
+                .addTemporalMarker(1.5, () -> {
                     mtrI.setPower(.6);
                 })
-                .waitSeconds(2)
+                .waitSeconds(1)
+                .lineTo(new Vector2d(17.00, 42.00))
                 .build();
         TrajectorySequence blueBackdropCenterTrajs2 = drive.trajectorySequenceBuilder(blueBackdropCenterTrajs1.end())
                 .waitSeconds(1)
@@ -105,39 +106,56 @@ public class BlueBackdropNew extends LinearOpMode {
                 .addTemporalMarker(2.5, () -> {
                     robot.mtrLift.setVelocity(1000);
                 })
-                .addTemporalMarker(3.25, () -> {
+                .addTemporalMarker(3.1, () -> {
                     robot.mtrLift.setVelocity(0);
+                    robot.armSwing.setPosition(1.0);
                 })
                 .turn(Math.toRadians(-90))
-                .lineTo(new Vector2d(51.50, 34.50))
+                .lineTo(new Vector2d(51.50, 36.50))
 
                 .build();
         TrajectorySequence blueBackdropCenterTrajs3 = drive.trajectorySequenceBuilder(blueBackdropCenterTrajs2.end())
-                .waitSeconds(2)
+                .waitSeconds(1.25)
                 .addTemporalMarker(1, () -> {
                     robot.gripper.setPosition(.32);
                 })
-                .lineTo(new Vector2d(48.00, 34.50))
+                .addTemporalMarker(1.5, () -> {
+                    robot.armSwing.setPosition(0);
+                })
+                .lineTo(new Vector2d(48.00, 36.50))
                 .build();
 
 
 
         //outside parking trajectory
-        TrajectorySequence outsidePark = drive.trajectorySequenceBuilder(new Pose2d())
-                .lineTo(new Vector2d(48.00, 60.00))
-                .build();
+
+        while (!isStarted() && !isStopRequested()) {
+
+            telemetry.addLine("waitForStart");
+            telemetry.addData("Prop Position", bluepropPipeline.getPropPosition());
+            telemetry.update();
+            sleep(20);
+            if (bluepropPipeline.getPropPosition() == "left"){
+                state = 10;
+            } else if (bluepropPipeline.getPropPosition() == "right") {
+                state = 20;
+            } else {
+                state = 30;
+                parkPose = (new Pose2d(48.00,36.50, 180));
+            }
 
 
-        waitForStart();
-        if (bluepropPipeline.getPropPosition() == "left"){
-            state = 10;
-        } else if (bluepropPipeline.getPropPosition() == "right") {
-            state = 20;
-        } else {
-            state = 30;
         }
 
+        TrajectorySequence outsidePark = drive.trajectorySequenceBuilder(parkPose)
+                .waitSeconds(.5)
+                .lineTo(new Vector2d(48.00, 59.00))
+                .build();
+
+        waitForStart();
+
         if (isStopRequested()) return;
+        telemetry.addData("place", state);
 
         drive.followTrajectorySequence(blueBackdropUniversalTraj1);
 
@@ -155,6 +173,7 @@ public class BlueBackdropNew extends LinearOpMode {
                 break;
         }
 
+        drive.setPoseEstimate(parkPose);
         //if switch == high or whatever, we'll put this in
         drive.followTrajectorySequence(outsidePark);
         //else
@@ -162,6 +181,7 @@ public class BlueBackdropNew extends LinearOpMode {
 
         while (!robot.bottomLimit.isPressed()) {
             robot.mtrLift.setDirection(DcMotorSimple.Direction.REVERSE);
+            robot.armSwing.setPosition(.1);
             lifttime.reset();
             robot.mtrLift.setVelocity(1000);
             if (robot.bottomLimit.isPressed() || lifttime.time() >= .75 || robot.bottomLimit.isPressed() && lifttime.time() >= .75) {
@@ -169,6 +189,8 @@ public class BlueBackdropNew extends LinearOpMode {
                 break;
             }
         }
+
+        while (!isStopRequested() && opModeIsActive()) ;
 
     }
 }
