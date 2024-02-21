@@ -88,6 +88,43 @@ public class BlueBackdropNew extends LinearOpMode {
                 })
                 .build();
 
+        //if prop is on the left
+        TrajectorySequence blueBackdropLeftTrajs1 = drive.trajectorySequenceBuilder(blueBackdropUniversalTraj1.end())
+                .turn(Math.toRadians(90))
+                .waitSeconds(2)
+                .addTemporalMarker(1, () -> {
+                    mtrI.setPower(.6);
+                })
+                .build();
+
+        TrajectorySequence blueBackdropLeftTrajs2 = drive.trajectorySequenceBuilder(blueBackdropLeftTrajs1.end())
+                .addTemporalMarker(0, () -> {
+                    mtrI.setPower(0);
+                })
+                .addTemporalMarker(1, () -> {
+                    robot.mtrLift.setVelocity(1000);
+                    robot.armSwing.setPosition(1.0);
+                })
+                //to understand this turn motion, please go to learnroadrunner.com and read the 180 turn angle page in the advanced tips section
+                .turn(Math.toRadians(180) + 1e-6)
+                .lineTo(new Vector2d(12.00, 44.00))
+                .build();
+
+        TrajectorySequence blueBackdropLeftTrajs3 = drive.trajectorySequenceBuilder(blueBackdropLeftTrajs2.end())
+                .lineTo(new Vector2d(51.50, 44.00))
+                .addTemporalMarker(.2, () -> {
+                    robot.mtrLift.setVelocity(0);
+                })
+                .addTemporalMarker(1.25, () -> {
+                    robot.gripper.setPosition(.32);
+                })
+                .addTemporalMarker(1.5, () -> {
+                    robot.armSwing.setPosition(0);
+                })
+                .waitSeconds(2)
+                .lineTo(new Vector2d(46, 44))
+                .build();
+
 
         //if prop is in the center
         TrajectorySequence blueBackdropCenterTrajs1 = drive.trajectorySequenceBuilder(blueBackdropUniversalTraj1.end())
@@ -122,36 +159,73 @@ public class BlueBackdropNew extends LinearOpMode {
                 .addTemporalMarker(1.5, () -> {
                     robot.armSwing.setPosition(0);
                 })
-                .lineTo(new Vector2d(48.00, 36.50))
+                .lineTo(new Vector2d(46.00, 35.0))
+                .build();
+
+        //if the prop is on the right
+        TrajectorySequence blueBackdropRightTrajs1 = drive.trajectorySequenceBuilder(blueBackdropUniversalTraj1.end())
+                .turn(Math.toRadians(-90))
+                .addTemporalMarker(1, () -> {
+                    mtrI.setPower(.6);
+                })
+                .waitSeconds(1.5)
+                .build();
+
+        TrajectorySequence blueBackdropRightTrajs2 = drive.trajectorySequenceBuilder(blueBackdropRightTrajs1.end())
+                .addTemporalMarker(0, () -> {
+                    mtrI.setPower(0);
+                    robot.mtrLift.setVelocity(1000);
+                    robot.armSwing.setPosition(1.0);
+                })
+                .lineTo(new Vector2d(12.00, 30.00))
+                .build();
+
+        TrajectorySequence blueBackdropRightTrajs3 = drive.trajectorySequenceBuilder(blueBackdropRightTrajs2.end())
+                .addTemporalMarker(.2, () -> {
+                    robot.mtrLift.setVelocity(0);
+                })
+                .addTemporalMarker(1.25, () -> {
+                    robot.gripper.setPosition(.32);
+                })
+                .addTemporalMarker(1.5, () -> {
+                    robot.armSwing.setPosition(0);
+                })
+                .lineTo(new Vector2d(51.50, 30.00))
+                .waitSeconds(1)
+                .lineTo(new Vector2d(46, 30))
                 .build();
 
 
 
-        //outside parking trajectory
 
+        //outside parking trajectory
         while (!isStarted() && !isStopRequested()) {
 
             telemetry.addLine("waitForStart");
             telemetry.addData("Prop Position", bluepropPipeline.getPropPosition());
             telemetry.update();
-            sleep(20);
             if (bluepropPipeline.getPropPosition() == "left"){
                 state = 10;
+                parkPose = (new Pose2d(46, 44, Math.toRadians(180)));
             } else if (bluepropPipeline.getPropPosition() == "right") {
                 state = 20;
+                parkPose = (new Pose2d(46.00, 30.00, Math.toRadians(180)));
             } else {
                 state = 30;
-                parkPose = (new Pose2d(48.00,36.50, 180));
+                parkPose = (new Pose2d(46.00,36.50, Math.toRadians(180)));
             }
+            sleep(20);
+
 
 
         }
 
         TrajectorySequence outsidePark = drive.trajectorySequenceBuilder(parkPose)
                 .waitSeconds(.5)
-                .lineTo(new Vector2d(48.00, 59.00))
+                .lineTo(new Vector2d(46.00, 59.00))
                 .build();
 
+        //wait until we start
         waitForStart();
 
         if (isStopRequested()) return;
@@ -164,7 +238,9 @@ public class BlueBackdropNew extends LinearOpMode {
 
                 break;
             case (20):
-
+                drive.followTrajectorySequence(blueBackdropRightTrajs1);
+                drive.followTrajectorySequence(blueBackdropRightTrajs2);
+                drive.followTrajectorySequence(blueBackdropRightTrajs3);
                 break;
             case (30):
                 drive.followTrajectorySequence(blueBackdropCenterTrajs1);
