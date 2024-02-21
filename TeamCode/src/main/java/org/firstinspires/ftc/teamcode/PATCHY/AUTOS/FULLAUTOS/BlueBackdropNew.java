@@ -46,6 +46,7 @@ public class BlueBackdropNew extends LinearOpMode {
         robot.mtrBR.setDirection(DcMotorSimple.Direction.FORWARD);
         robot.mtrFL.setDirection(DcMotorSimple.Direction.REVERSE);
         robot.mtrFR.setDirection(DcMotorSimple.Direction.FORWARD);
+        robot.mtrLift.setDirection(DcMotorSimple.Direction.FORWARD);
 
         mtrI =  hardwareMap.get(DcMotorEx.class, "mtrI");
         mtrI.setZeroPowerBehavior(BRAKE);
@@ -128,12 +129,12 @@ public class BlueBackdropNew extends LinearOpMode {
 
         //if prop is in the center
         TrajectorySequence blueBackdropCenterTrajs1 = drive.trajectorySequenceBuilder(blueBackdropUniversalTraj1.end())
-                .lineTo(new Vector2d(17.00, 37.50))
+                .lineTo(new Vector2d(19.00, 37.50))
                 .addTemporalMarker(1.5, () -> {
                     mtrI.setPower(.6);
                 })
                 .waitSeconds(1)
-                .lineTo(new Vector2d(17.00, 42.00))
+                .lineTo(new Vector2d(19.00, 42.00))
                 .build();
         TrajectorySequence blueBackdropCenterTrajs2 = drive.trajectorySequenceBuilder(blueBackdropCenterTrajs1.end())
                 .waitSeconds(1)
@@ -152,11 +153,11 @@ public class BlueBackdropNew extends LinearOpMode {
 
                 .build();
         TrajectorySequence blueBackdropCenterTrajs3 = drive.trajectorySequenceBuilder(blueBackdropCenterTrajs2.end())
-                .waitSeconds(1.25)
-                .addTemporalMarker(1, () -> {
+                .waitSeconds(1)
+                .addTemporalMarker(.4, () -> {
                     robot.gripper.setPosition(.32);
                 })
-                .addTemporalMarker(1.5, () -> {
+                .addTemporalMarker(.8, () -> {
                     robot.armSwing.setPosition(0);
                 })
                 .lineTo(new Vector2d(46.00, 35.0))
@@ -167,30 +168,36 @@ public class BlueBackdropNew extends LinearOpMode {
                 .turn(Math.toRadians(-90))
                 .addTemporalMarker(1, () -> {
                     mtrI.setPower(.6);
+                    robot.gripper.setPosition(.57);
                 })
                 .waitSeconds(1.5)
                 .build();
 
         TrajectorySequence blueBackdropRightTrajs2 = drive.trajectorySequenceBuilder(blueBackdropRightTrajs1.end())
+                .lineTo(new Vector2d(16.00, 36.5))
+                .lineTo(new Vector2d(16.00, 26.5))
                 .addTemporalMarker(0, () -> {
                     mtrI.setPower(0);
-                    robot.mtrLift.setVelocity(1000);
-                    robot.armSwing.setPosition(1.0);
+                    robot.gripper.setPosition(.57);
                 })
-                .lineTo(new Vector2d(12.00, 30.00))
                 .build();
 
         TrajectorySequence blueBackdropRightTrajs3 = drive.trajectorySequenceBuilder(blueBackdropRightTrajs2.end())
-                .addTemporalMarker(.2, () -> {
-                    robot.mtrLift.setVelocity(0);
+                .addTemporalMarker(0, () -> {
+                    robot.mtrLift.setVelocity(1000);
+                    robot.gripper.setPosition(.57);
                 })
-                .addTemporalMarker(1.25, () -> {
+                .addTemporalMarker(.7, () -> {
+                    robot.mtrLift.setVelocity(0);
+                    robot.armSwing.setPosition(1.0);
+                })
+                .addTemporalMarker(1.8, () -> {
                     robot.gripper.setPosition(.32);
                 })
-                .addTemporalMarker(1.5, () -> {
+                .addTemporalMarker(2, () -> {
                     robot.armSwing.setPosition(0);
                 })
-                .lineTo(new Vector2d(51.50, 30.00))
+                .lineTo(new Vector2d(51.50, 26.5))
                 .waitSeconds(1)
                 .lineTo(new Vector2d(46, 30))
                 .build();
@@ -209,7 +216,7 @@ public class BlueBackdropNew extends LinearOpMode {
                 parkPose = (new Pose2d(46, 44, Math.toRadians(180)));
             } else if (bluepropPipeline.getPropPosition() == "right") {
                 state = 20;
-                parkPose = (new Pose2d(46.00, 30.00, Math.toRadians(180)));
+                parkPose = (new Pose2d(46.00, 26.5, Math.toRadians(180)));
             } else {
                 state = 30;
                 parkPose = (new Pose2d(46.00,35.00, Math.toRadians(180)));
@@ -222,7 +229,7 @@ public class BlueBackdropNew extends LinearOpMode {
 
         TrajectorySequence outsidePark = drive.trajectorySequenceBuilder(parkPose)
                 .waitSeconds(.5)
-                .lineTo(new Vector2d(46.00, 59.00))
+                .lineTo(new Vector2d(46.00, 60.75))
                 .build();
 
         //wait until we start
@@ -235,7 +242,9 @@ public class BlueBackdropNew extends LinearOpMode {
 
         switch (state){
             case (10):
-
+                drive.followTrajectorySequence(blueBackdropLeftTrajs1);
+                drive.followTrajectorySequence(blueBackdropLeftTrajs2);
+                drive.followTrajectorySequence(blueBackdropLeftTrajs3);
                 break;
             case (20):
                 drive.followTrajectorySequence(blueBackdropRightTrajs1);
@@ -260,11 +269,13 @@ public class BlueBackdropNew extends LinearOpMode {
             robot.armSwing.setPosition(.1);
             lifttime.reset();
             robot.mtrLift.setVelocity(1000);
-            if (robot.bottomLimit.isPressed() || lifttime.time() >= .75 || robot.bottomLimit.isPressed() && lifttime.time() >= .75) {
+            if (robot.bottomLimit.isPressed() || lifttime.time() >= .25) {
                 robot.mtrLift.setVelocity(0);
                 break;
             }
         }
+
+        robot.mtrLift.setVelocity(0);
 
         while (!isStopRequested() && opModeIsActive()) ;
 
