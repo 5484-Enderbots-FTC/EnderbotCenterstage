@@ -78,7 +78,7 @@ public class BlueBackdropNew extends LinearOpMode {
         drive.setPoseEstimate(startPose);
 
         TrajectorySequence blueBackdropUniversalTraj1 = drive.trajectorySequenceBuilder(startPose)
-                .lineTo(new Vector2d(12.00, 34.50))
+                .lineTo(new Vector2d(12.00, 36.50))
                 .addTemporalMarker(0, () -> {
                     robot.intakeRight.setPosition(.94);
                     robot.gripper.setPosition(.57);
@@ -148,7 +148,7 @@ public class BlueBackdropNew extends LinearOpMode {
                     robot.armSwing.setPosition(1.0);
                 })
                 .turn(Math.toRadians(-90))
-                .lineTo(new Vector2d(51.50, 36.50))
+                .lineTo(new Vector2d(51.50, 35.00))
 
                 .build();
         TrajectorySequence blueBackdropCenterTrajs3 = drive.trajectorySequenceBuilder(blueBackdropCenterTrajs2.end())
@@ -212,7 +212,7 @@ public class BlueBackdropNew extends LinearOpMode {
                 parkPose = (new Pose2d(46.00, 30.00, Math.toRadians(180)));
             } else {
                 state = 30;
-                parkPose = (new Pose2d(46.00,36.50, Math.toRadians(180)));
+                parkPose = (new Pose2d(46.00,35.00, Math.toRadians(180)));
             }
             sleep(20);
 
