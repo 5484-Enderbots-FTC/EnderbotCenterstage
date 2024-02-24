@@ -102,27 +102,28 @@ public class BlueBackdropNew extends LinearOpMode {
                 .addTemporalMarker(0, () -> {
                     mtrI.setPower(0);
                 })
-                .addTemporalMarker(1, () -> {
-                    robot.mtrLift.setVelocity(1000);
-                    robot.armSwing.setPosition(1.0);
-                })
                 //to understand this turn motion, please go to learnroadrunner.com and read the 180 turn angle page in the advanced tips section
                 .turn(Math.toRadians(180) + 1e-6)
-                .lineTo(new Vector2d(12.00, 44.00))
+                .lineTo(new Vector2d(15.00, 36.50))
+                .lineTo(new Vector2d(15.00, 44.00))
                 .build();
 
         TrajectorySequence blueBackdropLeftTrajs3 = drive.trajectorySequenceBuilder(blueBackdropLeftTrajs2.end())
                 .lineTo(new Vector2d(51.50, 44.00))
-                .addTemporalMarker(.2, () -> {
+                .addTemporalMarker(0, () -> {
+                    robot.mtrLift.setVelocity(1000);
+                    robot.armSwing.setPosition(1.0);
+                })
+                .addTemporalMarker(.7, () -> {
                     robot.mtrLift.setVelocity(0);
                 })
-                .addTemporalMarker(1.25, () -> {
+                .addTemporalMarker(2, () -> {
                     robot.gripper.setPosition(.32);
                 })
-                .addTemporalMarker(1.5, () -> {
+                .addTemporalMarker(2.25, () -> {
                     robot.armSwing.setPosition(0);
                 })
-                .waitSeconds(2)
+                .waitSeconds(2.5)
                 .lineTo(new Vector2d(46, 44))
                 .build();
 
@@ -162,6 +163,7 @@ public class BlueBackdropNew extends LinearOpMode {
                 })
                 .lineTo(new Vector2d(46.00, 35.0))
                 .build();
+
 
         //if the prop is on the right
         TrajectorySequence blueBackdropRightTrajs1 = drive.trajectorySequenceBuilder(blueBackdropUniversalTraj1.end())
