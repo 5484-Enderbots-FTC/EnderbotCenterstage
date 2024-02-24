@@ -16,6 +16,7 @@ import com.qualcomm.robotcore.hardware.TouchSensor;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.teamcode.PATCHY.PIPELINES.bluepropPipeline;
+import org.firstinspires.ftc.teamcode.PATCHY.TELEOP.CenterstageTeleop;
 import org.firstinspires.ftc.vision.VisionPortal;
 import org.openftc.easyopencv.OpenCvCamera;
 
@@ -141,13 +142,15 @@ public class hardwareCS {
         proximityOne = hw.get(DigitalChannel.class, "nut1");
         proximityTwo = hw.get(DigitalChannel.class, "nut2");
 
-        blinkin = hw.get(RevBlinkinLedDriver.class, "blinkin");
+       // blinkin = hw.get(RevBlinkinLedDriver.class, "blinkin");
 
         joggingup = false;
         joggingdown = false;
         mtrLift.setVelocity(0);
         mtrLift2.setVelocity(0);
         droneLauncher.setPosition(1.0);
+        armSwing.setPosition(0.05);
+        gripper.setPosition(.6);
         gripperPressed = false;
 
         // set digital channel to input mode.
@@ -199,7 +202,7 @@ public class hardwareCS {
         if (!proximityTwo.getState()) {
             checkSecond = true;
         } else {
-            checkSecond = true;
+            checkSecond = false;
         }
 
     }
