@@ -19,6 +19,8 @@ import org.firstinspires.ftc.teamcode.PATCHY.PIPELINES.bluepropPipeline;
 import org.firstinspires.ftc.vision.VisionPortal;
 import org.openftc.easyopencv.OpenCvCamera;
 
+import com.qualcomm.hardware.rev.RevBlinkinLedDriver;
+
 
 public class hardwareCS {
 
@@ -61,6 +63,20 @@ public class hardwareCS {
 
     Pose2d visPose;
     Pose2d placePose;
+
+    public RevBlinkinLedDriver blinkin;
+
+    //defining the
+    public RevBlinkinLedDriver.BlinkinPattern
+            SickColor = RevBlinkinLedDriver.BlinkinPattern.CP1_2_COLOR_WAVES,
+            Aqua = RevBlinkinLedDriver.BlinkinPattern.AQUA,
+            Black = RevBlinkinLedDriver.BlinkinPattern.BLACK,
+            Blue = RevBlinkinLedDriver.BlinkinPattern.BLUE,
+            Pink = RevBlinkinLedDriver.BlinkinPattern.HOT_PINK;
+
+    //is the pixel near the proximity sensor boolean control
+    public boolean checkFirst;
+    public boolean checkSecond;
 
     public hardwareCS() {
         //nothing goes in here, just a way to call the class (stolen from FF hardware map)
@@ -125,6 +141,8 @@ public class hardwareCS {
         proximityOne = hw.get(DigitalChannel.class, "nut1");
         proximityTwo = hw.get(DigitalChannel.class, "nut2");
 
+        blinkin = hw.get(RevBlinkinLedDriver.class, "blinkin");
+
         joggingup = false;
         joggingdown = false;
         mtrLift.setVelocity(0);
@@ -167,6 +185,22 @@ public class hardwareCS {
 
     public String getOutString(){
         return bluepropPipeline.getPropPosition();
+
+    }
+
+    public void LEDcontrol(){
+
+        if (!proximityOne.getState()) {
+            checkFirst = true;
+        } else {
+            checkFirst = false;
+        }
+
+        if (!proximityTwo.getState()) {
+            checkSecond = true;
+        } else {
+            checkSecond = true;
+        }
 
     }
 
