@@ -12,6 +12,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
@@ -34,6 +35,7 @@ public class RedBackdropNew extends LinearOpMode {
 
     double resolution;
     Pose2d parkPose;
+    Servo gripper;
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -45,6 +47,8 @@ public class RedBackdropNew extends LinearOpMode {
         mtrI.setZeroPowerBehavior(BRAKE);
         mtrI.setDirection(DcMotor.Direction.FORWARD);
         mtrI.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
+        gripper = hardwareMap.get(Servo.class, "svrGrip");
 
         redpropPipeline = new redpropPipeline();
 
@@ -80,7 +84,7 @@ public class RedBackdropNew extends LinearOpMode {
             .lineTo(new Vector2d(12.00, -36.50))
             .addTemporalMarker(0, () -> {
                 robot.intakeRight.setPosition(.94);
-                robot.gripper.setPosition(.57);
+                gripper.setPosition(.6);
             })
             .addTemporalMarker(0.3, () -> {
                 robot.intakeLeft.setPosition(.027);
@@ -89,11 +93,11 @@ public class RedBackdropNew extends LinearOpMode {
 
 
     //is it on the left?
-        TrajectorySequence redBackdropLeftTrajs1 = drive.trajectorySequenceBuilder(redBackdropUniversalTraj1.end())
+        TrajectorySequence redBackdropLeftTrajs1 = drive.trajectorySequenceBuilder(startPose)
                 .turn(Math.toRadians(90))
                 .addTemporalMarker(1, () -> {
                     mtrI.setPower(.6);
-                    robot.gripper.setPosition(.57);
+                    gripper.setPosition(.57);
                 })
                 .waitSeconds(1.5)
                 .build();
@@ -103,35 +107,40 @@ public class RedBackdropNew extends LinearOpMode {
                 .lineTo(new Vector2d(16.00, -26.5))
                 .addTemporalMarker(0, () -> {
                     mtrI.setPower(0);
-                    robot.gripper.setPosition(.57);
+                    gripper.setPosition(.57);
                 })
                 .build();
 
         TrajectorySequence redBackdropLeftTrajs3 = drive.trajectorySequenceBuilder(redBackdropLeftTrajs2.end())
                 .addTemporalMarker(0, () -> {
                     robot.mtrLift.setVelocity(1000);
-                    robot.gripper.setPosition(.57);
+                    gripper.setPosition(.57);
                 })
                 .addTemporalMarker(.7, () -> {
                     robot.mtrLift.setVelocity(0);
                     robot.armSwing.setPosition(1.0);
                 })
-                .addTemporalMarker(1.8, () -> {
-                    robot.gripper.setPosition(.32);
-                })
                 .addTemporalMarker(2, () -> {
-                    robot.armSwing.setPosition(0);
+                    gripper.setPosition(.32);
                 })
-                .lineTo(new Vector2d(51.50, -26.5))
-                .waitSeconds(1.4)
-                .lineTo(new Vector2d(46, -26.5))
+                .lineTo(new Vector2d(50.50, -27))
+                .waitSeconds(1)
+                .lineTo(new Vector2d(46, -27))
                 .build();
 
     //center trajectories
-    TrajectorySequence RedBackDropCenterTrajs1 = drive.trajectorySequenceBuilder(redBackdropUniversalTraj1.end())
-            .lineTo(new Vector2d(19.00, -34.36))
-            .addTemporalMarker(1.5, () -> {
-                mtrI.setPower(.6);
+    TrajectorySequence RedBackDropCenterTrajs1 = drive.trajectorySequenceBuilder(startPose)
+            .lineTo(new Vector2d(15.70, -37.5))
+            .forward(1.5)
+            .addTemporalMarker(2.5, () -> {
+                mtrI.setPower(.7);
+            })
+            .addTemporalMarker(0, () -> {
+                robot.intakeRight.setPosition(.94);
+                gripper.setPosition(.6);
+            })
+            .addTemporalMarker(0.3, () -> {
+                robot.intakeLeft.setPosition(.027);
             })
             .waitSeconds(1)
             .lineTo(new Vector2d(19.00, -42.00))
@@ -149,59 +158,65 @@ public class RedBackdropNew extends LinearOpMode {
                 robot.mtrLift.setVelocity(0);
                 robot.armSwing.setPosition(1.0);
             })
-            .turn(Math.toRadians(90))
-            .lineTo(new Vector2d(51.50, -35.50))
+            .turn(Math.toRadians(-90))
+            .lineTo(new Vector2d(49.00, -35.00))
+
             .build();
 
     TrajectorySequence RedBackDropCenterTrajs3 = drive.trajectorySequenceBuilder(RedBackDropCenterTrajs2.end())
-            .waitSeconds(.75)
+            .waitSeconds(.6)
             .addTemporalMarker(.4, () -> {
-                robot.gripper.setPosition(.32);
+                gripper.setPosition(.32);
             })
-            .addTemporalMarker(.8, () -> {
-                robot.armSwing.setPosition(0);
-            })
-            .lineTo(new Vector2d(46, -35))
+            .lineTo(new Vector2d(46.00, -35.0))
             .build();
 
 
     //is it on the right?
     TrajectorySequence redBackdropRightTrajs1 = drive.trajectorySequenceBuilder(redBackdropUniversalTraj1.end())
-            .turn(Math.toRadians(-90))
+            .lineTo(new Vector2d(12.00, -60.75))
+            .lineTo(new Vector2d(20.00, -60.75))
+            .lineTo(new Vector2d(20.00, -45.00))
             .waitSeconds(2)
-            .addTemporalMarker(1, () -> {
-                mtrI.setPower(.6);
+            .addTemporalMarker(0, () -> {
+                robot.intakeRight.setPosition(.94);
+                gripper.setPosition(.6);
+            })
+            .addTemporalMarker(0.3, () -> {
+                robot.intakeLeft.setPosition(.027);
+            })
+            .addTemporalMarker(3.5, () -> {
+                mtrI.setPower(.8);
+                gripper.setPosition(.6);
             })
             .build();
 
     TrajectorySequence redBackdropRightTrajs2 = drive.trajectorySequenceBuilder(redBackdropRightTrajs1.end())
             //to understand this turn motion, please go to learnroadrunner.com and read the 180 turn angle page in the advanced tips section
-            .turn(Math.toRadians(180) + 1e-6)
-            .lineTo(new Vector2d(10.00, -36.50))
-            .lineTo(new Vector2d(10.00, -44.00))
             .addTemporalMarker(0, () -> {
                 mtrI.setPower(0);
             })
-
+            //to understand this turn motion, please go to learnroadrunner.com and read the 180 turn angle page in the advanced tips section
+            .lineTo(new Vector2d(20.00, -50.00))
+            .turn(Math.toRadians(-90))
             .build();
 
     TrajectorySequence redBackdropRightTrajs3 = drive.trajectorySequenceBuilder(redBackdropRightTrajs2.end())
-            .lineTo(new Vector2d(51.50, -44.00))
+            .lineTo(new Vector2d(49, -41.50))
             .addTemporalMarker(0, () -> {
                 robot.mtrLift.setVelocity(1000);
+            })
+            .addTemporalMarker(.5, () -> {
                 robot.armSwing.setPosition(1.0);
             })
             .addTemporalMarker(.7, () -> {
                 robot.mtrLift.setVelocity(0);
             })
             .addTemporalMarker(2, () -> {
-                robot.gripper.setPosition(.32);
+                gripper.setPosition(.32);
             })
-            .addTemporalMarker(2.25, () -> {
-                robot.armSwing.setPosition(0);
-            })
-            .waitSeconds(2.5)
-            .lineTo(new Vector2d(46.00, -44.00))
+            .waitSeconds(1)
+            .lineTo(new Vector2d(46, -44))
             .build();
 
 
@@ -210,7 +225,8 @@ public class RedBackdropNew extends LinearOpMode {
 
 
 
-        waitForStart();
+
+        gripper.setPosition(.6);
         //outside parking trajectory
         while (!isStarted() && !isStopRequested()) {
 
@@ -219,7 +235,7 @@ public class RedBackdropNew extends LinearOpMode {
             telemetry.update();
             if (redpropPipeline.getPropPosition() == "left"){
                 state = 10;
-                parkPose = (new Pose2d(46.00, -26.5, Math.toRadians(180)));
+                parkPose = (new Pose2d(46.00, -27, Math.toRadians(180)));
             } else if (redpropPipeline.getPropPosition() == "right") {
                 state = 20;
                 parkPose = new Pose2d(46.00, -44, Math.toRadians(180));
@@ -237,13 +253,18 @@ public class RedBackdropNew extends LinearOpMode {
         TrajectorySequence outsidePark = drive.trajectorySequenceBuilder(parkPose)
                 .lineTo(new Vector2d(46.00, -61.00))
                 .build();
+
+        waitForStart();
+
         if (isStopRequested()) return;
 
-        drive.followTrajectorySequence(redBackdropUniversalTraj1);
+        if (state != 10 && state != 30) {
+            drive.followTrajectorySequence(redBackdropUniversalTraj1);
+        }
 
         switch (state){
             case (10):
-                drive.followTrajectorySequence(redBackdropLeftTrajs2);
+                drive.followTrajectorySequence(redBackdropLeftTrajs1);
                 drive.followTrajectorySequence(redBackdropLeftTrajs2);
                 drive.followTrajectorySequence(redBackdropLeftTrajs3);
                 break;

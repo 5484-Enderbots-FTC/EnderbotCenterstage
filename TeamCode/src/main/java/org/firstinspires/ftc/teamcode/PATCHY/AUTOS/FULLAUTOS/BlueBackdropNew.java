@@ -53,8 +53,7 @@ public class BlueBackdropNew extends LinearOpMode {
 
         gripper = hardwareMap.get(Servo.class, "svrGrip");
 
-        gripper.setPosition(.6);
-        telemetry.addLine("Gripper should be open.");
+
 
         mtrI =  hardwareMap.get(DcMotorEx.class, "mtrI");
         mtrI.setZeroPowerBehavior(BRAKE);
@@ -257,7 +256,7 @@ public class BlueBackdropNew extends LinearOpMode {
 
         //wait until we start
         waitForStart();
-
+        gripper.setPosition(.6);
         if (isStopRequested()) return;
         telemetry.addData("place", state);
 
