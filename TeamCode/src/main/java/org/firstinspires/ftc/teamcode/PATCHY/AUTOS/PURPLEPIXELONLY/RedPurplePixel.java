@@ -68,6 +68,13 @@ public class RedPurplePixel extends LinearOpMode {
         Pose2d startPose = new Pose2d(0,0, Math.toRadians(0));
 
         TrajectorySequence traj1 = drive.trajectorySequenceBuilder(startPose)
+                .addTemporalMarker(0, () -> {
+                    robot.intakeRight.setPosition(.94);
+                    robot.gripper.setPosition(.6);
+                })
+                .addTemporalMarker(0.3, () -> {
+                    robot.intakeLeft.setPosition(.027);
+                })
                         .forward(22)
                                 .build();
 
@@ -90,6 +97,14 @@ public class RedPurplePixel extends LinearOpMode {
         TrajectorySequence blah = drive.trajectorySequenceBuilder(new Pose2d())
                 .waitSeconds(2)
                 .build();
+
+        while (!isStarted() && !isStopRequested()) {
+
+            telemetry.addLine("waitForStart");
+            telemetry.addData("Prop Position", redpropPipeline.getPropPosition());
+            telemetry.update();
+            auto = redpropPipeline.getPropPosition();
+        }
 
         waitForStart();
 

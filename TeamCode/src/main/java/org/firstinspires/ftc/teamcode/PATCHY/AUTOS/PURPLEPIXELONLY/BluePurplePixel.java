@@ -68,10 +68,25 @@ public class BluePurplePixel extends LinearOpMode {
             telemetry.addData("Blue Prop Position", bluepropPipeline.getPropPosition());
             telemetry.update();
 
+        while (!isStarted() && !isStopRequested()) {
+
+            telemetry.addLine("waitForStart");
+            telemetry.addData("Prop Position", bluepropPipeline.getPropPosition());
+            telemetry.update();
+            auto = bluepropPipeline.getPropPosition();
+        }
+
 
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
 
         Trajectory traj1 = drive.trajectoryBuilder(new Pose2d())
+                .addTemporalMarker(0, () -> {
+                    robot.intakeRight.setPosition(.94);
+                    robot.gripper.setPosition(.6);
+                })
+                .addTemporalMarker(0.3, () -> {
+                    robot.intakeLeft.setPosition(.027);
+                })
                 .forward(20)
                 .build();
 

@@ -94,8 +94,16 @@ public class RedBackdropNew extends LinearOpMode {
 
     //is it on the left?
         TrajectorySequence redBackdropLeftTrajs1 = drive.trajectorySequenceBuilder(startPose)
+                .lineTo(new Vector2d(12.00, -36.50))
                 .turn(Math.toRadians(90))
-                .addTemporalMarker(1, () -> {
+                .addTemporalMarker(0, () -> {
+                    robot.intakeRight.setPosition(.94);
+                    gripper.setPosition(.6);
+                })
+                .addTemporalMarker(0.3, () -> {
+                    robot.intakeLeft.setPosition(.027);
+                })
+                .addTemporalMarker(1.5, () -> {
                     mtrI.setPower(.6);
                     gripper.setPosition(.57);
                 })
@@ -158,7 +166,7 @@ public class RedBackdropNew extends LinearOpMode {
                 robot.mtrLift.setVelocity(0);
                 robot.armSwing.setPosition(1.0);
             })
-            .turn(Math.toRadians(-90))
+            .turn(Math.toRadians(90))
             .lineTo(new Vector2d(49.00, -35.00))
 
             .build();
@@ -174,8 +182,6 @@ public class RedBackdropNew extends LinearOpMode {
 
     //is it on the right?
     TrajectorySequence redBackdropRightTrajs1 = drive.trajectorySequenceBuilder(redBackdropUniversalTraj1.end())
-            .lineTo(new Vector2d(12.00, -60.75))
-            .lineTo(new Vector2d(20.00, -60.75))
             .lineTo(new Vector2d(20.00, -45.00))
             .waitSeconds(2)
             .addTemporalMarker(0, () -> {
@@ -198,7 +204,7 @@ public class RedBackdropNew extends LinearOpMode {
             })
             //to understand this turn motion, please go to learnroadrunner.com and read the 180 turn angle page in the advanced tips section
             .lineTo(new Vector2d(20.00, -50.00))
-            .turn(Math.toRadians(-90))
+            .turn(Math.toRadians(90))
             .build();
 
     TrajectorySequence redBackdropRightTrajs3 = drive.trajectorySequenceBuilder(redBackdropRightTrajs2.end())

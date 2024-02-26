@@ -265,8 +265,8 @@ public class CenterstageTeleop extends LinearOpMode {
             }
             //middle
             if (gamepad2.x && intakeArmInt == 1 && oldIntakeArmInt == 0) {
-                robot.intakeRight.setPosition(0.93);
-                robot.intakeLeft.setPosition(.06);
+                robot.intakeRight.setPosition(0.92);
+                robot.intakeLeft.setPosition(.07);
                 intakeArmInt = 0;
                 oldIntakeArmInt = 1;
             }
