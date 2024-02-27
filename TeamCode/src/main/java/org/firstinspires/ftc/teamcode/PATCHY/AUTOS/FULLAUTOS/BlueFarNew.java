@@ -263,6 +263,18 @@ public class BlueFarNew extends LinearOpMode {
                 .lineTo(new Vector2d(46.00, 60.25))
                 .build();
 
+        TrajectorySequence reset = drive.trajectorySequenceBuilder(outsidePark.end())
+                .lineTo(new Vector2d(47, 60.25))
+                .addTemporalMarker(0, () -> {
+                    robot.mtrLift.setDirection(DcMotorSimple.Direction.REVERSE);
+                    robot.mtrLift.setVelocity(1000);
+                })
+                .addTemporalMarker(0.7, () -> {
+                    robot.mtrLift.setVelocity(0);
+                })
+                .back(1)
+                .build();
+
         waitForStart();
 
         if (isStopRequested()) return;
@@ -291,20 +303,16 @@ public class BlueFarNew extends LinearOpMode {
                 break;
         }
 
-        //if switch == high or whatever, we'll put this in
         drive.setPoseEstimate(parkPose);
+        //if switch == high or whatever, we'll put this in
         drive.followTrajectorySequence(outsidePark);
         //else
         //inside park trajectory
-        while (!robot.bottomLimit.isPressed()) {
-            robot.mtrLift.setDirection(DcMotorSimple.Direction.REVERSE);
-            lifttime.reset();
-            robot.mtrLift.setVelocity(1000);
-            if (robot.bottomLimit.isPressed() || lifttime.time() >= .75 || robot.bottomLimit.isPressed() && lifttime.time() >= .75) {
-                robot.mtrLift.setVelocity(0);
-                break;
-            }
-        }
+
+        //drive.setPoseEstimate(parkPose);
+        //drive.followTrajectorySequence(reset);
+
+        robot.mtrLift.setVelocity(0);
 
         while (!isStopRequested() && opModeIsActive()) ;
 

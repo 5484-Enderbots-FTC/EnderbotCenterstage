@@ -262,8 +262,21 @@ public class RedFarNew extends LinearOpMode {
                 .lineTo(new Vector2d(46.00, 60.25))
                 .build();
 
+        TrajectorySequence reset = drive.trajectorySequenceBuilder(outsidePark.end())
+                .lineTo(new Vector2d(47, -60.25))
+                .addTemporalMarker(0, () -> {
+                    robot.mtrLift.setDirection(DcMotorSimple.Direction.REVERSE);
+                    robot.mtrLift.setVelocity(1000);
+                })
+                .addTemporalMarker(0.7, () -> {
+                    robot.mtrLift.setVelocity(0);
+                })
+                .back(1)
+                .build();
+
         //wait until we start
         waitForStart();
+
         gripper.setPosition(.6);
         if (isStopRequested()) return;
         telemetry.addData("place", state);
@@ -296,17 +309,7 @@ public class RedFarNew extends LinearOpMode {
         drive.followTrajectorySequence(outsidePark);
         //else
         //inside park trajectory
-
-        while (!robot.bottomLimit.isPressed()) {
-            robot.mtrLift.setDirection(DcMotorSimple.Direction.REVERSE);
-            robot.armSwing.setPosition(.1);
-            lifttime.reset();
-            robot.mtrLift.setVelocity(1000);
-            if (robot.bottomLimit.isPressed() || lifttime.time() >= .25) {
-                robot.mtrLift.setVelocity(0);
-                break;
-            }
-        }
+        //drive.followTrajectorySequence(reset);
 
         robot.mtrLift.setVelocity(0);
 
