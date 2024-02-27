@@ -38,8 +38,6 @@ public class RedPurplePixel extends LinearOpMode {
         mtrI.setDirection(DcMotor.Direction.FORWARD);
         mtrI.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
-        init_loop();
-        {
             redpropPipeline = new redpropPipeline();
 
             portal = new VisionPortal.Builder()
@@ -62,7 +60,6 @@ public class RedPurplePixel extends LinearOpMode {
             auto = redpropPipeline.getPropPosition();
             telemetry.addData("Red Prop Position", redpropPipeline.getPropPosition());
             telemetry.update();
-        }
 
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
         Pose2d startPose = new Pose2d(0,0, Math.toRadians(0));
