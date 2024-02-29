@@ -62,29 +62,42 @@ public class hardwareCS {
     public VisionPortal portal;
     public org.firstinspires.ftc.teamcode.PATCHY.PIPELINES.bluepropPipeline bluepropPipeline;
 
+    public RevBlinkinLedDriver lights;
+
     Pose2d visPose;
     Pose2d placePose;
 
     public RevBlinkinLedDriver blinkin;
 
+    int pixelCount;
+
     //defining the
     public RevBlinkinLedDriver.BlinkinPattern
             SickColor = RevBlinkinLedDriver.BlinkinPattern.CP1_2_COLOR_WAVES,
             Aqua = RevBlinkinLedDriver.BlinkinPattern.AQUA,
-            Black = RevBlinkinLedDriver.BlinkinPattern.BLACK,
-            Blue = RevBlinkinLedDriver.BlinkinPattern.BLUE,
-            Pink = RevBlinkinLedDriver.BlinkinPattern.HOT_PINK;
+            black = RevBlinkinLedDriver.BlinkinPattern.BLACK,
+
+            blue = RevBlinkinLedDriver.BlinkinPattern.BLUE,
+            pink = RevBlinkinLedDriver.BlinkinPattern.HOT_PINK;
+
+    public enum robotState{
+        intaking,
+        idle,
+        liftlowering;
+    }
 
     //is the pixel near the proximity sensor boolean control
     public boolean checkFirst;
     public boolean checkSecond;
-
+    public robotState state = robotState.idle;
     public hardwareCS() {
         //nothing goes in here, just a way to call the class (stolen from FF hardware map)
     }
 
     public void inithardware(HardwareMap thisHwMap) {
         hw = thisHwMap;
+
+
 
         mtrBL = hw.get(DcMotorEx.class, "mtrBL");
         mtrBL.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
@@ -141,6 +154,8 @@ public class hardwareCS {
 
         proximityOne = hw.get(DigitalChannel.class, "nut1");
         proximityTwo = hw.get(DigitalChannel.class, "nut2");
+
+        lights = hw.get(RevBlinkinLedDriver.class, "lights");
 
        // blinkin = hw.get(RevBlinkinLedDriver.class, "blinkin");
 
@@ -203,6 +218,47 @@ public class hardwareCS {
             checkSecond = true;
         } else {
             checkSecond = false;
+        }
+
+        if (checkFirst){
+            if (checkSecond){
+                pixelCount = 2;
+            } else {
+                pixelCount = 1;
+            }
+        } else if (checkSecond){
+            pixelCount = 1;
+        } else if (!checkFirst && !checkSecond) {
+            pixelCount = 0;
+        }
+
+        switch (state) {
+            case idle:
+                //IF WE HAVE NO PIXELS or 1 AND OUR INTAKE ARMS ARE IN THE MIDDLE
+                if (intakeLeft.getPosition() == .07 && pixelCount <= 1){
+                    lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.VIOLET);
+                } else if (intakeLeft.getPosition() == 0 && pixelCount <= 1){
+                    lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.GREEN);
+                } else if (checkFirst && checkSecond){
+                    //we got the pixels right?
+                    lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.HOT_PINK);
+                } else {
+                    //IF NONE OF THE OTHER CONDITIONS APPLY
+                    lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.BLACK);
+                }
+
+                break;
+            case liftlowering:
+
+                if (bottomLimit.isPressed()){
+                    lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.HEARTBEAT_BLUE);
+                } else {
+                    lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.HEARTBEAT_GRAY);
+                }
+                break;
+            default:
+                state = robotState.idle;
+                break;
         }
 
     }

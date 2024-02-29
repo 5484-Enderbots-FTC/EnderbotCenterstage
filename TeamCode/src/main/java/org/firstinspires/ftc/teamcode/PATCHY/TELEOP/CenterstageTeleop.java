@@ -432,6 +432,14 @@ public class CenterstageTeleop extends LinearOpMode {
                 oldGripperInt = false;
             }
 
+            //hardwareCS file, controls our LEDs
+            if (gamepad2.left_trigger >= .9){
+                robot.state = hardwareCS.robotState.liftlowering;
+            }else {
+                robot.state = hardwareCS.robotState.idle;
+            }
+            
+            robot.LEDcontrol();
 
 
 
