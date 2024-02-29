@@ -91,8 +91,9 @@ public class RedPurplePixel extends LinearOpMode {
                         .turn(Math.toRadians(-65))
                                 .build();
 
-        TrajectorySequence blah = drive.trajectorySequenceBuilder(new Pose2d())
+        TrajectorySequence blah = drive.trajectorySequenceBuilder(new Pose2d(22,0,Math.toRadians(0)))
                 .waitSeconds(2)
+                .back(5)
                 .build();
 
         while (!isStarted() && !isStopRequested()) {
@@ -111,15 +112,14 @@ public class RedPurplePixel extends LinearOpMode {
 
         if (auto == "left"){
             drive.followTrajectorySequence(traj2a);
-            mtrI.setPower(.6);
         } else if (auto == "right"){
             drive.followTrajectorySequence(traj2c);
-            mtrI.setPower(.6);
         }else {
             drive.followTrajectorySequence(traj2b);
-            mtrI.setPower(.6);
         }
 
+        mtrI.setPower(.8);
+        drive.setPoseEstimate(new Pose2d(22,0,Math.toRadians(0)));
         drive.followTrajectorySequence(blah);
         mtrI.setPower(0);
 

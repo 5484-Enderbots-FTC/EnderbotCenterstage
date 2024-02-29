@@ -113,8 +113,9 @@ public class BluePurplePixel extends LinearOpMode {
                 .forward(3)
                 .build();
 
-        TrajectorySequence blah = drive.trajectorySequenceBuilder(new Pose2d())
+        TrajectorySequence blah = drive.trajectorySequenceBuilder(new Pose2d(22,0,Math.toRadians(0)))
                         .waitSeconds(2)
+                .back(10)
                                 .build();
 
         while (!isStarted() && !isStopRequested()) {
@@ -142,16 +143,16 @@ public class BluePurplePixel extends LinearOpMode {
         if (auto == "left"){
             drive.followTrajectorySequence(traj2a);
             drive.followTrajectorySequence(traj3a);
-            mtrI.setPower(.5);
         } else if (auto == "right"){
             drive.followTrajectorySequence(traj2c);
             drive.followTrajectorySequence(traj3c);
-            mtrI.setPower(.5);
         }else {
             drive.followTrajectorySequence(traj2b);
-            mtrI.setPower(.5);
+
         }
 
+        mtrI.setPower(.8);
+        drive.setPoseEstimate(new Pose2d(22,0,Math.toRadians(0)));
         drive.followTrajectorySequence(blah);
         mtrI.setPower(0);
 

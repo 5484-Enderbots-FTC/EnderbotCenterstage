@@ -258,17 +258,6 @@ public class RedBackdropNew extends LinearOpMode {
 
 
         //reset thingy
-        TrajectorySequence reset = drive.trajectorySequenceBuilder(outsidePark.end())
-                .lineTo(new Vector2d(47, -60.25))
-                        .addTemporalMarker(0, () -> {
-                            robot.mtrLift.setDirection(DcMotorSimple.Direction.REVERSE);
-                            robot.mtrLift.setVelocity(1000);
-                        })
-                        .addTemporalMarker(0.7, () -> {
-                            robot.mtrLift.setVelocity(0);
-                        })
-                        .back(1)
-                        .build();
 
         waitForStart();
 

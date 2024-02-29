@@ -75,11 +75,11 @@ public class CenterstageTeleop extends LinearOpMode {
 
     //toggle variables for the various toggle buttons
     public int gripperInt = 0;
-    public int oldGripperInt = 0;
+    public boolean oldGripperInt = false;
     public int intakeArmInt = 0;
-    public int oldIntakeArmInt = 0;
+    public boolean oldIntakeArmInt = false;
     public int armInt = 0;
-    public int oldArmInt = 0;
+    public boolean oldArmInt = false;
 
 
     @Override
@@ -257,26 +257,34 @@ public class CenterstageTeleop extends LinearOpMode {
             }
 
 //outside
-            if (gamepad2.x && intakeArmInt == 0 && oldIntakeArmInt == 0) {
+            /*if (gamepad2.x && intakeArmInt == 0 && !oldIntakeArmInt) {
                 robot.intakeLeft.setPosition(0);
                 robot.intakeRight.setPosition(1);
                 intakeArmInt = 1;
-                oldIntakeArmInt = 1;
             }
             //middle
-            if (gamepad2.x && intakeArmInt == 1 && oldIntakeArmInt == 0) {
+            if (gamepad2.x && intakeArmInt == 1 && !oldIntakeArmInt) {
                 robot.intakeRight.setPosition(0.92);
                 robot.intakeLeft.setPosition(.07);
                 intakeArmInt = 0;
-                oldIntakeArmInt = 1;
+            }*/
+
+            if(gamepad2.x && !oldIntakeArmInt) {
+                if  (robot.intakeLeft.getPosition() == 0 && robot.intakeRight.getPosition() == 1) {
+                    robot.intakeLeft.setPosition(.07);
+                    robot.intakeRight.setPosition(.92);
+                    oldIntakeArmInt = true;
+                } else {
+                    robot.intakeRight.setPosition(1);
+                    robot.intakeLeft.setPosition(0);
+                    oldIntakeArmInt = true;
+                }
+            } else if(!gamepad2.x) {
+                oldIntakeArmInt = false;
             }
 
             //control and make sure we can't activate the above functions unless we aren't pressing the x button
-            if (gamepad2.x && oldIntakeArmInt != 1) {
-                oldIntakeArmInt = 1;
-            } else {
-                oldIntakeArmInt = 0;
-            }
+
 
             //hanging
             //extend the lift
@@ -366,7 +374,7 @@ public class CenterstageTeleop extends LinearOpMode {
             }
 
             //control the arm swing positions
-            if (gamepad2.a && armInt == 0 && oldArmInt == 0) {
+            /*if (gamepad2.a && armInt == 0 && oldArmInt == 0) {
                 robot.armSwing.setPosition(1.0);
                 oldArmInt = 1;
                 armInt = 1;
@@ -381,10 +389,22 @@ public class CenterstageTeleop extends LinearOpMode {
                 oldArmInt = 0;
             } else if (gamepad1.a && oldArmInt != 1) {
                 oldArmInt = 1;
+            }*/
+
+            if(gamepad2.a && !oldArmInt) {
+                if  (robot.armSwing.getPosition() == 0) {
+                    robot.armSwing.setPosition(1);
+                    oldArmInt = true;
+                } else {
+                    robot.armSwing.setPosition(0);
+                    oldArmInt = true;
+                }
+            } else if(!gamepad2.a) {
+                oldArmInt = false;
             }
 
             //if we are pressing the left bumper, weren't already open, and weren't holding
-            if (gamepad2.right_bumper && gripperInt == 0 && oldGripperInt == 0) {
+           /* if (gamepad2.right_bumper && gripperInt == 0 && oldGripperInt == 0) {
                 robot.gripper.setPosition(.57);
                 gripperInt = 1;
                 oldGripperInt = 1;
@@ -398,6 +418,18 @@ public class CenterstageTeleop extends LinearOpMode {
 
             if (!gamepad2.right_bumper && oldGripperInt != 0) {
                 oldGripperInt = 0;
+            }*/
+
+            if(gamepad2.right_bumper && !oldGripperInt) {
+                if  (robot.gripper.getPosition() <=.32) {
+                    robot.gripper.setPosition(.57);
+                    oldGripperInt = true;
+                } else {
+                    robot.gripper.setPosition(.32);
+                    oldGripperInt = true;
+                }
+            } else if(!gamepad2.right_bumper) {
+                oldGripperInt = false;
             }
 
 

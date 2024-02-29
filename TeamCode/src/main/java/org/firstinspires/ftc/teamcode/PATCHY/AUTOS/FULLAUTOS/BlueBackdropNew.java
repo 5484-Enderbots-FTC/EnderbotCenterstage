@@ -173,7 +173,7 @@ public class BlueBackdropNew extends LinearOpMode {
                     robot.armSwing.setPosition(1.0);
                 })
                 .turn(Math.toRadians(-90))
-                .lineTo(new Vector2d(49.00, 35.00))
+                .lineTo(new Vector2d(50.00, 35.00))
 
                 .build();
         TrajectorySequence blueBackdropCenterTrajs3 = drive.trajectorySequenceBuilder(blueBackdropCenterTrajs2.end())
@@ -247,22 +247,11 @@ public class BlueBackdropNew extends LinearOpMode {
         }
 
         TrajectorySequence outsidePark = drive.trajectorySequenceBuilder(parkPose)
+                .lineTo(new Vector2d(46.00, 60.25))
                 .addTemporalMarker(0, () -> {
                     robot.armSwing.setPosition(0);
                 })
                 .waitSeconds(.5)
-                .lineTo(new Vector2d(46.00, 60.25))
-                .build();
-
-        TrajectorySequence reset = drive.trajectorySequenceBuilder(outsidePark.end())
-                .lineTo(new Vector2d(47, 60.25))
-                .addTemporalMarker(0, () -> {
-                    robot.mtrLift.setDirection(DcMotorSimple.Direction.REVERSE);
-                    robot.mtrLift.setVelocity(1000);
-                })
-                .addTemporalMarker(0.7, () -> {
-                    robot.mtrLift.setVelocity(0);
-                })
                 .build();
 
         //wait until we start
