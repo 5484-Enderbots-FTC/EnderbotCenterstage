@@ -164,7 +164,7 @@ public class hardwareCS {
         mtrLift.setVelocity(0);
         mtrLift2.setVelocity(0);
         droneLauncher.setPosition(1.0);
-        armSwing.setPosition(0.05);
+        armSwing.setPosition(0.1);
         gripper.setPosition(.6);
         gripperPressed = false;
 
@@ -236,12 +236,12 @@ public class hardwareCS {
             case idle:
                 //IF WE HAVE NO PIXELS or 1 AND OUR INTAKE ARMS ARE IN THE MIDDLE
                 if (intakeLeft.getPosition() == .07 && pixelCount <= 1){
-                    lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.VIOLET);
+                    lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.DARK_BLUE);
                 } else if (intakeLeft.getPosition() == 0 && pixelCount <= 1){
-                    lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.GREEN);
+                    lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.HOT_PINK);
                 } else if (checkFirst && checkSecond){
                     //we got the pixels right?
-                    lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.HOT_PINK);
+                    lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.DARK_RED);
                 } else {
                     //IF NONE OF THE OTHER CONDITIONS APPLY
                     lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.BLACK);
@@ -251,9 +251,9 @@ public class hardwareCS {
             case liftlowering:
 
                 if (bottomLimit.isPressed()){
-                    lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.HEARTBEAT_BLUE);
-                } else {
                     lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.HEARTBEAT_GRAY);
+                } else {
+                    lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.RED_ORANGE);
                 }
                 break;
             default:

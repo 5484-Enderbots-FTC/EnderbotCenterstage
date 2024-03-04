@@ -244,12 +244,12 @@ public class CenterstageTeleop extends LinearOpMode {
             //take in pixels
             if (gamepad2.dpad_right) {
                 robot.mtrI.setDirection(DcMotor.Direction.REVERSE);
-                robot.mtrI.setPower(0.75);
+                robot.mtrI.setPower(0.6);
             }
             //spit out pixels
             if (gamepad2.dpad_left) {
                 robot.mtrI.setDirection(DcMotor.Direction.FORWARD);
-                robot.mtrI.setPower(0.75);
+                robot.mtrI.setPower(0.6);
             }
             //kill the power on the intake
             if (gamepad2.b) {
@@ -392,11 +392,11 @@ public class CenterstageTeleop extends LinearOpMode {
             }*/
 
             if(gamepad2.a && !oldArmInt) {
-                if  (robot.armSwing.getPosition() == 0) {
+                if  (robot.armSwing.getPosition() <= 0.02) {
                     robot.armSwing.setPosition(1);
                     oldArmInt = true;
                 } else {
-                    robot.armSwing.setPosition(0);
+                    robot.armSwing.setPosition(0.00);
                     oldArmInt = true;
                 }
             } else if(!gamepad2.a) {
