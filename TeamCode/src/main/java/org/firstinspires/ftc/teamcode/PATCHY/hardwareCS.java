@@ -71,6 +71,11 @@ public class hardwareCS {
 
     int pixelCount;
 
+    //the one of the flap that falls when the bot starts, im not generally sure what it detects tho tbh
+    public DigitalChannel flapSns;
+    //arm sensor on the bot, the one at the front
+    public DigitalChannel armSns;
+
     //defining the
     public RevBlinkinLedDriver.BlinkinPattern
             SickColor = RevBlinkinLedDriver.BlinkinPattern.CP1_2_COLOR_WAVES,
@@ -86,10 +91,16 @@ public class hardwareCS {
         liftlowering;
     }
 
+    public enum intakeState{
+        off,
+        intake
+    }
+
     //is the pixel near the proximity sensor boolean control
     public boolean checkFirst;
     public boolean checkSecond;
     public robotState state = robotState.idle;
+    public intakeState iState = intakeState.off;
     public hardwareCS() {
         //nothing goes in here, just a way to call the class (stolen from FF hardware map)
     }
@@ -154,6 +165,8 @@ public class hardwareCS {
 
         proximityOne = hw.get(DigitalChannel.class, "nut1");
         proximityTwo = hw.get(DigitalChannel.class, "nut2");
+        flapSns = hw.get(DigitalChannel.class, "flap");
+        armSns = hw.get(DigitalChannel.class, "armSns");
 
         lights = hw.get(RevBlinkinLedDriver.class, "lights");
 
@@ -261,6 +274,29 @@ public class hardwareCS {
                 break;
         }
 
+    }
+
+    public void intakeControl(){
+        armSns.getState();
+        flapSns.getState();
+
+        switch (iState){
+            case intake:
+                if (checkSecond && checkFirst){
+                    iState = intakeState.off;
+                }
+
+                break;
+            case off:
+                if (!flapSns.getState()){
+                    if (checkSecond && checkFirst){
+
+                    }
+                }
+                break;
+            default:
+                iState = intakeState.off;
+        }
     }
 
 
