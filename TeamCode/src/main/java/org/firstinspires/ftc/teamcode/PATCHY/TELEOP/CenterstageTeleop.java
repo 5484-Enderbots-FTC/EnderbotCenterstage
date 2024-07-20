@@ -361,7 +361,7 @@ public class CenterstageTeleop extends LinearOpMode {
             //this extra variable check is in place b/c of the
             //same reasoning as the other trigger check
             //this also doesn't need the limit switch to stop
-            if (gamepad2.left_trigger == 0 && joggingdown) {
+            if (gamepad2.left_trigger <= 0.2 && joggingdown) {
                 robot.mtrLift.setVelocity(0);
                 //robot.mtrLift2.setVelocity(0);
                 joggingdown = false;
