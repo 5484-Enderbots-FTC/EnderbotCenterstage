@@ -299,5 +299,9 @@ public class hardwareCS {
         }
     }
 
+    public void toggle(Boolean gamepadbutton){
+
+    }
+
 
 }
