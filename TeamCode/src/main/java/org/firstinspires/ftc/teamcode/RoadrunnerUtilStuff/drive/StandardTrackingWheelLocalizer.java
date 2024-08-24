@@ -7,6 +7,8 @@ import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.localization.ThreeTrackingWheelLocalizer;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+
+import org.firstinspires.ftc.teamcode.PATCHY.SparkFunOTOS;
 import org.firstinspires.ftc.teamcode.RoadrunnerUtilStuff.util.Encoder;
 
 import java.util.Arrays;
@@ -36,12 +38,16 @@ public class StandardTrackingWheelLocalizer extends ThreeTrackingWheelLocalizer 
 
     private Encoder leftEncoder, rightEncoder, frontEncoder;
 
-    private List<Integer> lastEncPositions, lastEncVels;
+    private List<Double> lastEncPositions;
+    private List<Double> lastEncVels;
 
     public static double X_MULTIPLIER = 1; // Multiplier in the X direction
     public static double Y_MULTIPLIER = 1.02360548; // Multiplier in the Y direction
+
+    SparkFunOTOS myOtos;
+
 // :)
-    public StandardTrackingWheelLocalizer(HardwareMap hardwareMap, List<Integer> lastTrackingEncPositions, List<Integer> lastTrackingEncVels) {
+    public StandardTrackingWheelLocalizer(HardwareMap hardwareMap, List<Double> lastTrackingEncPositions, List<Double> lastTrackingEncVels) {
         super(Arrays.asList(
                 new Pose2d(0, LATERAL_DISTANCE / 2, 0), // left
                 new Pose2d(0, -LATERAL_DISTANCE / 2, 0), // right
@@ -55,10 +61,13 @@ public class StandardTrackingWheelLocalizer extends ThreeTrackingWheelLocalizer 
         rightEncoder = new Encoder(hardwareMap.get(DcMotorEx.class, "mtrFR"));
         frontEncoder = new Encoder(hardwareMap.get(DcMotorEx.class, "mtrBL"));
 
+        myOtos = hardwareMap.get(SparkFunOTOS.class, "sensor_otos");
+
         // TODO: reverse any encoders using Encoder.setDirection(Encoder.Direction.REVERSE)
         frontEncoder.setDirection(Encoder.Direction.FORWARD);
         leftEncoder.setDirection(Encoder.Direction.FORWARD);
         rightEncoder.setDirection(Encoder.Direction.REVERSE);
+
     }
 
     public static double encoderTicksToInches(double ticks) {
@@ -68,38 +77,53 @@ public class StandardTrackingWheelLocalizer extends ThreeTrackingWheelLocalizer 
     @NonNull
     @Override
     public List<Double> getWheelPositions() {
-        int leftPos = leftEncoder.getCurrentPosition();
+        /*int leftPos = leftEncoder.getCurrentPosition();
         int rightPos = rightEncoder.getCurrentPosition();
-        int frontPos = frontEncoder.getCurrentPosition();
+        int frontPos = frontEncoder.getCurrentPosition();*/
+
+        double otosPosX = myOtos.getPosition().x;
+        double otosPosY = myOtos.getPosition().y;
 
         lastEncPositions.clear();
-        lastEncPositions.add(leftPos);
+
+        lastEncPositions.add(otosPosX);
+        lastEncPositions.add(otosPosY);
+        /*lastEncPositions.add(leftPos);
         lastEncPositions.add(rightPos);
-        lastEncPositions.add(frontPos);
+        lastEncPositions.add(frontPos);*/
 
         return Arrays.asList(
-                encoderTicksToInches(leftPos) * X_MULTIPLIER,
+                otosPosX * X_MULTIPLIER,
+                otosPosY * Y_MULTIPLIER
+                /*encoderTicksToInches(leftPos) * X_MULTIPLIER,
                 encoderTicksToInches(rightPos) * X_MULTIPLIER,
-                encoderTicksToInches(frontPos) * Y_MULTIPLIER
+                encoderTicksToInches(frontPos) * Y_MULTIPLIER*/
         );
     }
 
-    @NonNull
-    @Override
+    // @NonNull
+   // @Override
     public List<Double> getWheelVelocities() {
         int leftVel = (int) leftEncoder.getCorrectedVelocity();
         int rightVel = (int) rightEncoder.getCorrectedVelocity();
         int frontVel = (int) frontEncoder.getCorrectedVelocity();
 
+        double otosVelX = myOtos.getVelocity().x;
+        double otosVelY = myOtos.getVelocity().y;
+
         lastEncVels.clear();
-        lastEncVels.add(leftVel);
+        lastEncVels.add(otosVelX);
+        lastEncVels.add(otosVelY);
+        /*lastEncVels.add(leftVel);
         lastEncVels.add(rightVel);
-        lastEncVels.add(frontVel);
+        lastEncVels.add(frontVel);*/
 
         return Arrays.asList(
-                encoderTicksToInches(leftVel) * X_MULTIPLIER,
+                /*encoderTicksToInches(leftVel) * X_MULTIPLIER,
                 encoderTicksToInches(rightVel) * X_MULTIPLIER,
-                encoderTicksToInches(frontVel) * Y_MULTIPLIER
+                encoderTicksToInches(frontVel) * Y_MULTIPLIER*/
+                otosVelX * X_MULTIPLIER,
+                otosVelY * Y_MULTIPLIER
         );
     }
 }

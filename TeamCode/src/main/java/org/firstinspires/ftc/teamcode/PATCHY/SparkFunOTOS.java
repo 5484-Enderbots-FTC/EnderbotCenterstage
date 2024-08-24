@@ -211,7 +211,7 @@ public class SparkFunOTOS extends I2cDeviceSynchDevice {
             return (byte) ((enLut ? 0x01 : 0) | (enAcc ? 0x02 : 0) | (enRot ? 0x04 : 0) | (enVar ? 0x08 : 0));
         }
     }
-
+    //interesting to look at
     // Self-test config register structure
     public static class SelfTestConfig {
         public boolean start;
