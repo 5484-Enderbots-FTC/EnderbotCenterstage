@@ -82,16 +82,16 @@ public class hardwareCS {
             Aqua = RevBlinkinLedDriver.BlinkinPattern.AQUA,
             black = RevBlinkinLedDriver.BlinkinPattern.BLACK,
 
-            blue = RevBlinkinLedDriver.BlinkinPattern.BLUE,
+    blue = RevBlinkinLedDriver.BlinkinPattern.BLUE,
             pink = RevBlinkinLedDriver.BlinkinPattern.HOT_PINK;
 
-    public enum robotState{
+    public enum robotState {
         intaking,
         idle,
         liftlowering;
     }
 
-    public enum intakeState{
+    public enum intakeState {
         off,
         intake
     }
@@ -101,6 +101,7 @@ public class hardwareCS {
     public boolean checkSecond;
     public robotState state = robotState.idle;
     public intakeState iState = intakeState.off;
+
     public hardwareCS() {
         //nothing goes in here, just a way to call the class (stolen from FF hardware map)
     }
@@ -109,21 +110,20 @@ public class hardwareCS {
         hw = thisHwMap;
 
 
-
         mtrBL = hw.get(DcMotorEx.class, "mtrBL");
-        mtrBL.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
+        mtrBL.setZeroPowerBehavior(BRAKE);
         mtrBL.setDirection(DcMotorEx.Direction.FORWARD);
 
         mtrBR = hw.get(DcMotorEx.class, "mtrBR");
-        mtrBR.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
+        mtrBR.setZeroPowerBehavior(BRAKE);
         mtrBR.setDirection(DcMotorEx.Direction.REVERSE);
 
         mtrFL = hw.get(DcMotorEx.class, "mtrFL");
-        mtrFL.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
+        mtrFL.setZeroPowerBehavior(BRAKE);
         mtrFL.setDirection(DcMotorEx.Direction.FORWARD);
 
         mtrFR = hw.get(DcMotorEx.class, "mtrFR");
-        mtrFR.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
+        mtrFR.setZeroPowerBehavior(BRAKE);
         mtrFR.setDirection(DcMotorEx.Direction.REVERSE);
 
         mtrI = hw.get(DcMotorEx.class, "mtrI");
@@ -170,7 +170,7 @@ public class hardwareCS {
 
         lights = hw.get(RevBlinkinLedDriver.class, "lights");
 
-       // blinkin = hw.get(RevBlinkinLedDriver.class, "blinkin");
+        // blinkin = hw.get(RevBlinkinLedDriver.class, "blinkin");
 
         joggingup = false;
         joggingdown = false;
@@ -200,13 +200,13 @@ public class hardwareCS {
 
         //portal.saveNextFrameRaw(String.format(Locale.US, "CameraFrameCapture-%06d"));
         //if (portal.getCameraState() != VisionPortal.CameraState.STREAMING) {
-            //telemetry.addData("Camera", "Waiting");
-           //telemetry.update();
+        //telemetry.addData("Camera", "Waiting");
+        //telemetry.update();
             /*while (!isStopRequested() && (portal.getCameraState() != VisionPortal.CameraState.STREAMING)) {
                 sleep(20);
             }*/
-            //telemetry.addData("Camera", "Ready");
-            //telemetry.update();
+        //telemetry.addData("Camera", "Ready");
+        //telemetry.update();
         //}
         //prop position for autonomous, auto = prop position
         //auto = bluepropPipeline.getPropPosition();
@@ -214,12 +214,12 @@ public class hardwareCS {
         //telemetry.update();
     }
 
-    public String getOutString(){
+    public String getOutString() {
         return bluepropPipeline.getPropPosition();
 
     }
 
-    public void LEDcontrol(){
+    public void LEDcontrol() {
 
         if (!proximityOne.getState()) {
             checkFirst = true;
@@ -233,13 +233,13 @@ public class hardwareCS {
             checkSecond = false;
         }
 
-        if (checkFirst){
-            if (checkSecond){
+        if (checkFirst) {
+            if (checkSecond) {
                 pixelCount = 2;
             } else {
                 pixelCount = 1;
             }
-        } else if (checkSecond){
+        } else if (checkSecond) {
             pixelCount = 1;
         } else if (!checkFirst && !checkSecond) {
             pixelCount = 0;
@@ -248,11 +248,11 @@ public class hardwareCS {
         switch (state) {
             case idle:
                 //IF WE HAVE NO PIXELS or 1 AND OUR INTAKE ARMS ARE IN THE MIDDLE
-                if (intakeLeft.getPosition() == .07 && pixelCount <= 1){
+                if (intakeLeft.getPosition() == .07 && pixelCount <= 1) {
                     lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.DARK_BLUE);
-                } else if (intakeLeft.getPosition() == 0 && pixelCount <= 1){
+                } else if (intakeLeft.getPosition() == 0 && pixelCount <= 1) {
                     lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.HOT_PINK);
-                } else if (checkFirst && checkSecond){
+                } else if (checkFirst && checkSecond) {
                     //we got the pixels right?
                     lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.DARK_RED);
                 } else {
@@ -263,7 +263,7 @@ public class hardwareCS {
                 break;
             case liftlowering:
 
-                if (bottomLimit.isPressed()){
+                if (bottomLimit.isPressed()) {
                     lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.HEARTBEAT_GRAY);
                 } else {
                     lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.RED_ORANGE);
@@ -276,20 +276,20 @@ public class hardwareCS {
 
     }
 
-    public void intakeControl(){
+    public void intakeControl() {
         armSns.getState();
         flapSns.getState();
 
-        switch (iState){
+        switch (iState) {
             case intake:
-                if (checkSecond && checkFirst){
+                if (checkSecond && checkFirst) {
                     iState = intakeState.off;
                 }
 
                 break;
             case off:
-                if (!flapSns.getState()){
-                    if (checkSecond && checkFirst){
+                if (!flapSns.getState()) {
+                    if (checkSecond && checkFirst) {
 
                     }
                 }
@@ -299,9 +299,19 @@ public class hardwareCS {
         }
     }
 
-    public void toggle(Boolean gamepadbutton){
+    public void toggle(Boolean gamepadbutton, Servo object, double positionGoTo, double positionStartAt) {
+        Boolean controlVariable = null;
+        if (gamepadbutton && !controlVariable) {
+            if (object.getPosition() <= positionStartAt) {
+                object.setPosition(positionGoTo);
+                controlVariable = true;
+            } else {
+                object.setPosition(positionStartAt);
+                controlVariable = true;
+            }
+        } else if (!gamepadbutton) {
+            controlVariable = false;
+        }
 
     }
-
-
 }

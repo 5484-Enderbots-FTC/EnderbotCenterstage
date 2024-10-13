@@ -403,6 +403,8 @@ public class CenterstageTeleop extends LinearOpMode {
                 oldArmInt = false;
             }
 
+            robot.toggle(gamepad2.a, robot.armSwing, 1, .02);
+
             //if we are pressing the left bumper, weren't already open, and weren't holding
            /* if (gamepad2.right_bumper && gripperInt == 0 && oldGripperInt == 0) {
                 robot.gripper.setPosition(.57);
